@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}User Management{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2>👥 User Management</h2>
+        <a href="/admin/users/new" class="btn btn-success">➕ Add New User</a>
+    </div>
+    
+    <div style="margin-bottom: 20px;">
+        <p>Total Users: <strong>{{ users|length }}</strong></p>
+    </div>
+    
+    {% if users %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Full Name</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Created</th>
+                    <th>Updated</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td><strong>{{ user.username }}</strong></td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.full_name or '-' }}</td>
+                    <td><span class="badge badge-{{ user.role }}">{{ user.role.title() }}</span></td>
+                    <td><span class="badge badge-{{ 'active' if user.is_active else 'inactive' }}">{{ 'Active' if user.is_active else 'Inactive' }}</span></td>
+                    <td>{{ user.created_at[:16] }}</td>
+                    <td>{{ user.updated_at[:16] if user.updated_at else '-' }}</td>
+                    <td>
+                        <a href="/admin/users/{{ user.id }}" class="btn btn-primary" style="padding: 5px 10px; font-size: 12px;">View</a>
+                        <a href="/admin/users/{{ user.id }}/edit" class="btn btn-warning" style="padding: 5px 10px; font-size: 12px;">Edit</a>
+                        <form method="post" action="/admin/users/{{ user.id }}/delete" style="display: inline;">
+                            <button type="submit" class="btn btn-danger" style="padding: 5px 10px; font-size: 12px;" onclick="return confirmDelete('user')">Delete</button>
+                        </form>
+                        {% if user.is_active %}
+                            <form method="post" action="/admin/users/{{ user.id }}/deactivate" style="display: inline;">
+                                <button type="submit" class="btn btn-warning" style="padding: 5px 10px; font-size: 12px;">Deactivate</button>
+                            </form>
+                        {% else %}
+                            <form method="post" action="/admin/users/{{ user.id }}/activate" style="display: inline;">
+                                <button type="submit" class="btn btn-success" style="padding: 5px 10px; font-size: 12px;">Activate</button>
+                            </form>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-warning">
+            <strong>No users found.</strong> <a href="/admin/users/new">Create the first user</a>
+        </div>
+    {% endif %}
+</div>
+
+<div class="card">
+    <h3>📊 User Statistics</h3>
+    <div class="stats">
+        <div class="stat-card">
+            <div class="stat-number">{{ users|selectattr('role', 'equalto', 'admin')|list|length }}</div>
+            <div class="stat-label">Administrators</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">{{ users|selectattr('role', 'equalto', 'user')|list|length }}</div>
+            <div class="stat-label">Regular Users</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">{{ users|selectattr('is_active', 'equalto', true)|list|length }}</div>
+            <div class="stat-label">Active Users</div>
+        </div>
+    </div>
+</div>
+{% endblock %}

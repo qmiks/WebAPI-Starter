@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %}{% if user %}Edit User{% else %}Add New User{% endif %}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>{% if user %}✏️ Edit User: {{ user.username }}{% else %}➕ Add New User{% endif %}</h2>
+    
+    {% if error %}
+    <div class="alert alert-error">
+        <strong>❌ Error:</strong> {{ error }}
+    </div>
+    {% endif %}
+    
+    <form method="post" action="{{ form_action if form_action else ('/admin/users/' + user.id|string + '/edit' if user else '/admin/users/new') }}">
+        <div class="form-group">
+            <label for="username">Username *</label>
+            <input type="text" class="form-control" id="username" name="username" 
+                   value="{{ form_data.username if form_data else (user.username if user else '') }}" required
+                   pattern="[a-zA-Z0-9_]{3,50}" 
+                   title="Username must be 3-50 characters and contain only letters, numbers, and underscores">
+            <small style="color: #666;">3-50 characters, letters, numbers, and underscores only</small>
+        </div>
+        
+        <div class="form-group">
+            <label for="email">Email *</label>
+            <input type="email" class="form-control" id="email" name="email" 
+                   value="{{ form_data.email if form_data else (user.email if user else '') }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="full_name">Full Name</label>
+            <input type="text" class="form-control" id="full_name" name="full_name" 
+                   value="{{ form_data.full_name if form_data else (user.full_name if user else '') }}" maxlength="100">
+        </div>
+        
+        <div class="form-group">
+            <label for="password">{% if user %}New Password (leave blank to keep current){% else %}Password *{% endif %}</label>
+            <input type="password" class="form-control" id="password" name="password" 
+                   {% if not user %}required{% endif %} minlength="8">
+            <small style="color: #666;">{% if user %}Leave blank to keep current password. {% endif %}Minimum 8 characters</small>
+        </div>
+        
+        <div class="form-group">
+            <label for="role">Role *</label>
+            <select class="form-control" id="role" name="role" required>
+                <option value="user" {% if (form_data and form_data.role == 'user') or (user and user.role == 'user') %}selected{% endif %}>User</option>
+                <option value="admin" {% if (form_data and form_data.role == 'admin') or (user and user.role == 'admin') %}selected{% endif %}>Administrator</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label>
+                <input type="checkbox" name="is_active" value="true" 
+                       {% if (form_data and form_data.is_active) or (not form_data and (not user or user.is_active)) %}checked{% endif %}>
+                Active User
+            </label>
+            <small style="display: block; color: #666;">Inactive users cannot access the system</small>
+        </div>
+        
+        <div style="margin-top: 30px;">
+            <button type="submit" class="btn btn-success">
+                {% if user %}💾 Update User{% else %}➕ Create User{% endif %}
+            </button>
+            <a href="/admin/users" class="btn btn-warning">❌ Cancel</a>
+            {% if user %}
+                <a href="/admin/users/{{ user.id }}" class="btn btn-primary">👁️ View User</a>
+            {% endif %}
+        </div>
+    </form>
+</div>
+
+{% if user %}
+<div class="card">
+    <h3>🔧 Additional Actions</h3>
+    <div style="margin-top: 20px;">
+        {% if user.is_active %}
+            <form method="post" action="/admin/users/{{ user.id }}/deactivate" style="display: inline;">
+                <button type="submit" class="btn btn-warning">⏸️ Deactivate User</button>
+            </form>
+        {% else %}
+            <form method="post" action="/admin/users/{{ user.id }}/activate" style="display: inline;">
+                <button type="submit" class="btn btn-success">▶️ Activate User</button>
+            </form>
+        {% endif %}
+        
+        <button onclick="openModal('deleteModal')" class="btn btn-danger">🗑️ Delete User</button>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('deleteModal')">&times;</span>
+        <h3>⚠️ Confirm User Deletion</h3>
+        <p>Are you sure you want to delete the user <strong>{{ user.username }}</strong>?</p>
+        <p style="color: #d32f2f; font-weight: bold;">This action cannot be undone!</p>
+        
+        <div style="margin-top: 20px;">
+            <form method="post" action="/admin/users/{{ user.id }}/delete" style="display: inline;">
+                <button type="submit" class="btn btn-danger">Yes, Delete User</button>
+            </form>
+            <button onclick="closeModal('deleteModal')" class="btn btn-warning">Cancel</button>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

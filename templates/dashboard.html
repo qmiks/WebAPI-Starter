@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="stats">
+    <div class="stat-card">
+        <div class="stat-number">{{ total_users }}</div>
+        <div class="stat-label">Total Users</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{ active_users }}</div>
+        <div class="stat-label">Active Users</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{ total_items }}</div>
+        <div class="stat-label">Total Items</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{ active_items }}</div>
+        <div class="stat-label">Active Items</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{ total_client_apps }}</div>
+        <div class="stat-label">Client Apps</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{ active_client_apps }}</div>
+        <div class="stat-label">Active Apps</div>
+    </div>
+</div>
+
+<div class="card">
+    <h2>📊 System Overview</h2>
+    <p>Welcome to the Web API Admin Panel. Here you can manage users, items, and monitor your application.</p>
+    
+    <div style="margin-top: 30px;">
+        <h3>Quick Actions</h3>
+        <a href="/admin/users" class="btn btn-primary">👥 Manage Users</a>
+        <a href="/admin/items" class="btn btn-primary">📦 Manage Items</a>
+        <a href="/admin/client-apps" class="btn btn-primary">🔐 Client Apps</a>
+        <a href="/admin/users/new" class="btn btn-success">➕ Add New User</a>
+    </div>
+</div>
+
+<div class="card">
+    <h3>📈 Recent Activity</h3>
+    
+    <h4>Recent Users</h4>
+    {% if recent_users %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Created</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in recent_users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td><span class="badge badge-{{ user.role }}">{{ user.role.title() }}</span></td>
+                    <td><span class="badge badge-{{ 'active' if user.is_active else 'inactive' }}">{{ 'Active' if user.is_active else 'Inactive' }}</span></td>
+                    <td>{{ user.created_at[:16] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No users found.</p>
+    {% endif %}
+    
+    <div style="margin-top: 20px;">
+        <a href="/admin/users" class="btn btn-primary">View All Users</a>
+    </div>
+</div>
+
+<div class="card">
+    <h3>📦 Recent Items</h3>
+    {% if recent_items %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                    <th>Owner</th>
+                    <th>Created</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in recent_items %}
+                <tr>
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>${{ "%.2f"|format(item.price) }}</td>
+                    <td><span class="badge badge-{{ 'active' if item.status == 'active' else 'warning' if item.status == 'draft' else 'inactive' }}">{{ item.status.title() }}</span></td>
+                    <td>{{ item.owner_username or 'Unknown' }}</td>
+                    <td>{{ item.created_at[:16] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No items found.</p>
+    {% endif %}
+    
+    <div style="margin-top: 20px;">
+        <a href="/admin/items" class="btn btn-primary">View All Items</a>
+    </div>
+</div>
+
+<div class="card">
+    <h3>🔐 Client Applications</h3>
+    {% if recent_client_apps %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>App ID</th>
+                    <th>Status</th>
+                    <th>Created</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for app in recent_client_apps %}
+                <tr>
+                    <td>{{ app.id }}</td>
+                    <td>{{ app.name }}</td>
+                    <td><code style="font-size: 0.8em;">{{ app.app_id[:20] }}...</code></td>
+                    <td><span class="badge badge-{{ 'active' if app.is_active else 'inactive' }}">{{ 'Active' if app.is_active else 'Inactive' }}</span></td>
+                    <td>{{ app.created_at[:16] }}</td>
+                    <td>
+                        <a href="/admin/client-apps/" class="btn btn-sm" style="padding: 4px 8px; font-size: 0.8em; background: #667eea; color: white; text-decoration: none; border-radius: 4px;">Manage</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div style="text-align: center; padding: 20px; color: #666;">
+            <p>No client applications found.</p>
+            <a href="/admin/client-apps/" class="btn btn-primary">Create Your First App</a>
+        </div>
+    {% endif %}
+    
+    <div style="margin-top: 20px;">
+        <a href="/admin/client-apps/" class="btn btn-primary">🔐 Manage All Client Apps</a>
+        <a href="/api/v1/auth/token" class="btn btn-primary" style="background: #48bb78;">📚 API Token Endpoint</a>
+    </div>
+</div>
+{% endblock %}

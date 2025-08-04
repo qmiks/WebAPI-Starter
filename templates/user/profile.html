@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile - Web API Application</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 15px 0;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header h1 {
+            color: #667eea;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        
+        .nav {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .nav a {
+            color: #667eea;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .nav a:hover, .nav a.active {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: #555;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .profile-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 3rem;
+            color: white;
+        }
+        
+        .profile-name {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .profile-role {
+            display: inline-block;
+            padding: 8px 20px;
+            background: #667eea;
+            color: white;
+            border-radius: 25px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            text-transform: capitalize;
+        }
+        
+        .profile-details {
+            display: grid;
+            gap: 20px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+        
+        .detail-row {
+            display: grid;
+            grid-template-columns: 150px 1fr;
+            gap: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            align-items: center;
+        }
+        
+        .detail-label {
+            font-weight: 600;
+            color: #555;
+        }
+        
+        .detail-value {
+            color: #333;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .status-active {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-inactive {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin: 0 10px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #495057;
+            border: 2px solid #e1e1e1;
+        }
+        
+        .btn-secondary:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+        }
+        
+        .actions {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav {
+                justify-content: center;
+            }
+            
+            .detail-row {
+                grid-template-columns: 1fr;
+                gap: 10px;
+                text-align: center;
+            }
+            
+            .profile-card {
+                padding: 30px 20px;
+            }
+            
+            .actions {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <h1>👤 User Profile</h1>
+            <div class="nav">
+                <a href="/user/dashboard">�️ Admin Dashboard</a>
+                <a href="/user/search">🔍 Search Items</a>
+                <a href="/user/profile" class="active">👤 Profile</a>
+                <a href="/">🏠 Home</a>
+            </div>
+            <div class="user-info">
+                <span>👋 {{ current_user.full_name or current_user.username }}</span>
+                <a href="/auth/logout" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.9rem;">Logout</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="profile-card">
+            <div class="profile-avatar">
+                👤
+            </div>
+            
+            <h1 class="profile-name">{{ current_user.full_name or current_user.username }}</h1>
+            <span class="profile-role">{{ current_user.role }}</span>
+            
+            <div class="profile-details">
+                <div class="detail-row">
+                    <div class="detail-label">👤 Username:</div>
+                    <div class="detail-value">{{ current_user.username }}</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">📧 Email:</div>
+                    <div class="detail-value">{{ current_user.email }}</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">🏷️ Full Name:</div>
+                    <div class="detail-value">{{ current_user.full_name or 'Not set' }}</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">🔐 Role:</div>
+                    <div class="detail-value">{{ current_user.role.title() }}</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">✅ Status:</div>
+                    <div class="detail-value">
+                        <span class="status-badge status-{% if current_user.is_active %}active{% else %}inactive{% endif %}">
+                            {% if current_user.is_active %}Active{% else %}Inactive{% endif %}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="actions">
+                <a href="/user/dashboard" class="btn btn-primary">�️ Admin Dashboard</a>
+                <a href="/user/search" class="btn btn-secondary">🔍 Search Items</a>
+                {% if current_user.role == 'admin' %}
+                <a href="/admin" class="btn btn-secondary">🛠️ Admin Panel</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

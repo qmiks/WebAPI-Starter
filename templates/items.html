@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}Item Management{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2>📦 Item Management</h2>
+        <a href="/admin/items/new" class="btn btn-success">➕ Add New Item</a>
+    </div>
+    
+    <div style="margin-bottom: 20px;">
+        <p>Total Items: <strong>{{ items|length }}</strong></p>
+    </div>
+    
+    {% if items %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                    <th>Owner</th>
+                    <th>Created</th>
+                    <th>Updated</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td>{{ item.id }}</td>
+                    <td><strong>{{ item.name }}</strong></td>
+                    <td>{{ item.description[:50] + '...' if item.description and item.description|length > 50 else item.description or '-' }}</td>
+                    <td>${{ "%.2f"|format(item.price) }}</td>
+                    <td>
+                        <span class="badge badge-{{ 'active' if item.status == 'active' else 'warning' if item.status == 'draft' else 'inactive' }}">
+                            {{ item.status.title() }}
+                        </span>
+                    </td>
+                    <td>{{ item.owner_username }}</td>
+                    <td>{{ item.created_at[:16] }}</td>
+                    <td>{{ item.updated_at[:16] if item.updated_at else '-' }}</td>
+                    <td>
+                        <a href="/admin/items/{{ item.id }}" class="btn btn-primary" style="padding: 5px 10px; font-size: 12px;">View</a>
+                        <a href="/admin/items/{{ item.id }}/edit" class="btn btn-warning" style="padding: 5px 10px; font-size: 12px;">Edit</a>
+                        <form method="post" action="/admin/items/{{ item.id }}/delete" style="display: inline;">
+                            <button type="submit" class="btn btn-danger" style="padding: 5px 10px; font-size: 12px;" onclick="return confirmDelete('item')">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-warning">
+            <strong>No items found.</strong> <a href="/admin/items/new">Create the first item</a>
+        </div>
+    {% endif %}
+</div>
+
+<div class="card">
+    <h3>📊 Item Statistics</h3>
+    <div class="stats">
+        <div class="stat-card">
+            <div class="stat-number">{{ items|selectattr('status', 'equalto', 'active')|list|length }}</div>
+            <div class="stat-label">Active Items</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">{{ items|selectattr('status', 'equalto', 'draft')|list|length }}</div>
+            <div class="stat-label">Draft Items</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">{{ items|selectattr('status', 'equalto', 'inactive')|list|length }}</div>
+            <div class="stat-label">Inactive Items</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">${{ "%.2f"|format(items|sum(attribute='price')) }}</div>
+            <div class="stat-label">Total Value</div>
+        </div>
+    </div>
+</div>
+{% endblock %}

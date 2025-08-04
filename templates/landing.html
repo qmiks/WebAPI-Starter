@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebAPI Starter - Welcome</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(118, 75, 162, 0.9) 100%);
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'%3E%3Cpath d='m0 40l40-40h-40v40zm40 0v-40h-40l40 40z'/%3E%3C/g%3E%3C/svg%3E");
+            z-index: 1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero-content {
+            text-align: center;
+            color: white;
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .hero .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+        
+        .hero .description {
+            font-size: 1.1rem;
+            margin-bottom: 50px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0.8;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 60px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            min-width: 180px;
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background: #ffffff;
+            color: #667eea;
+            border: 2px solid #ffffff;
+        }
+        
+        .btn-primary:hover {
+            background: transparent;
+            color: #ffffff;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: #ffffff;
+            border: 2px solid #ffffff;
+        }
+        
+        .btn-secondary:hover {
+            background: #ffffff;
+            color: #667eea;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 80px;
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+        
+        .feature-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #ffffff;
+        }
+        
+        .feature-description {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .floating-element {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .floating-element:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+        
+        .floating-element:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            top: 60%;
+            right: 15%;
+            animation-delay: 2s;
+        }
+        
+        .floating-element:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(180deg);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <div class="floating-elements">
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
+        </div>
+        
+        <div class="container">
+            <div class="hero-content">
+                <h1>🚀 WebAPI Starter Template</h1>
+                <p class="subtitle">Your Web API Project Foundation</p>
+                <p class="description">
+                    A ready-to-use starter template for building professional web APIs with modern Python frameworks. 
+                    Clone this project and start building immediately with pre-configured authentication, 
+                    admin dashboard, user management, CRUD operations, and comprehensive documentation - 
+                    all the boilerplate code you need to launch your next web application.
+                </p>
+                
+                <div class="cta-buttons">
+                    <a href="/auth/login?redirect_url=/admin" class="btn btn-primary">🛠️ Try Admin Dashboard</a>
+                    <a href="/auth/login?redirect_url=/user/search" class="btn btn-primary">👤 Try User Portal</a>
+                    <a href="/auth/register" class="btn btn-secondary">📝 Create User Account</a>
+                    <a href="/docs" class="btn btn-secondary">📚 Explore API Docs</a>
+                </div>
+                
+                <div class="features">
+                    <div class="feature-card">
+                        <span class="feature-icon">🛠️</span>
+                        <h3 class="feature-title">Ready-Made Admin Panel</h3>
+                        <p class="feature-description">
+                            Pre-built administration interface for managing users, items, and system monitoring. 
+                            Includes role-based access control and beautiful responsive design - 
+                            ready to customize for your specific needs.
+                        </p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <span class="feature-icon">⚡</span>
+                        <h3 class="feature-title">Modern Framework Foundation</h3>
+                        <p class="feature-description">
+                            Built on modern Python frameworks with all the best practices pre-configured. 
+                            Async/await patterns, automatic validation, and high performance - 
+                            perfect starting point for scalable APIs.
+                        </p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <span class="feature-icon">🔒</span>
+                        <h3 class="feature-title">Auth System Included</h3>
+                        <p class="feature-description">
+                            Complete authentication system with JWT tokens, password hashing, 
+                            session management, and role-based permissions - 
+                            no need to build authentication from scratch.
+                        </p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <span class="feature-icon">📊</span>
+                        <h3 class="feature-title">CRUD Boilerplate</h3>
+                        <p class="feature-description">
+                            Pre-implemented Create, Read, Update, Delete operations with database models, 
+                            validation, and error handling. Use as-is or extend for your custom data types.
+                        </p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <span class="feature-icon">🌐</span>
+                        <h3 class="feature-title">API Structure Ready</h3>
+                        <p class="feature-description">
+                            Well-organized project structure with automatic OpenAPI documentation, 
+                            CORS configuration, and standardized response patterns - 
+                            follow the established patterns for consistency.
+                        </p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <span class="feature-icon">📱</span>
+                        <h3 class="feature-title">UI Templates Included</h3>
+                        <p class="feature-description">
+                            Professional responsive HTML templates for forms, dashboards, and user interfaces. 
+                            Easily customizable with modern CSS - perfect starting point for your frontend.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="footer">
+                    <p>&copy; 2025 WebAPI Starter Template. Your foundation for building modern web APIs.</p>
+                    <p style="margin-top: 10px;">
+                        <a href="/health" style="color: rgba(255,255,255,0.8); text-decoration: none;">Health Check</a> | 
+                        <a href="/info" style="color: rgba(255,255,255,0.8); text-decoration: none;">System Info</a> | 
+                        <a href="/redoc" style="color: rgba(255,255,255,0.8); text-decoration: none;">ReDoc</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

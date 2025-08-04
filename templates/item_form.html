@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+
+{% block title %}{% if item %}Edit Item{% else %}Add New Item{% endif %}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>{% if item %}✏️ Edit Item: {{ item.name }}{% else %}➕ Add New Item{% endif %}</h2>
+    
+    <form method="post" action="{% if item %}/admin/items/{{ item.id }}/edit{% else %}/admin/items/new{% endif %}">
+        <div class="form-group">
+            <label for="name">Item Name *</label>
+            <input type="text" class="form-control" id="name" name="name" 
+                   value="{{ item.name if item else '' }}" required
+                   maxlength="100">
+            <small style="color: #666;">Maximum 100 characters</small>
+        </div>
+        
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea class="form-control" id="description" name="description" 
+                      rows="4" maxlength="500" style="resize: vertical;">{{ item.description if item else '' }}</textarea>
+            <small style="color: #666;">Maximum 500 characters (optional)</small>
+        </div>
+        
+        <div class="form-group">
+            <label for="price">Price *</label>
+            <input type="number" class="form-control" id="price" name="price" 
+                   value="{{ item.price if item else '' }}" required
+                   min="0.01" step="0.01">
+            <small style="color: #666;">Price must be greater than 0</small>
+        </div>
+        
+        <div class="form-group">
+            <label for="status">Status *</label>
+            <select class="form-control" id="status" name="status" required>
+                <option value="active" {% if item and item.status == 'active' %}selected{% endif %}>Active</option>
+                <option value="inactive" {% if item and item.status == 'inactive' %}selected{% endif %}>Inactive</option>
+                <option value="draft" {% if item and item.status == 'draft' %}selected{% endif %}>Draft</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="owner_id">Owner *</label>
+            <select class="form-control" id="owner_id" name="owner_id" required>
+                {% if not item %}
+                    <option value="">Select an owner...</option>
+                {% endif %}
+                {% for user in users %}
+                    <option value="{{ user.id }}" 
+                            {% if item and item.owner_id == user.id %}selected{% endif %}>
+                        {{ user.username }} ({{ user.full_name or user.email }})
+                    </option>
+                {% endfor %}
+            </select>
+            <small style="color: #666;">Only active users are shown</small>
+        </div>
+        
+        <div style="margin-top: 30px;">
+            <button type="submit" class="btn btn-success">
+                {% if item %}💾 Update Item{% else %}➕ Create Item{% endif %}
+            </button>
+            <a href="/admin/items" class="btn btn-warning">❌ Cancel</a>
+            {% if item %}
+                <a href="/admin/items/{{ item.id }}" class="btn btn-primary">👁️ View Item</a>
+            {% endif %}
+        </div>
+    </form>
+</div>
+
+{% if item %}
+<div class="card">
+    <h3>🔧 Additional Actions</h3>
+    <div style="margin-top: 20px;">
+        {% if item.status != 'active' %}
+            <form method="post" action="/admin/items/{{ item.id }}/activate" style="display: inline;">
+                <button type="submit" class="btn btn-success">▶️ Activate Item</button>
+            </form>
+        {% endif %}
+        
+        {% if item.status != 'inactive' %}
+            <form method="post" action="/admin/items/{{ item.id }}/deactivate" style="display: inline;">
+                <button type="submit" class="btn btn-warning">⏸️ Deactivate Item</button>
+            </form>
+        {% endif %}
+        
+        <button onclick="openModal('deleteModal')" class="btn btn-danger">🗑️ Delete Item</button>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('deleteModal')">&times;</span>
+        <h3>⚠️ Confirm Item Deletion</h3>
+        <p>Are you sure you want to delete the item <strong>{{ item.name }}</strong>?</p>
+        <p style="color: #d32f2f; font-weight: bold;">This action cannot be undone!</p>
+        
+        <div style="margin-top: 20px;">
+            <form method="post" action="/admin/items/{{ item.id }}/delete" style="display: inline;">
+                <button type="submit" class="btn btn-danger">Yes, Delete Item</button>
+            </form>
+            <button onclick="closeModal('deleteModal')" class="btn btn-warning">Cancel</button>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<script>
+// Form validation
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form');
+    const priceInput = document.getElementById('price');
+    const nameInput = document.getElementById('name');
+    
+    // Price validation
+    priceInput.addEventListener('input', function() {
+        if (this.value <= 0) {
+            this.setCustomValidity('Price must be greater than 0');
+        } else {
+            this.setCustomValidity('');
+        }
+    });
+    
+    // Name validation
+    nameInput.addEventListener('input', function() {
+        if (this.value.trim().length === 0) {
+            this.setCustomValidity('Item name is required');
+        } else if (this.value.length > 100) {
+            this.setCustomValidity('Item name must be 100 characters or less');
+        } else {
+            this.setCustomValidity('');
+        }
+    });
+    
+    // Form submission validation
+    form.addEventListener('submit', function(e) {
+        const price = parseFloat(priceInput.value);
+        const name = nameInput.value.trim();
+        const ownerId = document.getElementById('owner_id').value;
+        
+        if (!name) {
+            e.preventDefault();
+            alert('Please enter an item name');
+            nameInput.focus();
+            return;
+        }
+        
+        if (price <= 0 || isNaN(price)) {
+            e.preventDefault();
+            alert('Please enter a valid price greater than 0');
+            priceInput.focus();
+            return;
+        }
+        
+        if (!ownerId) {
+            e.preventDefault();
+            alert('Please select an owner for the item');
+            document.getElementById('owner_id').focus();
+            return;
+        }
+    });
+});
+</script>
+{% endblock %}

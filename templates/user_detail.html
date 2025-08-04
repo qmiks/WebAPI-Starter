@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+
+{% block title %}User Details - {{ user.username }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2>👤 User Details: {{ user.username }}</h2>
+        <div>
+            <a href="/admin/users/{{ user.id }}/edit" class="btn btn-warning">✏️ Edit User</a>
+            <a href="/admin/users" class="btn btn-primary">← Back to Users</a>
+        </div>
+    </div>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+        <div>
+            <h3>📋 Basic Information</h3>
+            <table style="width: 100%; margin-top: 15px;">
+                <tr>
+                    <td style="font-weight: bold; padding: 8px 0;">ID:</td>
+                    <td style="padding: 8px 0;">{{ user.id }}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold; padding: 8px 0;">Username:</td>
+                    <td style="padding: 8px 0;">{{ user.username }}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold; padding: 8px 0;">Email:</td>
+                    <td style="padding: 8px 0;">{{ user.email }}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold; padding: 8px 0;">Full Name:</td>
+                    <td style="padding: 8px 0;">{{ user.full_name or '-' }}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold; padding: 8px 0;">Role:</td>
+                    <td style="padding: 8px 0;">
+                        <span class="badge badge-{{ user.role }}">{{ user.role.title() }}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold; padding: 8px 0;">Status:</td>
+                    <td style="padding: 8px 0;">
+                        <span class="badge badge-{{ 'active' if user.is_active else 'inactive' }}">
+                            {{ 'Active' if user.is_active else 'Inactive' }}
+                        </span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        
+        <div>
+            <h3>📅 Timestamps</h3>
+            <table style="width: 100%; margin-top: 15px;">
+                <tr>
+                    <td style="font-weight: bold; padding: 8px 0;">Created:</td>
+                    <td style="padding: 8px 0;">{{ user.created_at[:19] }}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold; padding: 8px 0;">Last Updated:</td>
+                    <td style="padding: 8px 0;">
+                        {{ user.updated_at[:19] if user.updated_at else 'Never' }}
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <h3>📦 User's Items</h3>
+    {% if user_items %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                    <th>Created</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in user_items %}
+                <tr>
+                    <td>{{ item.id }}</td>
+                    <td><strong>{{ item.name }}</strong></td>
+                    <td>{{ item.description[:50] + '...' if item.description and item.description|length > 50 else item.description or '-' }}</td>
+                    <td>${{ "%.2f"|format(item.price) }}</td>
+                    <td>
+                        <span class="badge badge-{{ 'active' if item.status == 'active' else 'warning' if item.status == 'draft' else 'inactive' }}">
+                            {{ item.status.title() }}
+                        </span>
+                    </td>
+                    <td>{{ item.created_at[:16] }}</td>
+                    <td>
+                        <a href="/admin/items/{{ item.id }}" class="btn btn-primary" style="padding: 5px 10px; font-size: 12px;">View</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-warning">
+            This user doesn't have any items yet.
+        </div>
+    {% endif %}
+</div>
+
+<div class="card">
+    <h3>🔧 Quick Actions</h3>
+    <div style="margin-top: 20px;">
+        <a href="/admin/users/{{ user.id }}/edit" class="btn btn-warning">✏️ Edit User</a>
+        
+        {% if user.is_active %}
+            <form method="post" action="/admin/users/{{ user.id }}/deactivate" style="display: inline;">
+                <button type="submit" class="btn btn-warning">⏸️ Deactivate User</button>
+            </form>
+        {% else %}
+            <form method="post" action="/admin/users/{{ user.id }}/activate" style="display: inline;">
+                <button type="submit" class="btn btn-success">▶️ Activate User</button>
+            </form>
+        {% endif %}
+        
+        <button onclick="openModal('deleteModal')" class="btn btn-danger">🗑️ Delete User</button>
+        <a href="/admin/users" class="btn btn-primary">← Back to Users</a>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('deleteModal')">&times;</span>
+        <h3>⚠️ Confirm User Deletion</h3>
+        <p>Are you sure you want to delete the user <strong>{{ user.username }}</strong>?</p>
+        <p style="color: #d32f2f; font-weight: bold;">This action will also delete all items owned by this user and cannot be undone!</p>
+        
+        {% if user_items %}
+        <p style="color: #f57c00;">This user owns {{ user_items|length }} item(s) that will also be deleted.</p>
+        {% endif %}
+        
+        <div style="margin-top: 20px;">
+            <form method="post" action="/admin/users/{{ user.id }}/delete" style="display: inline;">
+                <button type="submit" class="btn btn-danger">Yes, Delete User and Items</button>
+            </form>
+            <button onclick="closeModal('deleteModal')" class="btn btn-warning">Cancel</button>
+        </div>
+    </div>
+</div>
+{% endblock %}

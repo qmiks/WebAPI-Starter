@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+
+{% block title %}Item Details - {{ item.name }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2>📦 Item Details: {{ item.name }}</h2>
+        <div>
+            <a href="/admin/items/{{ item.id }}/edit" class="btn btn-warning">✏️ Edit Item</a>
+            <a href="/admin/items" class="btn btn-primary">← Back to Items</a>
+        </div>
+    </div>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+        <div>
+            <h3>📋 Basic Information</h3>
+            <table style="width: 100%; margin-top: 15px;">
+                <tr>
+                    <td style="font-weight: bold; padding: 8px 0;">ID:</td>
+                    <td style="padding: 8px 0;">{{ item.id }}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold; padding: 8px 0;">Name:</td>
+                    <td style="padding: 8px 0;">{{ item.name }}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold; padding: 8px 0;">Description:</td>
+                    <td style="padding: 8px 0;">{{ item.description or '-' }}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold; padding: 8px 0;">Price:</td>
+                    <td style="padding: 8px 0; font-size: 1.2em; color: #28a745; font-weight: bold;">${{ "%.2f"|format(item.price) }}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold; padding: 8px 0;">Status:</td>
+                    <td style="padding: 8px 0;">
+                        <span class="badge badge-{{ 'active' if item.status == 'active' else 'warning' if item.status == 'draft' else 'inactive' }}">
+                            {{ item.status.title() }}
+                        </span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        
+        <div>
+            <h3>👤 Owner Information</h3>
+            {% if item.owner %}
+            <table style="width: 100%; margin-top: 15px;">
+                <tr>
+                    <td style="font-weight: bold; padding: 8px 0;">Owner ID:</td>
+                    <td style="padding: 8px 0;">{{ item.owner.id }}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold; padding: 8px 0;">Username:</td>
+                    <td style="padding: 8px 0;">
+                        <a href="/admin/users/{{ item.owner.id }}" style="color: #667eea; text-decoration: none;">
+                            {{ item.owner.username }}
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold; padding: 8px 0;">Full Name:</td>
+                    <td style="padding: 8px 0;">{{ item.owner.full_name or '-' }}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold; padding: 8px 0;">Email:</td>
+                    <td style="padding: 8px 0;">{{ item.owner.email }}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold; padding: 8px 0;">Role:</td>
+                    <td style="padding: 8px 0;">
+                        <span class="badge badge-{{ item.owner.role }}">{{ item.owner.role.title() }}</span>
+                    </td>
+                </tr>
+            </table>
+            {% else %}
+            <p style="color: #dc3545;">Owner not found</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <h3>📅 Timestamps</h3>
+    <table style="width: 100%; margin-top: 15px;">
+        <tr>
+            <td style="font-weight: bold; padding: 8px 0; width: 150px;">Created:</td>
+            <td style="padding: 8px 0;">{{ item.created_at[:19] }}</td>
+        </tr>
+        <tr>
+            <td style="font-weight: bold; padding: 8px 0;">Last Updated:</td>
+            <td style="padding: 8px 0;">
+                {{ item.updated_at[:19] if item.updated_at else 'Never' }}
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="card">
+    <h3>🔧 Quick Actions</h3>
+    <div style="margin-top: 20px;">
+        <a href="/admin/items/{{ item.id }}/edit" class="btn btn-warning">✏️ Edit Item</a>
+        
+        {% if item.status != 'active' %}
+            <form method="post" action="/admin/items/{{ item.id }}/activate" style="display: inline;">
+                <button type="submit" class="btn btn-success">▶️ Activate Item</button>
+            </form>
+        {% endif %}
+        
+        {% if item.status != 'inactive' %}
+            <form method="post" action="/admin/items/{{ item.id }}/deactivate" style="display: inline;">
+                <button type="submit" class="btn btn-warning">⏸️ Deactivate Item</button>
+            </form>
+        {% endif %}
+        
+        <button onclick="openModal('deleteModal')" class="btn btn-danger">🗑️ Delete Item</button>
+        <a href="/admin/items" class="btn btn-primary">← Back to Items</a>
+        
+        {% if item.owner %}
+            <a href="/admin/users/{{ item.owner.id }}" class="btn btn-primary">👤 View Owner</a>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('deleteModal')">&times;</span>
+        <h3>⚠️ Confirm Item Deletion</h3>
+        <p>Are you sure you want to delete the item <strong>{{ item.name }}</strong>?</p>
+        <p style="color: #d32f2f; font-weight: bold;">This action cannot be undone!</p>
+        
+        <div style="margin-top: 20px;">
+            <form method="post" action="/admin/items/{{ item.id }}/delete" style="display: inline;">
+                <button type="submit" class="btn btn-danger">Yes, Delete Item</button>
+            </form>
+            <button onclick="closeModal('deleteModal')" class="btn btn-warning">Cancel</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
