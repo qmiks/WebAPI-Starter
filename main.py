@@ -117,13 +117,16 @@ async def get_supported_locales():
         "default_locale": i18n.default_locale
     }
 
-@app.get("/api/v1/i18n/translate/{key}")
-async def translate_key(key: str, request: Request, locale: str = None):
+@app.get("/api/v1/i18n/translate/{key:path}")
+async def translate_key(key: str, request: Request, lang: str = None):
     """Translate a specific key"""
-    if locale is None:
+    # Get locale from URL parameter, request state, or default
+    if lang and lang in i18n.supported_locales:
+        locale = lang
+    else:
         locale = getattr(request.state, 'locale', i18n.default_locale)
     
-    # Replace dots with slashes in URL path
+    # Replace slashes with dots in URL path for key lookup
     key = key.replace('/', '.')
     
     return {
