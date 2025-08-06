@@ -1,0 +1,74 @@
+{
+  "app": {
+    "title": "WebAPI Starter",
+    "description": "A comprehensive WebAPI Starter application with CRUD operations and API token authentication"
+  },
+  "auth": {
+    "invalid_credentials": "Invalid credentials",
+    "access_denied": "Access denied",
+    "token_expired": "Token has expired",
+    "invalid_token": "Invalid token",
+    "user_not_found": "User not found",
+    "login_required": "Login required",
+    "insufficient_permissions": "Insufficient permissions"
+  },
+  "users": {
+    "user_created": "User created successfully",
+    "user_updated": "User updated successfully",
+    "user_deleted": "User deleted successfully",
+    "user_not_found": "User not found",
+    "email_already_exists": "Email already exists",
+    "username_already_exists": "Username already exists",
+    "invalid_email": "Invalid email format",
+    "password_too_short": "Password must be at least 8 characters long"
+  },
+  "items": {
+    "item_created": "Item created successfully",
+    "item_updated": "Item updated successfully",
+    "item_deleted": "Item deleted successfully",
+    "item_not_found": "Item not found",
+    "invalid_item_data": "Invalid item data"
+  },
+  "general": {
+    "success": "Success",
+    "error": "Error",
+    "not_found": "Not found",
+    "bad_request": "Bad request",
+    "internal_error": "Internal server error",
+    "validation_error": "Validation error",
+    "unauthorized": "Unauthorized",
+    "forbidden": "Forbidden"
+  },
+  "forms": {
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "confirm_password": "Confirm Password",
+    "title": "Title",
+    "description": "Description",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "update": "Update"
+  },
+  "navigation": {
+    "home": "Home",
+    "users": "Users",
+    "items": "Items",
+    "admin": "Admin",
+    "login": "Login",
+    "logout": "Logout",
+    "dashboard": "Dashboard",
+    "profile": "Profile"
+  },
+  "messages": {
+    "welcome": "Welcome to WebAPI Starter",
+    "operation_successful": "Operation completed successfully",
+    "operation_failed": "Operation failed",
+    "please_try_again": "Please try again",
+    "contact_support": "Please contact support if the problem persists"
+  }
+}

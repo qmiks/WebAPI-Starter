@@ -1,0 +1,74 @@
+{
+  "app": {
+    "title": "WebAPI Starter",
+    "description": "Una aplicación WebAPI Starter integral con operaciones CRUD y autenticación por token API"
+  },
+  "auth": {
+    "invalid_credentials": "Credenciales inválidas",
+    "access_denied": "Acceso denegado",
+    "token_expired": "El token ha expirado",
+    "invalid_token": "Token inválido",
+    "user_not_found": "Usuario no encontrado",
+    "login_required": "Se requiere iniciar sesión",
+    "insufficient_permissions": "Permisos insuficientes"
+  },
+  "users": {
+    "user_created": "Usuario creado exitosamente",
+    "user_updated": "Usuario actualizado exitosamente",
+    "user_deleted": "Usuario eliminado exitosamente",
+    "user_not_found": "Usuario no encontrado",
+    "email_already_exists": "El email ya existe",
+    "username_already_exists": "El nombre de usuario ya existe",
+    "invalid_email": "Formato de email inválido",
+    "password_too_short": "La contraseña debe tener al menos 8 caracteres"
+  },
+  "items": {
+    "item_created": "Elemento creado exitosamente",
+    "item_updated": "Elemento actualizado exitosamente",
+    "item_deleted": "Elemento eliminado exitosamente",
+    "item_not_found": "Elemento no encontrado",
+    "invalid_item_data": "Datos del elemento inválidos"
+  },
+  "general": {
+    "success": "Éxito",
+    "error": "Error",
+    "not_found": "No encontrado",
+    "bad_request": "Solicitud incorrecta",
+    "internal_error": "Error interno del servidor",
+    "validation_error": "Error de validación",
+    "unauthorized": "No autorizado",
+    "forbidden": "Prohibido"
+  },
+  "forms": {
+    "name": "Nombre",
+    "email": "Email",
+    "password": "Contraseña",
+    "confirm_password": "Confirmar Contraseña",
+    "title": "Título",
+    "description": "Descripción",
+    "submit": "Enviar",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "create": "Crear",
+    "update": "Actualizar"
+  },
+  "navigation": {
+    "home": "Inicio",
+    "users": "Usuarios",
+    "items": "Elementos",
+    "admin": "Administrador",
+    "login": "Iniciar Sesión",
+    "logout": "Cerrar Sesión",
+    "dashboard": "Panel de Control",
+    "profile": "Perfil"
+  },
+  "messages": {
+    "welcome": "Bienvenido a WebAPI Starter",
+    "operation_successful": "Operación completada exitosamente",
+    "operation_failed": "La operación falló",
+    "please_try_again": "Por favor intenta de nuevo",
+    "contact_support": "Por favor contacta soporte si el problema persiste"
+  }
+}

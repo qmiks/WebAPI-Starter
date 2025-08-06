@@ -1,0 +1,74 @@
+{
+  "app": {
+    "title": "WebAPI Starter",
+    "description": "Une application WebAPI Starter complète avec opérations CRUD et authentification par jeton API"
+  },
+  "auth": {
+    "invalid_credentials": "Identifiants invalides",
+    "access_denied": "Accès refusé",
+    "token_expired": "Le jeton a expiré",
+    "invalid_token": "Jeton invalide",
+    "user_not_found": "Utilisateur non trouvé",
+    "login_required": "Connexion requise",
+    "insufficient_permissions": "Permissions insuffisantes"
+  },
+  "users": {
+    "user_created": "Utilisateur créé avec succès",
+    "user_updated": "Utilisateur mis à jour avec succès",
+    "user_deleted": "Utilisateur supprimé avec succès",
+    "user_not_found": "Utilisateur non trouvé",
+    "email_already_exists": "L'email existe déjà",
+    "username_already_exists": "Le nom d'utilisateur existe déjà",
+    "invalid_email": "Format d'email invalide",
+    "password_too_short": "Le mot de passe doit contenir au moins 8 caractères"
+  },
+  "items": {
+    "item_created": "Élément créé avec succès",
+    "item_updated": "Élément mis à jour avec succès",
+    "item_deleted": "Élément supprimé avec succès",
+    "item_not_found": "Élément non trouvé",
+    "invalid_item_data": "Données d'élément invalides"
+  },
+  "general": {
+    "success": "Succès",
+    "error": "Erreur",
+    "not_found": "Non trouvé",
+    "bad_request": "Mauvaise requête",
+    "internal_error": "Erreur interne du serveur",
+    "validation_error": "Erreur de validation",
+    "unauthorized": "Non autorisé",
+    "forbidden": "Interdit"
+  },
+  "forms": {
+    "name": "Nom",
+    "email": "Email",
+    "password": "Mot de passe",
+    "confirm_password": "Confirmer le mot de passe",
+    "title": "Titre",
+    "description": "Description",
+    "submit": "Soumettre",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "create": "Créer",
+    "update": "Mettre à jour"
+  },
+  "navigation": {
+    "home": "Accueil",
+    "users": "Utilisateurs",
+    "items": "Éléments",
+    "admin": "Administrateur",
+    "login": "Se connecter",
+    "logout": "Se déconnecter",
+    "dashboard": "Tableau de bord",
+    "profile": "Profil"
+  },
+  "messages": {
+    "welcome": "Bienvenue dans WebAPI Starter",
+    "operation_successful": "Opération terminée avec succès",
+    "operation_failed": "L'opération a échoué",
+    "please_try_again": "Veuillez réessayer",
+    "contact_support": "Veuillez contacter le support si le problème persiste"
+  }
+}

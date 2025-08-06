@@ -1,6 +1,16 @@
 """
 WebAPI Starter - Main Entry Point
-This is the main file that starts the WebAPI Starter application.
+This is the main # Add middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Add internationalization middleware
+app.add_middleware(LocaleMiddleware, i18n_instance=i18n)t starts the WebAPI Starter application.
 """
 
 from fastapi import FastAPI, HTTPException, Depends, Request
@@ -14,6 +24,7 @@ import uvicorn
 from routers import users, items, admin, auth_new as auth, user_portal, client_apps
 from data.models import User, Item, UserCreate, ItemCreate
 from data.database import get_db, user_crud, item_crud
+from utils.i18n import LocaleMiddleware, i18n, get_locale_from_request, t, get_translations_for_locale
 
 # Initialize templates
 templates = Jinja2Templates(directory="templates")
@@ -78,9 +89,48 @@ for router in client_apps.get_routers():
 @app.get("/", response_class=HTMLResponse)
 async def root(request: Request):
     """Landing page with application overview"""
+    locale = getattr(request.state, 'locale', 'en')
     return templates.TemplateResponse("landing.html", {
-        "request": request
+        "request": request,
+        "locale": locale,
+        "t": lambda key, **kwargs: t(key, locale, **kwargs)
     })
+
+# Internationalization endpoints
+@app.get("/api/v1/i18n/translations/{locale}")
+async def get_translations(locale: str):
+    """Get all translations for a specific locale"""
+    if locale not in i18n.supported_locales:
+        raise HTTPException(status_code=404, detail=f"Locale '{locale}' not supported")
+    
+    return {
+        "locale": locale,
+        "translations": get_translations_for_locale(locale),
+        "supported_locales": i18n.supported_locales
+    }
+
+@app.get("/api/v1/i18n/locales")
+async def get_supported_locales():
+    """Get list of supported locales"""
+    return {
+        "supported_locales": i18n.supported_locales,
+        "default_locale": i18n.default_locale
+    }
+
+@app.get("/api/v1/i18n/translate/{key}")
+async def translate_key(key: str, request: Request, locale: str = None):
+    """Translate a specific key"""
+    if locale is None:
+        locale = getattr(request.state, 'locale', i18n.default_locale)
+    
+    # Replace dots with slashes in URL path
+    key = key.replace('/', '.')
+    
+    return {
+        "key": key,
+        "locale": locale,
+        "translation": t(key, locale)
+    }
 
 # User portal endpoint - redirect to user search
 @app.get("/user-portal", response_class=HTMLResponse)

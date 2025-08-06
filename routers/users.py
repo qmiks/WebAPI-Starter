@@ -9,6 +9,14 @@ from typing import List, Optional, Union
 from data.models import User, UserCreate, UserUpdate, UserListResponse, MessageResponse
 from data.database import get_db, user_crud
 from api_auth import get_current_api_client
+from utils.localized_errors import (
+    get_request_locale, 
+    raise_user_not_found, 
+    LocalizedBadRequest,
+    create_success_response,
+    create_error_response
+)
+from utils.i18n import t
 
 router = APIRouter(
     prefix="/users",
@@ -44,6 +52,7 @@ async def get_users(
 @router.get("/{user_id}", response_model=User)
 async def get_user(
     user_id: int, 
+    request: Request,
     client_info = Depends(get_current_api_client),
     db=Depends(get_db)
 ):
@@ -56,15 +65,13 @@ async def get_user(
     """
     user = user_crud.get_user(user_id)
     if not user:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"User with id {user_id} not found"
-        )
+        raise_user_not_found(request)
     return user
 
 @router.post("/", response_model=User, status_code=status.HTTP_201_CREATED)
 async def create_user(
     user: UserCreate, 
+    request: Request,
     client_info = Depends(get_current_api_client),
     db=Depends(get_db)
 ):
@@ -79,21 +86,28 @@ async def create_user(
     - **full_name**: Optional full name
     - **role**: User role (admin, user)
     """
+    locale = get_request_locale(request)
+    
     # Check if username already exists
     existing_user = user_crud.get_user_by_username(user.username)
     if existing_user:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Username already registered"
+        raise LocalizedBadRequest(
+            "users.username_already_exists", 
+            locale,
+            username=user.username
         )
     
     # Check if email already exists
     existing_email = user_crud.get_user_by_email(user.email)
     if existing_email:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Email already registered"
+        raise LocalizedBadRequest(
+            "users.email_already_exists", 
+            locale,
+            email=user.email
         )
+    
+    new_user = user_crud.create_user(user)
+    return new_user
     
     new_user = user_crud.create_user(user)
     return new_user
