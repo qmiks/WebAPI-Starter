@@ -10,7 +10,15 @@
     "invalid_token": "Invalid token",
     "user_not_found": "User not found",
     "login_required": "Login required",
-    "insufficient_permissions": "Insufficient permissions"
+    "insufficient_permissions": "Insufficient permissions",
+    "login_title": "Login",
+    "admin_login_title": "Admin Login",
+    "user_login_title": "User Login",
+    "username": "Username",
+    "password": "Password",
+    "login_button": "Login",
+    "register_link": "Create new account",
+    "back_to_home": "Back to home"
   },
   "users": {
     "user_created": "User created successfully",
@@ -70,5 +78,32 @@
     "operation_failed": "Operation failed",
     "please_try_again": "Please try again",
     "contact_support": "Please contact support if the problem persists"
+  },
+  "landing": {
+    "title": "WebAPI Starter Template",
+    "subtitle": "Your Web API Project Foundation",
+    "description": "A ready-to-use starter template for building professional web APIs with modern Python frameworks. Clone this project and start building immediately with pre-configured authentication, admin dashboard, user management, CRUD operations, and comprehensive documentation - all the boilerplate code you need to launch your next web application.",
+    "try_admin": "🛠️ Try Admin Dashboard",
+    "try_user_portal": "👤 Try User Portal",
+    "create_account": "📝 Create User Account",
+    "explore_docs": "📚 Explore API Docs",
+    "features_title": "Key Features",
+    "auth_feature": "JWT Authentication",
+    "admin_feature": "Admin Dashboard",
+    "crud_feature": "CRUD Operations",
+    "docs_feature": "API Documentation",
+    "footer_text": "Your foundation for building modern web APIs.",
+    "admin_panel_title": "Ready-Made Admin Panel",
+    "admin_panel_desc": "Pre-built administration interface for managing users, items, and system monitoring. Includes role-based access control and beautiful responsive design - ready to customize for your specific needs.",
+    "framework_title": "Modern Framework Foundation",
+    "framework_desc": "Built on modern Python frameworks with all the best practices pre-configured. Async/await patterns, automatic validation, and high performance - perfect starting point for scalable APIs.",
+    "auth_system_title": "Auth System Included",
+    "auth_system_desc": "Complete authentication system with JWT tokens, password hashing, session management, and role-based permissions - no need to build authentication from scratch.",
+    "crud_title": "CRUD Boilerplate",
+    "crud_desc": "Pre-implemented Create, Read, Update, Delete operations with database models, validation, and error handling. Use as-is or extend for your custom data types.",
+    "api_structure_title": "API Structure Ready",
+    "api_structure_desc": "Well-organized project structure with automatic OpenAPI documentation, CORS configuration, and standardized response patterns - follow the established patterns for consistency.",
+    "ui_templates_title": "UI Templates Included",
+    "ui_templates_desc": "Professional responsive HTML templates for forms, dashboards, and user interfaces. Easily customizable with modern CSS - perfect starting point for your frontend."
   }
 }

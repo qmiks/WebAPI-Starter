@@ -151,7 +151,27 @@ class I18n:
 i18n = I18n()
 
 def get_locale_from_request(request: Request, accept_language: Optional[str] = Header(None)) -> str:
-    """Dependency to get locale from request."""
+    """
+    Dependency to get locale from request with robust fallback mechanism.
+    Priority: 
+    1. URL parameter (?lang=es) 
+    2. Session cookie (lang_preference)
+    3. Accept-Language header
+    4. Default locale
+    """
+    # Check URL parameter first (highest priority)
+    if hasattr(request, 'query_params'):
+        lang_param = request.query_params.get('lang')
+        if lang_param and lang_param in i18n.supported_locales:
+            return lang_param
+    
+    # Check session cookie (second priority)
+    if hasattr(request, 'cookies'):
+        cookie_lang = request.cookies.get('lang_preference')
+        if cookie_lang and cookie_lang in i18n.supported_locales:
+            return cookie_lang
+    
+    # Check Accept-Language header (third priority)
     return i18n.get_locale_from_request(request, accept_language)
 
 def t(key: str, locale: str = None, **kwargs) -> str:

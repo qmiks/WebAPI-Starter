@@ -10,15 +10,7 @@
     "invalid_token": "Token invalido",
     "user_not_found": "Usuario no encontrado",
     "login_required": "Se requiere iniciar sesion",
-    "insufficient_permissions": "Permisos insuficientes",
-    "login_title": "Iniciar Sesion",
-    "admin_login_title": "Iniciar Sesion - Admin",
-    "user_login_title": "Iniciar Sesion - Usuario",
-    "username": "Nombre de Usuario",
-    "password": "Contrasena",
-    "login_button": "Iniciar Sesion",
-    "register_link": "Crear nueva cuenta",
-    "back_to_home": "Volver al inicio"
+    "insufficient_permissions": "Permisos insuficientes"
   },
   "users": {
     "user_created": "Usuario creado exitosamente",

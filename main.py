@@ -21,7 +21,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.security import HTTPBearer
 import uvicorn
 
-from routers import users, items, admin, auth_new as auth, user_portal, client_apps
+from routers import users, items, admin, auth, user_portal, client_apps
 from data.models import User, Item, UserCreate, ItemCreate
 from data.database import get_db, user_crud, item_crud
 from utils.i18n import LocaleMiddleware, i18n, get_locale_from_request, t, get_translations_for_locale
@@ -87,9 +87,8 @@ for router in client_apps.get_routers():
 
 # Root endpoint
 @app.get("/", response_class=HTMLResponse)
-async def root(request: Request):
+async def root(request: Request, locale: str = Depends(get_locale_from_request)):
     """Landing page with application overview"""
-    locale = getattr(request.state, 'locale', 'en')
     return templates.TemplateResponse("landing.html", {
         "request": request,
         "locale": locale,
