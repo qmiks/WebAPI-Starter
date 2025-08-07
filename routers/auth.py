@@ -208,3 +208,100 @@ async def get_current_user_info(request: Request):
     user_info = current_user.copy()
     user_info.pop("hashed_password", None)
     return user_info
+
+
+@router.get("/register", response_class=HTMLResponse)
+async def register_page(
+    request: Request, 
+    error: Optional[str] = None, 
+    lang: Optional[str] = None
+):
+    """Display registration page with language support."""
+    try:
+        # Get locale (URL param -> cookie -> header -> default)
+        locale = get_locale_from_request(request)
+        if lang and lang in ['en', 'es', 'fr', 'de', 'pl']:
+            locale = lang
+        
+        # Get translations
+        translations = get_translations_for_locale(locale)
+        
+        context = {
+            "request": request,
+            "error": error,
+            "locale": locale,
+            "lang": locale,
+            "t": lambda key: t(key, locale),
+            "translations": translations
+        }
+        
+        response = templates.TemplateResponse("register.html", context)
+        
+        # Set language cookie if specified
+        if lang and lang in ['en', 'es', 'fr', 'de', 'pl']:
+            response.set_cookie(
+                key="lang_preference",
+                value=lang,
+                max_age=30 * 24 * 60 * 60,  # 30 days
+                httponly=True,
+                samesite="lax"
+            )
+        
+        return response
+        
+    except Exception as e:
+        print(f"Error in register_page: {e}")
+        raise HTTPException(status_code=500, detail="Internal server error")
+
+
+@router.post("/register", response_class=HTMLResponse)
+async def register_user(request: Request):
+    """Process user registration."""
+    try:
+        # Get locale for error messages
+        locale = get_locale_from_request(request)
+        
+        # Get form data
+        form_data = await request.form()
+        username = form_data.get("username", "").strip()
+        email = form_data.get("email", "").strip()
+        password = form_data.get("password", "")
+        confirm_password = form_data.get("confirm_password", "")
+        full_name = form_data.get("full_name", "").strip()
+        
+        # Basic validation
+        if not username or not email or not password:
+            error_msg = t("auth.all_fields_required", locale) or "All fields are required"
+            return RedirectResponse(
+                url=f"/auth/register?error={error_msg}&lang={locale}",
+                status_code=302
+            )
+        
+        if password != confirm_password:
+            error_msg = t("auth.passwords_not_match", locale) or "Passwords do not match"
+            return RedirectResponse(
+                url=f"/auth/register?error={error_msg}&lang={locale}",
+                status_code=302
+            )
+        
+        if len(password) < 6:
+            error_msg = t("auth.password_too_short", locale) or "Password must be at least 6 characters"
+            return RedirectResponse(
+                url=f"/auth/register?error={error_msg}&lang={locale}",
+                status_code=302
+            )
+        
+        # For now, just show a success message since we don't have user creation logic
+        success_msg = t("auth.registration_success", locale) or "Registration successful! Please contact admin to activate your account."
+        return RedirectResponse(
+            url=f"/auth/login?message={success_msg}&lang={locale}",
+            status_code=302
+        )
+        
+    except Exception as e:
+        print(f"Error in register_user: {e}")
+        error_msg = t("general.internal_error", locale) or "Internal server error"
+        return RedirectResponse(
+            url=f"/auth/register?error={error_msg}&lang={locale}",
+            status_code=302
+        )

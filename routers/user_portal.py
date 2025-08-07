@@ -11,6 +11,7 @@ from data.models import ItemStatus
 from data.database import get_db, user_crud, item_crud
 from auth import require_login, get_current_user_from_session
 from utils.html_errors import create_access_denied_response, expects_html
+from utils.i18n import get_locale_from_request, get_translations_for_locale, t
 
 # Initialize templates
 templates = Jinja2Templates(directory="templates")
@@ -159,14 +160,19 @@ async def user_search_items(
     })
 
 @router.get("/dashboard", response_class=HTMLResponse)
-async def user_dashboard(request: Request, db=Depends(get_db)):
+async def user_dashboard(request: Request, db=Depends(get_db), lang: Optional[str] = None):
     """Admin dashboard with overview of items and recent activity - ADMIN ONLY"""
+    
+    # Get locale for internationalization
+    locale = get_locale_from_request(request)
+    if lang and lang in ['en', 'es', 'fr', 'de']:
+        locale = lang
     
     # Check authentication
     current_user = get_current_user_from_session(request)
     if not current_user:
         return RedirectResponse(
-            url=f"/auth/login?redirect_url={request.url.path}",
+            url=f"/auth/login?redirect_url={request.url.path}&lang={locale}",
             status_code=302
         )
     
@@ -193,7 +199,10 @@ async def user_dashboard(request: Request, db=Depends(get_db)):
     # Get recent items (last 5 system-wide)
     recent_items = sorted(all_items, key=lambda x: x["created_at"], reverse=True)[:5]
     
-    return templates.TemplateResponse("user/dashboard.html", {
+    # Get translations
+    translations = get_translations_for_locale(locale)
+    
+    context = {
         "request": request,
         "current_user": current_user,
         "total_items": total_items,
@@ -201,8 +210,25 @@ async def user_dashboard(request: Request, db=Depends(get_db)):
         "total_value": total_value,
         "total_users": total_users,
         "recent_items": recent_items,
-        "all_items_count": total_items
-    })
+        "locale": locale,
+        "lang": locale,
+        "t": lambda key: t(key, locale),
+        "translations": translations
+    }
+    
+    response = templates.TemplateResponse("user/dashboard.html", context)
+    
+    # Set language cookie if specified
+    if lang and lang in ['en', 'es', 'fr', 'de']:
+        response.set_cookie(
+            key="lang_preference",
+            value=lang,
+            max_age=60*60*24*30,
+            httponly=True,
+            secure=False
+        )
+    
+    return response
 
 @router.get("/profile", response_class=HTMLResponse)
 async def user_profile(request: Request):

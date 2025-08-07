@@ -12,6 +12,7 @@ from data.models import UserCreate, UserUpdate, UserRole, ItemCreate, ItemUpdate
 from data.database import get_db, user_crud, item_crud, client_app_crud
 from auth import get_current_user_from_session, get_password_hash
 from utils.html_errors import create_access_denied_response, expects_html
+from utils.i18n import get_locale_from_request, get_translations_for_locale, t
 
 # Initialize templates
 templates = Jinja2Templates(directory="templates")
@@ -60,9 +61,14 @@ async def require_admin_user(request: Request) -> dict:
     return current_user
 
 @router.get("/", response_class=HTMLResponse)
-async def admin_dashboard(request: Request):
+async def admin_dashboard(request: Request, lang: Optional[str] = None):
     """Admin dashboard with statistics and navigation"""
     print(f"DEBUG: Admin dashboard called")
+    
+    # Get locale for internationalization
+    locale = get_locale_from_request(request)
+    if lang and lang in ['en', 'es', 'fr', 'de']:
+        locale = lang
     
     # Manual authentication check
     session_token = request.cookies.get("session_token")
@@ -76,7 +82,7 @@ async def admin_dashboard(request: Request):
     if not current_user:
         print("DEBUG: No current user, redirecting to login")
         return RedirectResponse(
-            url=f"/auth/login?redirect_url={request.url.path}",
+            url=f"/auth/login?redirect_url={request.url.path}&lang={locale}",
             status_code=status.HTTP_303_SEE_OTHER
         )
     
@@ -108,7 +114,10 @@ async def admin_dashboard(request: Request):
     recent_items_count = len(all_items)
     recent_apps_count = len(all_client_apps)
     
-    return templates.TemplateResponse("admin/dashboard.html", {
+    # Get translations
+    translations = get_translations_for_locale(locale)
+    
+    context = {
         "request": request,
         "user": current_user,
         "total_users": total_users,
@@ -122,8 +131,26 @@ async def admin_dashboard(request: Request):
         "recent_apps_count": recent_apps_count,
         "api_calls_today": 42,  # Mock data
         "total_api_calls": 1337,  # Mock data
-        "storage_usage": "78%"  # Mock data
-    })
+        "storage_usage": "78%",  # Mock data
+        "locale": locale,
+        "lang": locale,
+        "t": lambda key: t(key, locale),
+        "translations": translations
+    }
+    
+    response = templates.TemplateResponse("admin/dashboard.html", context)
+    
+    # Set language cookie if specified
+    if lang and lang in ['en', 'es', 'fr', 'de']:
+        response.set_cookie(
+            key="lang_preference",
+            value=lang,
+            max_age=60*60*24*30,
+            httponly=True,
+            secure=False
+        )
+    
+    return response
     
     try:
         return templates.TemplateResponse("dashboard.html", {

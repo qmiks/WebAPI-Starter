@@ -47,6 +47,54 @@
     "unauthorized": "Unauthorized",
     "forbidden": "Forbidden"
   },
+  "dashboard": {
+    "admin_title": "Admin Dashboard",
+    "user_title": "User Dashboard",
+    "overview": "System Overview",
+    "welcome_admin": "Welcome to the Web API Admin Panel. Here you can manage users, items, and monitor your application.",
+    "welcome_user": "Welcome to your user dashboard",
+    "quick_actions": "Quick Actions",
+    "recent_activity": "Recent Activity",
+    "recent_users": "Recent Users",
+    "recent_items": "Recent Items",
+    "recent_apps": "Recent Apps",
+    "system_status": "System Status",
+    "storage_usage": "Storage Usage",
+    "api_performance": "API Performance",
+    "statistics": {
+      "total_users": "Total Users",
+      "active_users": "Active Users",
+      "total_items": "Total Items", 
+      "active_items": "Active Items",
+      "client_apps": "Client Apps",
+      "active_apps": "Active Apps",
+      "api_calls_today": "API Calls Today",
+      "total_api_calls": "Total API Calls",
+      "active": "active",
+      "total": "total"
+    },
+    "actions": {
+      "manage_users": "Manage Users",
+      "manage_items": "Manage Items",
+      "manage_apps": "Manage Apps", 
+      "client_apps": "Client Apps",
+      "add_new_user": "Add New User",
+      "add_new_item": "Add New Item",
+      "view_all": "View All",
+      "edit": "Edit",
+      "delete": "Delete",
+      "create": "Create"
+    },
+    "status": {
+      "online": "Online",
+      "offline": "Offline",
+      "active": "Active",
+      "inactive": "Inactive",
+      "pending": "Pending",
+      "approved": "Approved",
+      "rejected": "Rejected"
+    }
+  },
   "forms": {
     "name": "Name",
     "email": "Email",
@@ -70,7 +118,19 @@
     "login": "Login",
     "logout": "Logout",
     "dashboard": "Dashboard",
-    "profile": "Profile"
+    "profile": "Profile",
+    "landing_page": "Landing Page",
+    "api_docs": "API Docs",
+    "hello": "Hello",
+    "language": "Language",
+    "switch_language": "Switch Language"
+  },
+  "languages": {
+    "english": "English",
+    "spanish": "Spanish", 
+    "french": "French",
+    "german": "German",
+    "polish": "Polish"
   },
   "messages": {
     "welcome": "Welcome to WebAPI Starter",

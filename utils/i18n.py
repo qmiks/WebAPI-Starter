@@ -172,7 +172,13 @@ def get_locale_from_request(request: Request, accept_language: Optional[str] = H
             return cookie_lang
     
     # Check Accept-Language header (third priority)
-    return i18n.get_locale_from_request(request, accept_language)
+    accept_lang_str = None
+    if accept_language and hasattr(accept_language, '__str__'):
+        accept_lang_str = str(accept_language)
+    elif isinstance(accept_language, str):
+        accept_lang_str = accept_language
+    
+    return i18n.get_locale_from_request(request, accept_lang_str)
 
 def t(key: str, locale: str = None, **kwargs) -> str:
     """Shorthand function for translation."""

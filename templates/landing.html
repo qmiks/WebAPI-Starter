@@ -259,6 +259,76 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* Language Switcher Styles */
+        .language-switcher {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        .language-switcher .language-btn {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: 2px solid rgba(255,255,255,0.3);
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+        }
+        
+        .language-switcher .language-btn:hover {
+            background: rgba(255,255,255,0.2);
+            border-color: rgba(255,255,255,0.5);
+            transform: translateY(-2px);
+        }
+        
+        .language-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            min-width: 180px;
+            z-index: 1000;
+            display: none;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        
+        .language-dropdown.active {
+            display: block;
+        }
+        
+        .language-dropdown a {
+            display: block;
+            padding: 15px 20px;
+            color: #333;
+            text-decoration: none;
+            transition: background 0.2s;
+            font-size: 16px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .language-dropdown a:last-child {
+            border-bottom: none;
+        }
+        
+        .language-dropdown a:hover {
+            background: #f8f9fa;
+        }
+        
+        .language-dropdown a.active {
+            background: #667eea;
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -278,7 +348,33 @@
                 </p>
                 
                 <div class="cta-buttons">
-                    <a href="/auth/login?redirect_url=/admin{% if locale != 'en' %}&lang={{ locale }}{% endif %}" class="btn btn-primary">{{ t('landing.try_admin') }}</a>
+                    <!-- Language Switcher -->
+                    <div class="language-switcher">
+                        <button class="language-btn" onclick="toggleLanguageDropdown()">
+                            <span>🌐</span>
+                            <span>{{ t('navigation.language') }}</span>
+                            <span style="font-size: 10px; margin-left: 5px;">▼</span>
+                        </button>
+                        <div class="language-dropdown" id="languageDropdown">
+                            <a href="?lang=en" class="{% if locale == 'en' %}active{% endif %}">
+                                🇺🇸 {{ t('languages.english') }}
+                            </a>
+                            <a href="?lang=es" class="{% if locale == 'es' %}active{% endif %}">
+                                🇪🇸 {{ t('languages.spanish') }}
+                            </a>
+                            <a href="?lang=fr" class="{% if locale == 'fr' %}active{% endif %}">
+                                🇫🇷 {{ t('languages.french') }}
+                            </a>
+                            <a href="?lang=de" class="{% if locale == 'de' %}active{% endif %}">
+                                🇩🇪 {{ t('languages.german') }}
+                            </a>
+                            <a href="?lang=pl" class="{% if locale == 'pl' %}active{% endif %}">
+                                🇵🇱 {{ t('languages.polish') }}
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <a href="/admin" class="btn btn-primary">{{ t('landing.try_admin') }}</a>
                     <a href="/auth/login?redirect_url=/user/search{% if locale != 'en' %}&lang={{ locale }}{% endif %}" class="btn btn-primary">{{ t('landing.try_user_portal') }}</a>
                     <a href="/auth/register{% if locale != 'en' %}?lang={{ locale }}{% endif %}" class="btn btn-secondary">{{ t('landing.create_account') }}</a>
                     <a href="/docs{% if locale != 'en' %}?lang={{ locale }}{% endif %}" class="btn btn-secondary">{{ t('landing.explore_docs') }}</a>
@@ -345,5 +441,35 @@
             </div>
         </div>
     </div>
+    
+    <script>
+        function toggleLanguageDropdown() {
+            const dropdown = document.getElementById('languageDropdown');
+            dropdown.classList.toggle('active');
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(event) {
+                const switcher = document.querySelector('.language-switcher');
+                if (!switcher.contains(event.target)) {
+                    dropdown.classList.remove('active');
+                }
+            });
+        }
+        
+        // Preserve current URL parameters when switching languages
+        document.querySelectorAll('.language-dropdown a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const url = new URL(window.location);
+                const langParam = this.href.split('lang=')[1];
+                if (langParam) {
+                    url.searchParams.set('lang', langParam);
+                } else {
+                    url.searchParams.delete('lang');
+                }
+                window.location.href = url.toString();
+            });
+        });
+    </script>
 </body>
 </html>

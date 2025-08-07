@@ -10,7 +10,15 @@
     "invalid_token": "Jeton invalide",
     "user_not_found": "Utilisateur non trouvé",
     "login_required": "Connexion requise",
-    "insufficient_permissions": "Permissions insuffisantes"
+    "insufficient_permissions": "Permissions insuffisantes",
+    "login_title": "Se connecter",
+    "admin_login_title": "Connexion Administrateur",
+    "user_login_title": "Connexion Utilisateur",
+    "username": "Nom d'utilisateur",
+    "password": "Mot de passe",
+    "login_button": "Se connecter",
+    "register_link": "Créer un nouveau compte",
+    "back_to_home": "Retour à l'accueil"
   },
   "users": {
     "user_created": "Utilisateur créé avec succès",
@@ -20,14 +28,23 @@
     "email_already_exists": "L'email existe déjà",
     "username_already_exists": "Le nom d'utilisateur existe déjà",
     "invalid_email": "Format d'email invalide",
-    "password_too_short": "Le mot de passe doit contenir au moins 8 caractères"
+    "password_too_short": "Le mot de passe est trop court",
+    "passwords_dont_match": "Les mots de passe ne correspondent pas"
   },
   "items": {
     "item_created": "Élément créé avec succès",
     "item_updated": "Élément mis à jour avec succès",
     "item_deleted": "Élément supprimé avec succès",
     "item_not_found": "Élément non trouvé",
-    "invalid_item_data": "Données d'élément invalides"
+    "title_required": "Le titre est requis",
+    "description_required": "La description est requise"
+  },
+  "admin": {
+    "admin_panel": "Panneau d'administration",
+    "user_management": "Gestion des utilisateurs",
+    "system_settings": "Paramètres système",
+    "statistics": "Statistiques",
+    "backup_restore": "Sauvegarde et restauration"
   },
   "general": {
     "success": "Succès",
@@ -62,7 +79,19 @@
     "login": "Se connecter",
     "logout": "Se déconnecter",
     "dashboard": "Tableau de bord",
-    "profile": "Profil"
+    "profile": "Profil",
+    "landing_page": "Page d'accueil",
+    "api_docs": "Documentation API",
+    "hello": "Bonjour",
+    "language": "Langue",
+    "switch_language": "Changer de langue"
+  },
+  "languages": {
+    "english": "Anglais",
+    "spanish": "Espagnol",
+    "french": "Français",
+    "german": "Allemand",
+    "polish": "Polonais"
   },
   "messages": {
     "welcome": "Bienvenue dans WebAPI Starter",
@@ -70,5 +99,77 @@
     "operation_failed": "L'opération a échoué",
     "please_try_again": "Veuillez réessayer",
     "contact_support": "Veuillez contacter le support si le problème persiste"
+  },
+  "dashboard": {
+    "title": "Tableau de bord",
+    "overview": "Aperçu",
+    "recent_activity": "Activité récente",
+    "quick_actions": "Actions rapides",
+    "statistics": "Statistiques",
+    "user_count": "Nombre d'utilisateurs",
+    "item_count": "Nombre d'éléments",
+    "active_sessions": "Sessions actives",
+    "total_users": "Total des utilisateurs",
+    "total_items": "Total des éléments",
+    "admin_dashboard": "Tableau de bord administrateur",
+    "user_dashboard": "Tableau de bord utilisateur",
+    "welcome_back": "Bon retour",
+    "admin_functions": "Fonctions administrateur",
+    "user_functions": "Fonctions utilisateur",
+    "manage_users": "Gérer les utilisateurs",
+    "manage_items": "Gérer les éléments",
+    "view_items": "Voir les éléments",
+    "create_item": "Créer un élément",
+    "your_profile": "Votre profil",
+    "settings": "Paramètres"
+  },
+  "buttons": {
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "submit": "Soumettre",
+    "back": "Retour",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "confirm": "Confirmer",
+    "close": "Fermer",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "create": "Créer"
+  },
+  "errors": {
+    "page_not_found": "Page non trouvée",
+    "internal_server_error": "Erreur interne du serveur",
+    "unauthorized": "Non autorisé",
+    "forbidden": "Interdit",
+    "bad_request": "Mauvaise demande",
+    "validation_error": "Erreur de validation",
+    "database_error": "Erreur de base de données"
+  },
+  "landing": {
+    "title": "Modèle WebAPI Starter",
+    "subtitle": "Votre fondation pour les projets d'API Web",
+    "description": "Un modèle de démarrage prêt à l'emploi pour créer des API Web professionnelles avec des frameworks Python modernes. Clonez ce projet et commencez à construire immédiatement avec authentification préconfigurée, tableau de bord administrateur, gestion des utilisateurs, opérations CRUD et documentation complète - tout le code de base dont vous avez besoin pour lancer votre prochaine application web.",
+    "try_admin": "🛠️ Essayer le tableau de bord administrateur",
+    "try_user_portal": "👤 Essayer le portail utilisateur",
+    "create_account": "📝 Créer un compte utilisateur",
+    "explore_docs": "📚 Explorer la documentation API",
+    "features_title": "Caractéristiques principales",
+    "auth_feature": "Authentification JWT",
+    "admin_feature": "Tableau de bord administrateur",
+    "crud_feature": "Opérations CRUD",
+    "docs_feature": "Documentation API",
+    "footer_text": "Votre fondation pour construire des API Web modernes.",
+    "admin_panel_title": "Panneau d'administration prêt",
+    "admin_panel_desc": "Interface d'administration pré-construite pour gérer les utilisateurs, les éléments et la surveillance du système. Inclut le contrôle d'accès basé sur les rôles et un design réactif magnifique - prêt à personnaliser selon vos besoins spécifiques.",
+    "framework_title": "Fondation de framework moderne",
+    "framework_desc": "Construit sur des frameworks Python modernes avec toutes les meilleures pratiques pré-configurées. Modèles async/await, validation automatique et haute performance - point de départ parfait pour les API évolutives.",
+    "auth_system_title": "Système d'authentification inclus",
+    "auth_system_desc": "Système d'authentification complet avec jetons JWT, hachage de mots de passe, gestion de session et permissions basées sur les rôles - pas besoin de construire l'authentification à partir de zéro.",
+    "crud_title": "Modèle CRUD",
+    "crud_desc": "Opérations de Créer, Lire, Mettre à jour, Supprimer pré-implémentées avec modèles de base de données, validation et gestion d'erreurs. Utilisez tel quel ou étendez pour vos types de données personnalisés.",
+    "api_structure_title": "Structure API prête",
+    "api_structure_desc": "Structure de projet bien organisée avec documentation OpenAPI automatique, configuration CORS et modèles de réponse standardisés - suivez les modèles établis pour la cohérence.",
+    "ui_templates_title": "Modèles UI inclus",
+    "ui_templates_desc": "Modèles HTML responsifs professionnels pour formulaires, tableaux de bord et interfaces utilisateur. Facilement personnalisables avec CSS moderne - point de départ parfait pour votre frontend."
   }
 }
