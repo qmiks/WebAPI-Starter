@@ -1,0 +1,189 @@
+{
+    "app": {
+        "title": "WebAPI Starter",
+        "description": "Kompletna aplikacja WebAPI Starter z operacjami CRUD i uwierzytelnianiem tokenów API"
+    },
+    "auth": {
+        "invalid_credentials": "Nieprawidłowe dane logowania",
+        "access_denied": "Dostęp zabroniony",
+        "token_expired": "Token wygasł",
+        "invalid_token": "Nieprawidłowy token",
+        "user_not_found": "Użytkownik nie został znaleziony",
+        "login_required": "Wymagane logowanie",
+        "insufficient_permissions": "Niewystarczające uprawnienia",
+        "login_title": "Zaloguj się",
+        "admin_login_title": "Logowanie administratora",
+        "user_login_title": "Logowanie użytkownika",
+        "username": "Nazwa użytkownika",
+        "password": "Hasło",
+        "login_button": "Zaloguj się",
+        "register_link": "Utwórz nowe konto",
+        "back_to_home": "Powrót do strony głównej",
+        "all_fields_required": "Wszystkie pola są wymagane",
+        "passwords_not_match": "Hasła nie są zgodne",
+        "password_too_short": "Hasło musi mieć co najmniej 6 znaków",
+        "registration_success": "Rejestracja zakończona pomyślnie! Skontaktuj się z administratorem, aby aktywować konto.",
+        "register_title": "Rejestracja",
+        "full_name": "Imię i nazwisko",
+        "email": "Adres email",
+        "confirm_password": "Potwierdź hasło",
+        "register_button": "Zarejestruj się",
+        "already_have_account": "Masz już konto?",
+        "sign_in_here": "Zaloguj się tutaj"
+    },
+    "navigation": {
+        "home": "Strona główna",
+        "users": "Użytkownicy",
+        "items": "Elementy",
+        "admin": "Administrator",
+        "login": "Zaloguj się",
+        "logout": "Wyloguj się",
+        "dashboard": "Panel",
+        "profile": "Profil",
+        "landing_page": "Strona główna",
+        "api_docs": "Dokumentacja API",
+        "hello": "Cześć",
+        "language": "Język",
+        "switch_language": "Zmień język"
+    },
+    "general": {
+        "success": "Sukces",
+        "error": "Błąd",
+        "not_found": "Nie znaleziono",
+        "bad_request": "Nieprawidłowe żądanie",
+        "internal_error": "Błąd wewnętrzny serwera",
+        "validation_error": "Błąd walidacji",
+        "unauthorized": "Nieautoryzowany",
+        "forbidden": "Zabroniony"
+    },
+    "forms": {
+        "name": "Nazwa",
+        "email": "Email",
+        "description": "Opis",
+        "submit": "Prześlij",
+        "cancel": "Anuluj",
+        "save": "Zapisz",
+        "edit": "Edytuj",
+        "delete": "Usuń",
+        "create": "Utwórz",
+        "update": "Aktualizuj",
+        "search": "Szukaj",
+        "filter": "Filtruj",
+        "reset": "Resetuj",
+        "confirm": "Potwierdź",
+        "close": "Zamknij"
+    },
+    "languages": {
+        "english": "Angielski",
+        "spanish": "Hiszpański",
+        "french": "Francuski",
+        "german": "Niemiecki",
+        "polish": "Polski"
+    },
+    "messages": {
+        "welcome": "Witamy w WebAPI Starter",
+        "operation_successful": "Operacja zakończona pomyślnie",
+        "operation_failed": "Operacja nie powiodła się",
+        "please_try_again": "Spróbuj ponownie",
+        "contact_support": "Skontaktuj się z pomocą techniczną, jeśli problem będzie się powtarzał"
+    },
+    "landing": {
+        "title": "Szablon WebAPI Starter",
+        "subtitle": "Twoja podstawa dla projektów Web API",
+        "description": "Gotowy szablon do tworzenia profesjonalnych interfejsów API z nowoczesnymi frameworkami Python. Sklonuj ten projekt i zacznij budować natychmiast z pre-skonfigurowanym uwierzytelnianiem, panelem administratora, zarządzaniem użytkownikami, operacjami CRUD i kompleksową dokumentacją - cały kod podstawowy, którego potrzebujesz do uruchomienia następnej aplikacji internetowej.",
+        "try_admin": "🛠️ Wypróbuj panel administratora",
+        "try_user_portal": "👤 Wypróbuj portal użytkownika",
+        "create_account": "📝 Utwórz konto użytkownika",
+        "explore_docs": "📚 Przejrzyj dokumentację API",
+        "features_title": "Kluczowe funkcje",
+        "auth_feature": "Uwierzytelnianie JWT",
+        "admin_feature": "Panel administratora",
+        "crud_feature": "Operacje CRUD",
+        "docs_feature": "Dokumentacja API",
+        "footer_text": "Twoja podstawa do budowania nowoczesnych interfejsów API.",
+        "admin_panel_title": "Gotowy panel administratora",
+        "admin_panel_desc": "Pre-zbudowany interfejs administracyjny do zarządzania użytkownikami, elementami i monitorowania systemu. Zawiera kontrolę dostępu opartą na rolach i piękny responsywny design - gotowy do dostosowania do Twoich specyficznych potrzeb.",
+        "framework_title": "Nowoczesna podstawa frameworka",
+        "framework_desc": "Zbudowany na nowoczesnych frameworkach Python ze wszystkimi najlepszymi praktykami pre-skonfigurowanymi. Wzorce async/await, automatyczna walidacja i wysoka wydajność - idealny punkt wyjścia dla skalowalnych API.",
+        "auth_system_title": "System uwierzytelniania w zestawie",
+        "auth_system_desc": "Kompletny system uwierzytelniania z tokenami JWT, hashowaniem haseł, zarządzaniem sesjami i uprawnieniami opartymi na rolach - nie ma potrzeby budowania uwierzytelniania od zera.",
+        "crud_title": "Szablon CRUD",
+        "crud_desc": "Pre-zaimplementowane operacje Create, Read, Update, Delete z modelami bazy danych, walidacją i obsługą błędów. Używaj w takiej postaci lub rozszerzaj dla swoich niestandardowych typów danych.",
+        "api_structure_title": "Struktura API gotowa",
+        "api_structure_desc": "Dobrze zorganizowana struktura projektu z automatyczną dokumentacją OpenAPI, konfiguracją CORS i standaryzowanymi wzorcami odpowiedzi - postępuj zgodnie z ustalonymi wzorcami dla spójności.",
+        "ui_templates_title": "Szablony UI w zestawie",
+        "ui_templates_desc": "Profesjonalne responsywne szablony HTML dla formularzy, dashboardów i interfejsów użytkownika. Łatwo dostosowywalne z nowoczesnym CSS - idealny punkt wyjścia dla Twojego frontendu."
+    },
+    "dashboard": {
+        "user_title": "Panel użytkownika",
+        "admin_title": "Panel administratora", 
+        "welcome_user": "Witaj",
+        "overview": "Przegląd Twojego konta i aktywności",
+        "recent_items": "Najnowsze elementy",
+        "statistics": {
+            "total_items": "Łączna liczba elementów",
+            "active_items": "Aktywne elementy",
+            "active_users": "Aktywni użytkownicy",
+            "total": "Łącznie"
+        },
+        "status": {
+            "active": "aktywny",
+            "inactive": "nieaktywny",
+            "pending": "oczekujący",
+            "completed": "ukończony"
+        },
+        "actions": {
+            "view_all": "Zobacz wszystkie",
+            "create_new": "Utwórz nowy",
+            "manage": "Zarządzaj"
+        }
+    },
+    "users": {
+        "user_created": "Użytkownik został utworzony pomyślnie",
+        "user_updated": "Użytkownik został zaktualizowany pomyślnie",
+        "user_deleted": "Użytkownik został usunięty pomyślnie",
+        "user_not_found": "Użytkownik nie został znaleziony",
+        "email_already_exists": "Email już istnieje",
+        "username_already_exists": "Nazwa użytkownika już istnieje",
+        "invalid_email": "Nieprawidłowy format email",
+        "password_too_short": "Hasło jest za krótkie",
+        "passwords_dont_match": "Hasła nie są zgodne"
+    },
+    "items": {
+        "item_created": "Element został utworzony pomyślnie",
+        "item_updated": "Element został zaktualizowany pomyślnie",
+        "item_deleted": "Element został usunięty pomyślnie",
+        "item_not_found": "Element nie został znaleziony",
+        "title_required": "Tytuł jest wymagany",
+        "description_required": "Opis jest wymagany"
+    },
+    "admin": {
+        "admin_panel": "Panel administracyjny",
+        "user_management": "Zarządzanie użytkownikami",
+        "system_settings": "Ustawienia systemu",
+        "statistics": "Statystyki",
+        "backup_restore": "Kopia zapasowa i przywracanie"
+    },
+    "buttons": {
+        "save": "Zapisz",
+        "cancel": "Anuluj",
+        "submit": "Prześlij",
+        "back": "Wstecz",
+        "next": "Następny",
+        "previous": "Poprzedni",
+        "confirm": "Potwierdź",
+        "close": "Zamknij",
+        "edit": "Edytuj",
+        "delete": "Usuń",
+        "create": "Utwórz"
+    },
+    "errors": {
+        "page_not_found": "Strona nie została znaleziona",
+        "internal_server_error": "Wewnętrzny błąd serwera",
+        "unauthorized": "Nieautoryzowany",
+        "forbidden": "Zabroniony",
+        "bad_request": "Nieprawidłowe żądanie",
+        "validation_error": "Błąd walidacji",
+        "database_error": "Błąd bazy danych"
+    }
+}

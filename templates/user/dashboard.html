@@ -3,12 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Web API Application</title>
+    <title>{{ t('dashboard.user_title') }} - Web API Application</title>
     <style>
         * {
             margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+            padding:            <div class="nav">
+                <a href="/user/dashboard" class="active">🛠️ Admin Dashboard</a>
+                <a href="/user/search">🔍 Search Items</a>
+                <a href="/user/profile">👤 Profile</a>
+                <a href="/">🏠 Home</a>
+                
+                <!-- Language Switcher -->
+                <div class="language-switcher">
+                    <select onchange="changeLanguage(this.value)" style="padding: 6px 10px; border-radius: 15px; border: 1px solid #ddd; background: white;">
+                        <option value="en" {% if locale == 'en' %}selected{% endif %}>🇺🇸 {{ t('languages.english') }}</option>
+                        <option value="es" {% if locale == 'es' %}selected{% endif %}>🇪🇸 {{ t('languages.spanish') }}</option>
+                        <option value="fr" {% if locale == 'fr' %}selected{% endif %}>🇫🇷 {{ t('languages.french') }}</option>
+                        <option value="de" {% if locale == 'de' %}selected{% endif %}>🇩🇪 {{ t('languages.german') }}</option>
+                        <option value="pl" {% if locale == 'pl' %}selected{% endif %}>🇵🇱 {{ t('languages.polish') }}</option>
+                    </select>
+                </div>
+            </div>           box-sizing: border-box;
         }
         
         body {
@@ -304,39 +319,39 @@
     
     <div class="container">
         <div class="welcome-section">
-            <h1 class="welcome-title">Welcome back, {{ current_user.full_name or current_user.username }}! 👋</h1>
-            <p class="welcome-subtitle">Admin overview of system activity and management</p>
+            <h1 class="welcome-title">{{ t('dashboard.welcome_user') }}, {{ current_user.full_name or current_user.username }}! 👋</h1>
+            <p class="welcome-subtitle">{{ t('dashboard.overview') }}</p>
         </div>
         
         <div class="stats-grid">
             <div class="stat-card">
                 <span class="stat-icon">📦</span>
                 <div class="stat-number">{{ total_items }}</div>
-                <div class="stat-label">Total Items</div>
+                <div class="stat-label">{{ t('dashboard.statistics.total_items') }}</div>
             </div>
             
             <div class="stat-card">
                 <span class="stat-icon">✅</span>
                 <div class="stat-number">{{ active_items }}</div>
-                <div class="stat-label">Active Items</div>
+                <div class="stat-label">{{ t('dashboard.statistics.active_items') }}</div>
             </div>
             
             <div class="stat-card">
                 <span class="stat-icon">💰</span>
                 <div class="stat-number">${{ "%.2f"|format(total_value) }}</div>
-                <div class="stat-label">Total Value</div>
+                <div class="stat-label">{{ t('dashboard.statistics.total') }} {{ t('dashboard.statistics.total_items')|lower }}</div>
             </div>
             
             <div class="stat-card">
                 <span class="stat-icon">👥</span>
                 <div class="stat-number">{{ total_users }}</div>
-                <div class="stat-label">Active Users</div>
+                <div class="stat-label">{{ t('dashboard.statistics.active_users') }}</div>
             </div>
         </div>
         
         <div class="recent-items">
             <h2 class="section-title">
-                📋 Recent Items (System-wide)
+                📋 {{ t('dashboard.recent_items') }}
             </h2>
             
             {% if recent_items %}
@@ -345,26 +360,39 @@
                 <div class="item-row">
                     <div class="item-name">{{ item.name }}</div>
                     <div class="item-price">${{ "%.2f"|format(item.price) }}</div>
-                    <span class="item-status status-{{ item.status }}">{{ item.status }}</span>
+                    <span class="item-status status-{{ item.status }}">{{ t('dashboard.status.' + item.status) if t('dashboard.status.' + item.status) != 'dashboard.status.' + item.status else item.status }}</span>
                     <div class="item-date">{{ item.created_at[:10] }}</div>
                 </div>
                 {% endfor %}
             </div>
             {% else %}
             <div class="no-items">
-                <h3>📭 No items yet</h3>
-                <p>You haven't created any items yet. Contact an administrator to add items.</p>
+                <h3>📭 {{ t('dashboard.statistics.total_items') }}</h3>
+                <p>{{ t('dashboard.welcome_user') }}</p>
             </div>
             {% endif %}
             
             <div class="quick-actions">
-                <a href="/user/search" class="btn btn-primary">🔍 Search All Items</a>
-                <a href="/user/profile" class="btn btn-secondary">👤 View Profile</a>
+                <a href="/user/search" class="btn btn-primary">🔍 {{ t('dashboard.actions.view_all') }} {{ t('dashboard.statistics.total_items') }}</a>
+                <a href="/user/profile" class="btn btn-secondary">👤 {{ t('dashboard.user_title') }}</a>
                 {% if current_user.role == 'admin' %}
-                <a href="/admin" class="btn btn-secondary">🛠️ Admin Dashboard</a>
+                <a href="/admin" class="btn btn-secondary">🛠️ {{ t('dashboard.admin_title') }}</a>
                 {% endif %}
             </div>
         </div>
     </div>
+
+    <script>
+        function changeLanguage(lang) {
+            // Get current URL parameters
+            const url = new URL(window.location);
+            
+            // Set the lang parameter
+            url.searchParams.set('lang', lang);
+            
+            // Redirect to the URL with the new language
+            window.location.href = url.toString();
+        }
+    </script>
 </body>
 </html>

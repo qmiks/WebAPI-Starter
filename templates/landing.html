@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebAPI Starter - Welcome</title>
+    <title>{{ t('landing.title') }} - {{ t('messages.welcome') }}</title>
     <style>
         * {
             margin: 0;
@@ -259,6 +259,76 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* Language Switcher Styles */
+        .language-switcher {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        .language-switcher .language-btn {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: 2px solid rgba(255,255,255,0.3);
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+        }
+        
+        .language-switcher .language-btn:hover {
+            background: rgba(255,255,255,0.2);
+            border-color: rgba(255,255,255,0.5);
+            transform: translateY(-2px);
+        }
+        
+        .language-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            min-width: 180px;
+            z-index: 1000;
+            display: none;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        
+        .language-dropdown.active {
+            display: block;
+        }
+        
+        .language-dropdown a {
+            display: block;
+            padding: 15px 20px;
+            color: #333;
+            text-decoration: none;
+            transition: background 0.2s;
+            font-size: 16px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .language-dropdown a:last-child {
+            border-bottom: none;
+        }
+        
+        .language-dropdown a:hover {
+            background: #f8f9fa;
+        }
+        
+        .language-dropdown a.active {
+            background: #667eea;
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -271,84 +341,97 @@
         
         <div class="container">
             <div class="hero-content">
-                <h1>🚀 WebAPI Starter Template</h1>
-                <p class="subtitle">Your Web API Project Foundation</p>
+                <h1>🚀 {{ t('landing.title') }}</h1>
+                <p class="subtitle">{{ t('landing.subtitle') }}</p>
                 <p class="description">
-                    A ready-to-use starter template for building professional web APIs with modern Python frameworks. 
-                    Clone this project and start building immediately with pre-configured authentication, 
-                    admin dashboard, user management, CRUD operations, and comprehensive documentation - 
-                    all the boilerplate code you need to launch your next web application.
+                    {{ t('landing.description') }}
                 </p>
                 
                 <div class="cta-buttons">
-                    <a href="/auth/login?redirect_url=/admin" class="btn btn-primary">🛠️ Try Admin Dashboard</a>
-                    <a href="/auth/login?redirect_url=/user/search" class="btn btn-primary">👤 Try User Portal</a>
-                    <a href="/auth/register" class="btn btn-secondary">📝 Create User Account</a>
-                    <a href="/docs" class="btn btn-secondary">📚 Explore API Docs</a>
+                    <!-- Language Switcher -->
+                    <div class="language-switcher">
+                        <button class="language-btn" onclick="toggleLanguageDropdown()">
+                            <span>🌐</span>
+                            <span>{{ t('navigation.language') }}</span>
+                            <span style="font-size: 10px; margin-left: 5px;">▼</span>
+                        </button>
+                        <div class="language-dropdown" id="languageDropdown">
+                            <a href="?lang=en" class="{% if locale == 'en' %}active{% endif %}">
+                                🇺🇸 {{ t('languages.english') }}
+                            </a>
+                            <a href="?lang=es" class="{% if locale == 'es' %}active{% endif %}">
+                                🇪🇸 {{ t('languages.spanish') }}
+                            </a>
+                            <a href="?lang=fr" class="{% if locale == 'fr' %}active{% endif %}">
+                                🇫🇷 {{ t('languages.french') }}
+                            </a>
+                            <a href="?lang=de" class="{% if locale == 'de' %}active{% endif %}">
+                                🇩🇪 {{ t('languages.german') }}
+                            </a>
+                            <a href="?lang=pl" class="{% if locale == 'pl' %}active{% endif %}">
+                                🇵🇱 {{ t('languages.polish') }}
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <a href="/admin" class="btn btn-primary">{{ t('landing.try_admin') }}</a>
+                    <a href="/auth/login?redirect_url=/user/search{% if locale != 'en' %}&lang={{ locale }}{% endif %}" class="btn btn-primary">{{ t('landing.try_user_portal') }}</a>
+                    <a href="/auth/register{% if locale != 'en' %}?lang={{ locale }}{% endif %}" class="btn btn-secondary">{{ t('landing.create_account') }}</a>
+                    <a href="/docs{% if locale != 'en' %}?lang={{ locale }}{% endif %}" class="btn btn-secondary">{{ t('landing.explore_docs') }}</a>
                 </div>
                 
                 <div class="features">
                     <div class="feature-card">
                         <span class="feature-icon">🛠️</span>
-                        <h3 class="feature-title">Ready-Made Admin Panel</h3>
+                        <h3 class="feature-title">{{ t('landing.admin_panel_title') }}</h3>
                         <p class="feature-description">
-                            Pre-built administration interface for managing users, items, and system monitoring. 
-                            Includes role-based access control and beautiful responsive design - 
-                            ready to customize for your specific needs.
+                            {{ t('landing.admin_panel_desc') }}
                         </p>
                     </div>
                     
                     <div class="feature-card">
                         <span class="feature-icon">⚡</span>
-                        <h3 class="feature-title">Modern Framework Foundation</h3>
+                        <h3 class="feature-title">{{ t('landing.framework_title') }}</h3>
                         <p class="feature-description">
-                            Built on modern Python frameworks with all the best practices pre-configured. 
-                            Async/await patterns, automatic validation, and high performance - 
-                            perfect starting point for scalable APIs.
+                            {{ t('landing.framework_desc') }}
                         </p>
                     </div>
                     
                     <div class="feature-card">
                         <span class="feature-icon">🔒</span>
-                        <h3 class="feature-title">Auth System Included</h3>
+                        <h3 class="feature-title">{{ t('landing.auth_system_title') }}</h3>
                         <p class="feature-description">
-                            Complete authentication system with JWT tokens, password hashing, 
-                            session management, and role-based permissions - 
-                            no need to build authentication from scratch.
+                            {{ t('landing.auth_system_desc') }}
                         </p>
                     </div>
                     
                     <div class="feature-card">
                         <span class="feature-icon">📊</span>
-                        <h3 class="feature-title">CRUD Boilerplate</h3>
+                        <h3 class="feature-title">{{ t('landing.crud_title') }}</h3>
                         <p class="feature-description">
-                            Pre-implemented Create, Read, Update, Delete operations with database models, 
-                            validation, and error handling. Use as-is or extend for your custom data types.
+                            {{ t('landing.crud_desc') }}
                         </p>
                     </div>
                     
                     <div class="feature-card">
                         <span class="feature-icon">🌐</span>
-                        <h3 class="feature-title">API Structure Ready</h3>
+                        <h3 class="feature-title">{{ t('landing.api_structure_title') }}</h3>
                         <p class="feature-description">
-                            Well-organized project structure with automatic OpenAPI documentation, 
-                            CORS configuration, and standardized response patterns - 
-                            follow the established patterns for consistency.
+                            {{ t('landing.api_structure_desc') }}
                         </p>
                     </div>
                     
                     <div class="feature-card">
                         <span class="feature-icon">📱</span>
-                        <h3 class="feature-title">UI Templates Included</h3>
+                        <h3 class="feature-title">{{ t('landing.ui_templates_title') }}</h3>
                         <p class="feature-description">
-                            Professional responsive HTML templates for forms, dashboards, and user interfaces. 
-                            Easily customizable with modern CSS - perfect starting point for your frontend.
+                            {{ t('landing.ui_templates_desc') }}
                         </p>
                     </div>
                 </div>
                 
                 <div class="footer">
-                    <p>&copy; 2025 WebAPI Starter Template. Your foundation for building modern web APIs.</p>
+                    <p>&copy; 2025 {{ t('landing.title') }}. {{ t('landing.footer_text') }}</p>
                     <p style="margin-top: 10px;">
                         <a href="/health" style="color: rgba(255,255,255,0.8); text-decoration: none;">Health Check</a> | 
                         <a href="/info" style="color: rgba(255,255,255,0.8); text-decoration: none;">System Info</a> | 
@@ -358,5 +441,35 @@
             </div>
         </div>
     </div>
+    
+    <script>
+        function toggleLanguageDropdown() {
+            const dropdown = document.getElementById('languageDropdown');
+            dropdown.classList.toggle('active');
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(event) {
+                const switcher = document.querySelector('.language-switcher');
+                if (!switcher.contains(event.target)) {
+                    dropdown.classList.remove('active');
+                }
+            });
+        }
+        
+        // Preserve current URL parameters when switching languages
+        document.querySelectorAll('.language-dropdown a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const url = new URL(window.location);
+                const langParam = this.href.split('lang=')[1];
+                if (langParam) {
+                    url.searchParams.set('lang', langParam);
+                } else {
+                    url.searchParams.delete('lang');
+                }
+                window.location.href = url.toString();
+            });
+        });
+    </script>
 </body>
 </html>

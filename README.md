@@ -51,12 +51,14 @@ This template saves you weeks of development time by providing:
 - Automatic API documentation (OpenAPI/Swagger)
 - Built-in data validation with Pydantic
 - High performance and scalability ready
+- **🌍 Multi-Language Support (i18n)** - English, Spanish, French, German
 
 ### 🔒 Auth System Included
 - JWT-based authentication with session management
 - Password hashing and security best practices
 - Role-based permissions (Admin, User, Moderator)
 - No need to build authentication from scratch
+- **Localized error messages** in multiple languages
 
 ### 📊 CRUD Boilerplate
 - Pre-implemented Create, Read, Update, Delete operations
@@ -278,8 +280,33 @@ Complete administration interface with:
 - **Error Pages**: User-friendly error handling
 - **Security**: Password hashing, JWT tokens, input validation
 - **Performance**: Async/await patterns throughout
+- **🌍 Internationalization**: Full i18n support for global applications
 
 ## 📖 API Reference
+
+### 🌍 Internationalization API
+
+- `GET /api/v1/i18n/locales` - Get supported locales
+- `GET /api/v1/i18n/translations/{locale}` - Get all translations for a locale
+- `GET /api/v1/i18n/translate/{key}?lang={locale}` - Translate a specific key
+
+**Multi-Language Support:**
+- **English (en)** - Default
+- **Spanish (es)** - Español  
+- **French (fr)** - Français
+- **German (de)** - Deutsch
+
+**Usage Examples:**
+```bash
+# Get Spanish translations
+curl "http://localhost:8000/api/v1/i18n/translations/es"
+
+# Translate with URL parameter
+curl "http://localhost:8000/api/v1/i18n/translate/users.user_not_found?lang=fr"
+
+# Automatic detection via Accept-Language header
+curl -H "Accept-Language: de-DE,de;q=0.9" "http://localhost:8000/api/v1/users/999"
+```
 
 ### Users API
 

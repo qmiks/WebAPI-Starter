@@ -1,52 +1,52 @@
 {% extends "base.html" %}
 
-{% block title %}Dashboard{% endblock %}
+{% block title %}{{ t('dashboard.admin_title') }}{% endblock %}
 
 {% block content %}
 <div class="stats">
     <div class="stat-card">
         <div class="stat-number">{{ total_users }}</div>
-        <div class="stat-label">Total Users</div>
+        <div class="stat-label">{{ t('dashboard.statistics.total_users') }}</div>
     </div>
     <div class="stat-card">
         <div class="stat-number">{{ active_users }}</div>
-        <div class="stat-label">Active Users</div>
+        <div class="stat-label">{{ t('dashboard.statistics.active_users') }}</div>
     </div>
     <div class="stat-card">
         <div class="stat-number">{{ total_items }}</div>
-        <div class="stat-label">Total Items</div>
+        <div class="stat-label">{{ t('dashboard.statistics.total_items') }}</div>
     </div>
     <div class="stat-card">
         <div class="stat-number">{{ active_items }}</div>
-        <div class="stat-label">Active Items</div>
+        <div class="stat-label">{{ t('dashboard.statistics.active_items') }}</div>
     </div>
     <div class="stat-card">
         <div class="stat-number">{{ total_client_apps }}</div>
-        <div class="stat-label">Client Apps</div>
+        <div class="stat-label">{{ t('dashboard.statistics.client_apps') }}</div>
     </div>
     <div class="stat-card">
         <div class="stat-number">{{ active_client_apps }}</div>
-        <div class="stat-label">Active Apps</div>
+        <div class="stat-label">{{ t('dashboard.statistics.active_apps') }}</div>
     </div>
 </div>
 
 <div class="card">
-    <h2>📊 System Overview</h2>
-    <p>Welcome to the Web API Admin Panel. Here you can manage users, items, and monitor your application.</p>
+    <h2>📊 {{ t('dashboard.overview') }}</h2>
+    <p>{{ t('dashboard.welcome_admin') }}</p>
     
     <div style="margin-top: 30px;">
-        <h3>Quick Actions</h3>
-        <a href="/admin/users" class="btn btn-primary">👥 Manage Users</a>
-        <a href="/admin/items" class="btn btn-primary">📦 Manage Items</a>
-        <a href="/admin/client-apps" class="btn btn-primary">🔐 Client Apps</a>
-        <a href="/admin/users/new" class="btn btn-success">➕ Add New User</a>
+        <h3>{{ t('dashboard.quick_actions') }}</h3>
+        <a href="/admin/users" class="btn btn-primary">👥 {{ t('dashboard.actions.manage_users') }}</a>
+        <a href="/admin/items" class="btn btn-primary">📦 {{ t('dashboard.actions.manage_items') }}</a>
+        <a href="/admin/client-apps" class="btn btn-primary">🔐 {{ t('dashboard.actions.client_apps') }}</a>
+        <a href="/admin/users/new" class="btn btn-success">➕ {{ t('dashboard.actions.add_new_user') }}</a>
     </div>
 </div>
 
 <div class="card">
-    <h3>📈 Recent Activity</h3>
+    <h3>📈 {{ t('dashboard.recent_activity') }}</h3>
     
-    <h4>Recent Users</h4>
+    <h4>{{ t('dashboard.recent_users') }}</h4>
     {% if recent_users %}
         <table class="table">
             <thead>

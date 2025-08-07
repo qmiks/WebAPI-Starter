@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 
-{% block title %}Admin Dashboard{% endblock %}
+{% block title %}{{ t('dashboard.admin_title') }}{% endblock %}
 
 {% block content %}
 <div class="admin-dashboard">
     <!-- Header Section -->
     <div class="dashboard-header">
-        <h1>🏢 Admin Dashboard</h1>
-        <p>System overview and management portal</p>
+        <h1>🏢 {{ t('dashboard.admin_title') }}</h1>
+        <p>{{ t('dashboard.overview') }}</p>
     </div>
 
     <!-- Statistics Cards -->
@@ -16,38 +16,38 @@
             <div class="stat-icon">👥</div>
             <div class="stat-content">
                 <div class="stat-number">{{ total_users }}</div>
-                <div class="stat-label">Total Users</div>
-                <div class="stat-detail">{{ active_users }} active</div>
+                <div class="stat-label">{{ t('dashboard.statistics.total_users') }}</div>
+                <div class="stat-detail">{{ active_users }} {{ t('dashboard.statistics.active') }}</div>
             </div>
-            <a href="/admin/users" class="stat-link">Manage Users →</a>
+            <a href="/admin/users" class="stat-link">{{ t('dashboard.actions.manage_users') }} →</a>
         </div>
 
         <div class="stat-card items">
             <div class="stat-icon">📦</div>
             <div class="stat-content">
                 <div class="stat-number">{{ total_items }}</div>
-                <div class="stat-label">Total Items</div>
-                <div class="stat-detail">{{ active_items }} active</div>
+                <div class="stat-label">{{ t('dashboard.statistics.total_items') }}</div>
+                <div class="stat-detail">{{ active_items }} {{ t('dashboard.statistics.active') }}</div>
             </div>
-            <a href="/admin/items" class="stat-link">Manage Items →</a>
+            <a href="/admin/items" class="stat-link">{{ t('dashboard.actions.manage_items') }} →</a>
         </div>
 
         <div class="stat-card apps">
             <div class="stat-icon">🔐</div>
             <div class="stat-content">
                 <div class="stat-number">{{ total_client_apps }}</div>
-                <div class="stat-label">Client Apps</div>
-                <div class="stat-detail">{{ active_client_apps }} active</div>
+                <div class="stat-label">{{ t('dashboard.statistics.client_apps') }}</div>
+                <div class="stat-detail">{{ active_client_apps }} {{ t('dashboard.statistics.active') }}</div>
             </div>
-            <a href="/admin/client-apps" class="stat-link">Manage Apps →</a>
+            <a href="/admin/client-apps" class="stat-link">{{ t('dashboard.actions.manage_apps') }} →</a>
         </div>
 
         <div class="stat-card api">
             <div class="stat-icon">🔗</div>
             <div class="stat-content">
                 <div class="stat-number">{{ api_calls_today or 0 }}</div>
-                <div class="stat-label">API Calls Today</div>
-                <div class="stat-detail">{{ total_api_calls or 0 }} total</div>
+                <div class="stat-label">{{ t('dashboard.statistics.api_calls_today') }}</div>
+                <div class="stat-detail">{{ total_api_calls or 0 }} {{ t('dashboard.statistics.total') }}</div>
             </div>
             <a href="/docs" target="_blank" class="stat-link">API Docs →</a>
         </div>
@@ -55,79 +55,79 @@
 
     <!-- Quick Actions -->
     <div class="quick-actions">
-        <h2>⚡ Quick Actions</h2>
+        <h2>⚡ {{ t('dashboard.quick_actions') }}</h2>
         <div class="actions-grid">
             <a href="/admin/users/new" class="action-card primary">
                 <div class="action-icon">➕</div>
-                <div class="action-title">Add New User</div>
-                <div class="action-description">Create a new user account</div>
+                <div class="action-title">{{ t('dashboard.actions.add_new_user') }}</div>
+                <div class="action-description">{{ t('dashboard.actions.create') }} {{ t('dashboard.statistics.total_users')|lower }}</div>
             </a>
 
             <a href="/admin/items/new" class="action-card success">
                 <div class="action-icon">📝</div>
-                <div class="action-title">Add New Item</div>
-                <div class="action-description">Create a new item</div>
+                <div class="action-title">{{ t('dashboard.actions.add_new_item') }}</div>
+                <div class="action-description">{{ t('dashboard.actions.create') }} {{ t('dashboard.statistics.total_items')|lower }}</div>
             </a>
 
             <a href="/admin/client-apps" class="action-card warning">
                 <div class="action-icon">🔑</div>
-                <div class="action-title">New API App</div>
-                <div class="action-description">Generate API credentials</div>
+                <div class="action-title">{{ t('dashboard.statistics.client_apps') }}</div>
+                <div class="action-description">{{ t('dashboard.actions.manage_apps') }}</div>
             </a>
 
             <a href="/user-portal" class="action-card info">
                 <div class="action-icon">🌐</div>
-                <div class="action-title">User Portal</div>
-                <div class="action-description">View user interface</div>
+                <div class="action-title">{{ t('dashboard.user_title') }}</div>
+                <div class="action-description">{{ t('dashboard.welcome_user') }}</div>
             </a>
         </div>
     </div>
 
     <!-- System Status -->
     <div class="system-status">
-        <h2>📊 System Status</h2>
+        <h2>📊 {{ t('dashboard.system_status') }}</h2>
         <div class="status-grid">
             <div class="status-item">
                 <div class="status-indicator active"></div>
                 <div class="status-label">API Server</div>
-                <div class="status-value">Online</div>
+                <div class="status-value">{{ t('dashboard.status.online') }}</div>
             </div>
             <div class="status-item">
                 <div class="status-indicator active"></div>
                 <div class="status-label">Database</div>
-                <div class="status-value">Connected</div>
+                <div class="status-value">{{ t('dashboard.status.active') }}</div>
             </div>
             <div class="status-item">
                 <div class="status-indicator active"></div>
                 <div class="status-label">Authentication</div>
-                <div class="status-value">Working</div>
+                <div class="status-value">{{ t('dashboard.status.active') }}</div>
             </div>
             <div class="status-item">
                 <div class="status-indicator warning"></div>
-                <div class="status-label">Storage</div>
-                <div class="status-value">{{ storage_usage or "85%" }} used</div>
+                <div class="status-label">{{ t('dashboard.storage_usage') }}</div>
+                <div class="status-value">{{ storage_usage or "85%" }}</div>
             </div>
         </div>
     </div>
 
     <!-- Recent Activity Summary -->
     <div class="recent-activity">
-        <h2>📈 Recent Activity</h2>
+        <h2>📈 {{ t('dashboard.recent_activity') }}</h2>
         <div class="activity-summary">
             <div class="activity-item">
                 <span class="activity-count">{{ recent_users_count or 0 }}</span>
-                <span class="activity-text">new users this week</span>
-                <a href="/admin/users" class="activity-link">View all →</a>
+                <span class="activity-text">{{ t('dashboard.recent_users') }}</span>
+                <a href="/admin/users" class="activity-link">{{ t('dashboard.actions.view_all') }} →</a>
             </div>
             <div class="activity-item">
                 <span class="activity-count">{{ recent_items_count or 0 }}</span>
-                <span class="activity-text">items created today</span>
-                <a href="/admin/items" class="activity-link">View all →</a>
+                <span class="activity-text">{{ t('dashboard.recent_items') }}</span>
+                <a href="/admin/items" class="activity-link">{{ t('dashboard.actions.view_all') }} →</a>
             </div>
             <div class="activity-item">
                 <span class="activity-count">{{ recent_apps_count or 0 }}</span>
-                <span class="activity-text">API apps created this month</span>
-                <a href="/admin/client-apps" class="activity-link">View all →</a>
+                <span class="activity-text">{{ t('dashboard.recent_apps') }}</span>
+                <a href="/admin/client-apps" class="activity-link">{{ t('dashboard.actions.view_all') }} →</a>
             </div>
         </div>
     </div>

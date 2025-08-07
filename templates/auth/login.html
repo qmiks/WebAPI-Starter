@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
         {% if redirect_url and ('/admin' in redirect_url) %}
-            Admin Login - WebAPI Starter
+            {{ t('auth.admin_login_title') }} - {{ t('app.title') }}
         {% elif redirect_url and ('/user' in redirect_url or '/user-portal' in redirect_url) %}
-            User Login - WebAPI Starter
+            {{ t('auth.user_login_title') }} - {{ t('app.title') }}
         {% else %}
-            Login - WebAPI Starter
+            {{ t('auth.login_title') }} - {{ t('app.title') }}
         {% endif %}
     </title>
     <style>
@@ -239,13 +239,13 @@
     <div class="login-container">
         <div class="login-header">
             {% if redirect_url and ('/admin' in redirect_url) %}
-                <h1>🔐 Admin Login</h1>
+                <h1>🔐 {{ t('auth.admin_login_title') }}</h1>
                 <p>Access the administration dashboard</p>
             {% elif redirect_url and ('/user' in redirect_url or '/user-portal' in redirect_url) %}
-                <h1>👤 User Login</h1>
+                <h1>👤 {{ t('auth.user_login_title') }}</h1>
                 <p>Access your user portal and search items</p>
             {% else %}
-                <h1>🔐 Login</h1>
+                <h1>🔐 {{ t('auth.login_title') }}</h1>
                 <p>Access the application</p>
             {% endif %}
         </div>
@@ -278,26 +278,29 @@
         
         <form method="post" action="/auth/login" enctype="application/x-www-form-urlencoded">
             <div class="form-group">
-                <label for="username">Username</label>
+                <label for="username">{{ t('auth.username') }}</label>
                 <input type="text" id="username" name="username" required autofocus>
             </div>
             
             <div class="form-group">
-                <label for="password">Password</label>
+                <label for="password">{{ t('auth.password') }}</label>
                 <input type="password" id="password" name="password" required>
             </div>
             
             <input type="hidden" name="redirect_url" value="{{ redirect_url }}">
+            {% if locale != 'en' %}
+            <input type="hidden" name="lang" value="{{ locale }}">
+            {% endif %}
             
             <button type="submit" class="login-btn">
-                🚀 Login to Dashboard
+                🚀 {{ t('auth.login_button') }}
             </button>
         </form>
         
         <div class="back-link">
-            <a href="/">← Back to Home</a>
+            <a href="{% if locale != 'en' %}/?lang={{ locale }}{% else %}/{% endif %}">← {{ t('auth.back_to_home') }}</a>
             <span style="margin: 0 10px; color: #ccc;">|</span>
-            <a href="/auth/register">Create Account</a>
+            <a href="/auth/register{% if locale != 'en' %}?lang={{ locale }}{% endif %}">{{ t('auth.register_link') }}</a>
         </div>
     </div>
 </body>

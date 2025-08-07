@@ -10,8 +10,24 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
-        body {
+                    <div class="nav">
+                <a href="/user/dashboard">🛠️ Admin Dashboard</a>
+                <a href="/user/search" class="active">🔍 Search Items</a>
+                <a href="/user/profile">👤 Profile</a>
+                <a href="/">🏠 Home</a>
+                
+                <!-- Language Switcher -->
+                <div class="language-switcher">
+                    <select onchange="changeLanguage(this.value)" style="padding: 6px 10px; border-radius: 15px; border: 1px solid #ddd; background: white;">
+                        <option value="en" {% if locale == 'en' %}selected{% endif %}>🇺🇸 English</option>
+                        <option value="es" {% if locale == 'es' %}selected{% endif %}>🇪🇸 Español</option>
+                        <option value="fr" {% if locale == 'fr' %}selected{% endif %}>🇫🇷 Français</option>
+                        <option value="de" {% if locale == 'de' %}selected{% endif %}>🇩🇪 Deutsch</option>
+                        <option value="pl" {% if locale == 'pl' %}selected{% endif %}>🇵🇱 Polski</option>
+                    </select>
+                </div>
+            </div>
+            <div class="user-info">  body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
@@ -452,5 +468,18 @@
             {% endif %}
         </div>
     </div>
+
+    <script>
+        function changeLanguage(lang) {
+            // Get current URL parameters
+            const url = new URL(window.location);
+            
+            // Set the lang parameter
+            url.searchParams.set('lang', lang);
+            
+            // Redirect to the URL with the new language
+            window.location.href = url.toString();
+        }
+    </script>
 </body>
 </html>

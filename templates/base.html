@@ -294,28 +294,163 @@
                 grid-template-columns: 1fr;
             }
         }
+        /* Language Switcher Styles */
+        .language-switcher {
+            display: inline-block;
+            position: relative;
+            margin-left: 20px;
+        }
+        
+        .language-switcher .language-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s;
+        }
+        
+        .language-switcher .language-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .language-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            min-width: 150px;
+            z-index: 1000;
+            display: none;
+            margin-top: 5px;
+        }
+        
+        .language-dropdown.active {
+            display: block;
+        }
+        
+        .language-dropdown a {
+            display: block;
+            padding: 10px 15px;
+            color: #333;
+            text-decoration: none;
+            border: none;
+            background: none;
+            margin: 0;
+            border-radius: 0;
+            transition: background 0.2s;
+            font-size: 14px;
+        }
+        
+        .language-dropdown a:hover {
+            background: #f5f5f5;
+        }
+        
+        .language-dropdown a.active {
+            background: #667eea;
+            color: white;
+        }
+        
+        .flag-emoji {
+            font-size: 16px;
+            margin-right: 5px;
+        }
+        
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .language-switcher {
+                margin-left: 10px;
+            }
+            
+            .language-dropdown {
+                right: -50px;
+                min-width: 120px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="header">
         <div class="container">
-            <h1>🛠️ Web API Admin Panel</h1>
+            <h1>🛠️ {{ t('app.title') if t else 'Web API Admin Panel' }}</h1>
             <div class="nav">
-                <a href="/admin" class="{% if request.url.path == '/admin' %}active{% endif %}">Dashboard</a>
-                <a href="/admin/users" class="{% if '/users' in request.url.path %}active{% endif %}">Users</a>
-                <a href="/admin/items" class="{% if '/items' in request.url.path %}active{% endif %}">Items</a>
-                <a href="/" target="_blank">🏠 Landing Page</a>
-                <a href="/docs" target="_blank">API Docs</a>
+                <a href="/admin" class="{% if request.url.path == '/admin' %}active{% endif %}">{{ t('navigation.dashboard') if t else 'Dashboard' }}</a>
+                <a href="/admin/users" class="{% if '/users' in request.url.path %}active{% endif %}">{{ t('navigation.users') if t else 'Users' }}</a>
+                <a href="/admin/items" class="{% if '/items' in request.url.path %}active{% endif %}">{{ t('navigation.items') if t else 'Items' }}</a>
+                <a href="/" target="_blank">🏠 {{ t('navigation.landing_page') if t else 'Landing Page' }}</a>
+                <a href="/docs" target="_blank">{{ t('navigation.api_docs') if t else 'API Docs' }}</a>
+                
+                <!-- Language Switcher -->
+                <div class="language-switcher">
+                    <button class="language-btn" onclick="toggleLanguageDropdown()">
+                        <span class="flag-emoji">🌐</span>
+                        <span>{{ t('navigation.language') if t else 'Language' }}</span>
+                        <span style="font-size: 10px;">▼</span>
+                    </button>
+                    <div class="language-dropdown" id="languageDropdown">
+                        <a href="?lang=en" class="{% if locale == 'en' %}active{% endif %}">
+                            <span class="flag-emoji">🇺🇸</span> {{ t('languages.english') if t else 'English' }}
+                        </a>
+                        <a href="?lang=es" class="{% if locale == 'es' %}active{% endif %}">
+                            <span class="flag-emoji">🇪🇸</span> {{ t('languages.spanish') if t else 'Español' }}
+                        </a>
+                        <a href="?lang=fr" class="{% if locale == 'fr' %}active{% endif %}">
+                            <span class="flag-emoji">🇫🇷</span> {{ t('languages.french') if t else 'Français' }}
+                        </a>
+                        <a href="?lang=de" class="{% if locale == 'de' %}active{% endif %}">
+                            <span class="flag-emoji">🇩🇪</span> {{ t('languages.german') if t else 'Deutsch' }}
+                        </a>
+                        <a href="?lang=pl" class="{% if locale == 'pl' %}active{% endif %}">
+                            <span class="flag-emoji">🇵🇱</span> {{ t('languages.polish') if t else 'Polski' }}
+                        </a>
+                    </div>
+                </div>
                 
                 {% if current_user %}
                 <div style="float: right;">
-                    <span style="margin-right: 15px; opacity: 0.8;">👋 Hello, {{ current_user.full_name or current_user.username }}</span>
-                    <a href="/auth/logout" style="background: rgba(255,255,255,0.2); padding: 8px 15px; border-radius: 5px;">🚪 Logout</a>
+                    <span style="margin-right: 15px; opacity: 0.8;">👋 {{ t('navigation.hello') if t else 'Hello' }}, {{ current_user.full_name or current_user.username }}</span>
+                    <a href="/auth/logout" style="background: rgba(255,255,255,0.2); padding: 8px 15px; border-radius: 5px;">🚪 {{ t('navigation.logout') if t else 'Logout' }}</a>
                 </div>
                 {% endif %}
             </div>
         </div>
     </div>
+    
+    <script>
+        function toggleLanguageDropdown() {
+            const dropdown = document.getElementById('languageDropdown');
+            dropdown.classList.toggle('active');
+        }
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const switcher = document.querySelector('.language-switcher');
+            const dropdown = document.getElementById('languageDropdown');
+            
+            if (!switcher.contains(event.target)) {
+                dropdown.classList.remove('active');
+            }
+        });
+        
+        // Preserve current URL when switching languages
+        document.querySelectorAll('.language-dropdown a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const url = new URL(window.location);
+                const lang = this.href.split('lang=')[1];
+                url.searchParams.set('lang', lang);
+                window.location.href = url.toString();
+            });
+        });
+    </script>
     
     <div class="container">
         {% if messages %}
