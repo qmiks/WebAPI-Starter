@@ -85,6 +85,9 @@ app.include_router(admin.router)
 for router in client_apps.get_routers():
     app.include_router(router)
 
+# Mount static files
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
 # Root endpoint
 @app.get("/", response_class=HTMLResponse)
 async def root(request: Request, locale: str = Depends(get_locale_from_request)):

@@ -137,5 +137,53 @@
             "create_new": "Utwórz nowy",
             "manage": "Zarządzaj"
         }
+    },
+    "users": {
+        "user_created": "Użytkownik został utworzony pomyślnie",
+        "user_updated": "Użytkownik został zaktualizowany pomyślnie",
+        "user_deleted": "Użytkownik został usunięty pomyślnie",
+        "user_not_found": "Użytkownik nie został znaleziony",
+        "email_already_exists": "Email już istnieje",
+        "username_already_exists": "Nazwa użytkownika już istnieje",
+        "invalid_email": "Nieprawidłowy format email",
+        "password_too_short": "Hasło jest za krótkie",
+        "passwords_dont_match": "Hasła nie są zgodne"
+    },
+    "items": {
+        "item_created": "Element został utworzony pomyślnie",
+        "item_updated": "Element został zaktualizowany pomyślnie",
+        "item_deleted": "Element został usunięty pomyślnie",
+        "item_not_found": "Element nie został znaleziony",
+        "title_required": "Tytuł jest wymagany",
+        "description_required": "Opis jest wymagany"
+    },
+    "admin": {
+        "admin_panel": "Panel administracyjny",
+        "user_management": "Zarządzanie użytkownikami",
+        "system_settings": "Ustawienia systemu",
+        "statistics": "Statystyki",
+        "backup_restore": "Kopia zapasowa i przywracanie"
+    },
+    "buttons": {
+        "save": "Zapisz",
+        "cancel": "Anuluj",
+        "submit": "Prześlij",
+        "back": "Wstecz",
+        "next": "Następny",
+        "previous": "Poprzedni",
+        "confirm": "Potwierdź",
+        "close": "Zamknij",
+        "edit": "Edytuj",
+        "delete": "Usuń",
+        "create": "Utwórz"
+    },
+    "errors": {
+        "page_not_found": "Strona nie została znaleziona",
+        "internal_server_error": "Wewnętrzny błąd serwera",
+        "unauthorized": "Nieautoryzowany",
+        "forbidden": "Zabroniony",
+        "bad_request": "Nieprawidłowe żądanie",
+        "validation_error": "Błąd walidacji",
+        "database_error": "Błąd bazy danych"
     }
 }
