@@ -111,7 +111,6 @@ async def create_user(
     
     new_user = user_crud.create_user(user)
     return new_user
-
 @router.put("/{user_id}", response_model=User)
 async def update_user(
     user_id: int, 
