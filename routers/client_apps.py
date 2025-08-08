@@ -17,6 +17,7 @@ from data.database import client_app_crud
 from api_auth import create_api_token, get_current_api_client
 from auth import get_current_user_from_session
 from utils.html_errors import create_access_denied_response, expects_html
+from utils.i18n import get_locale_from_request, get_translations_for_locale, t
 
 # Initialize templates
 templates = Jinja2Templates(directory="templates")
@@ -65,8 +66,13 @@ async def create_token(
 
 # HTML Management Interface
 @router.get("/", response_class=HTMLResponse)
-async def client_apps_dashboard(request: Request):
+async def client_apps_dashboard(request: Request, lang: Optional[str] = None):
     """Client apps management dashboard"""
+    # Get locale for internationalization
+    locale = get_locale_from_request(request)
+    if lang and lang in ['en', 'es', 'fr', 'de', 'pl']:
+        locale = lang
+    
     # Check if user is authenticated and is admin
     user = get_current_user_from_session(request)
     access_error = check_admin_access(request, user)
@@ -75,11 +81,30 @@ async def client_apps_dashboard(request: Request):
     
     client_apps = client_app_crud.get_client_apps()
     
-    return templates.TemplateResponse("admin/client_apps.html", {
+    # Get translations
+    translations = get_translations_for_locale(locale)
+    
+    response = templates.TemplateResponse("admin/client_apps.html", {
         "request": request,
         "client_apps": client_apps,
-        "user": user
+        "current_user": user,
+        "locale": locale,
+        "lang": locale,
+        "t": lambda key: t(key, locale),
+        "translations": translations
     })
+    
+    # Set language cookie if specified
+    if lang and lang in ['en', 'es', 'fr', 'de', 'pl']:
+        response.set_cookie(
+            key="lang_preference",
+            value=lang,
+            max_age=60*60*24*30,
+            httponly=True,
+            secure=False
+        )
+    
+    return response
 
 @router.post("/create", response_class=HTMLResponse)
 async def create_client_app_form(

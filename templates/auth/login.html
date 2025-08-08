@@ -240,27 +240,27 @@
         <div class="login-header">
             {% if redirect_url and ('/admin' in redirect_url) %}
                 <h1>🔐 {{ t('auth.admin_login_title') }}</h1>
-                <p>Access the administration dashboard</p>
+                <p>{{ t('auth.access_admin_dashboard') }}</p>
             {% elif redirect_url and ('/user' in redirect_url or '/user-portal' in redirect_url) %}
                 <h1>👤 {{ t('auth.user_login_title') }}</h1>
-                <p>Access your user portal and search items</p>
+                <p>{{ t('auth.access_user_portal') }}</p>
             {% else %}
                 <h1>🔐 {{ t('auth.login_title') }}</h1>
-                <p>Access the application</p>
+                <p>{{ t('auth.access_application') }}</p>
             {% endif %}
         </div>
         
         <div class="demo-credentials">
-            <h3>🔑 Demo Credentials (Copy & Paste):</h3>
+            <h3>🔑 {{ t('auth.demo_credentials') }}:</h3>
             {% if redirect_url and ('/admin' in redirect_url) %}
-                <p><strong>👑 Admin Access:</strong> username: <code>admin</code>, password: <code>admin123</code></p>
-                <p style="opacity: 0.6;"><em>Regular User:</em> username: <code>user</code>, password: <code>user123</code></p>
+                <p><strong>👑 {{ t('auth.admin_access') }}:</strong> {{ t('auth.username')|lower }}: <code>admin</code>, {{ t('auth.password')|lower }}: <code>admin123</code></p>
+                <p style="opacity: 0.6;"><em>{{ t('auth.regular_user') }}:</em> {{ t('auth.username')|lower }}: <code>user</code>, {{ t('auth.password')|lower }}: <code>user123</code></p>
             {% elif redirect_url and ('/user' in redirect_url or '/user-portal' in redirect_url) %}
-                <p><strong>👤 User Access:</strong> username: <code>user</code>, password: <code>user123</code></p>
-                <p style="opacity: 0.6;"><em>Admin Access:</em> username: <code>admin</code>, password: <code>admin123</code></p>
+                <p><strong>👤 {{ t('auth.user_access') }}:</strong> {{ t('auth.username')|lower }}: <code>user</code>, {{ t('auth.password')|lower }}: <code>user123</code></p>
+                <p style="opacity: 0.6;"><em>{{ t('auth.admin_access') }}:</em> {{ t('auth.username')|lower }}: <code>admin</code>, {{ t('auth.password')|lower }}: <code>admin123</code></p>
             {% else %}
-                <p><strong>👑 Admin:</strong> username: <code>admin</code>, password: <code>admin123</code></p>
-                <p><strong>👤 User:</strong> username: <code>user</code>, password: <code>user123</code></p>
+                <p><strong>👑 {{ t('auth.admin') }}:</strong> {{ t('auth.username')|lower }}: <code>admin</code>, {{ t('auth.password')|lower }}: <code>admin123</code></p>
+                <p><strong>👤 {{ t('auth.user') }}:</strong> {{ t('auth.username')|lower }}: <code>user</code>, {{ t('auth.password')|lower }}: <code>user123</code></p>
             {% endif %}
         </div>
         

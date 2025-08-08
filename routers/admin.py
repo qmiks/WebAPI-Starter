@@ -104,41 +104,34 @@ async def admin_dashboard(request: Request, lang: Optional[str] = None):
     total_client_apps = len(all_client_apps)
     active_client_apps = len([app for app in all_client_apps if app["is_active"]])
     
-    # Recent activity counts
-    from datetime import datetime, timedelta
-    today = datetime.now()
-    week_ago = today - timedelta(days=7)
-    
-    # For now, use simple counts until created_at is properly implemented
-    recent_users_count = max(0, len(all_users) - 1)  # Exclude initial sample users
-    recent_items_count = len(all_items)
-    recent_apps_count = len(all_client_apps)
+    # Get recent data (limited for performance)
+    recent_users = all_users[-5:] if all_users else []
+    recent_items = all_items[-5:] if all_items else []
+    recent_client_apps = all_client_apps[-5:] if all_client_apps else []
     
     # Get translations
     translations = get_translations_for_locale(locale)
     
     context = {
         "request": request,
-        "user": current_user,
+        "current_user": current_user,
         "total_users": total_users,
         "active_users": active_users,
         "total_items": total_items,
         "active_items": active_items,
         "total_client_apps": total_client_apps,
         "active_client_apps": active_client_apps,
-        "recent_users_count": recent_users_count,
-        "recent_items_count": recent_items_count,
-        "recent_apps_count": recent_apps_count,
-        "api_calls_today": 42,  # Mock data
-        "total_api_calls": 1337,  # Mock data
-        "storage_usage": "78%",  # Mock data
+        "recent_users": recent_users,
+        "recent_items": recent_items,
+        "recent_client_apps": recent_client_apps,
         "locale": locale,
         "lang": locale,
         "t": lambda key: t(key, locale),
-        "translations": translations
+        "translations": translations,
+        "messages": get_flash_messages()
     }
     
-    response = templates.TemplateResponse("admin/dashboard.html", context)
+    response = templates.TemplateResponse("dashboard.html", context)
     
     # Set language cookie if specified
     if lang and lang in ['en', 'es', 'fr', 'de', 'pl']:
@@ -151,49 +144,17 @@ async def admin_dashboard(request: Request, lang: Optional[str] = None):
         )
     
     return response
-    
-    try:
-        return templates.TemplateResponse("dashboard.html", {
-            "request": request,
-            "current_user": current_user,
-            "total_users": total_users,
-            "active_users": active_users,
-            "total_items": total_items,
-            "active_items": active_items,
-            "total_client_apps": total_client_apps,
-            "active_client_apps": active_client_apps,
-            "recent_users": recent_users,
-            "recent_items": recent_items,
-            "recent_client_apps": recent_client_apps,
-            "messages": get_flash_messages()
-        })
-    except Exception as e:
-        print(f"DEBUG: Template error: {e}")
-        # Fallback to simple HTML if template fails
-        return HTMLResponse(content=f"""
-        <html>
-            <head><title>Admin Dashboard</title></head>
-            <body>
-                <h1>Welcome to Admin Dashboard!</h1>
-                <p>Hello, {current_user.get('username', 'Admin')}!</p>
-                <p>Users: {total_users} (Active: {active_users})</p>
-                <p>Items: {total_items} (Active: {active_items})</p>
-                <p>Client Apps: {total_client_apps} (Active: {active_client_apps})</p>
-                <p><a href="/admin/users">Manage Users</a></p>
-                <p><a href="/admin/items">Manage Items</a></p>
-                <p><a href="/admin/client-apps">Manage Client Apps</a></p>
-                <p><a href="/user/search">User Portal</a></p>
-                <p><a href="/auth/logout">Logout</a></p>
-            </body>
-        </html>
-        """)
-
 @router.get("/users", response_class=HTMLResponse)
-async def admin_users_list(request: Request):
+async def admin_users_list(request: Request, lang: Optional[str] = None):
     """Users management page"""
+    # Get locale for internationalization
+    locale = get_locale_from_request(request)
+    if lang and lang in ['en', 'es', 'fr', 'de', 'pl']:
+        locale = lang
+    
     current_user = get_current_user_from_session(request)
     if not current_user:
-        return RedirectResponse(url=f"/auth/login?redirect_url={request.url.path}")
+        return RedirectResponse(url=f"/auth/login?redirect_url={request.url.path}&lang={locale}")
     
     if current_user.get("role") != "admin":
         return create_access_denied_response(request, current_user)
@@ -209,15 +170,34 @@ async def admin_users_list(request: Request):
     week_ago = datetime.now() - timedelta(days=7)
     recent_users_count = max(0, len(all_users) - 2)  # Simple count excluding starter users
     
-    return templates.TemplateResponse("admin/users.html", {
+    # Get translations
+    translations = get_translations_for_locale(locale)
+    
+    response = templates.TemplateResponse("users.html", {
         "request": request,
-        "user": current_user,
+        "current_user": current_user,
         "users": all_users,
         "total_users": total_users,
         "active_users": active_users,
         "admin_users": admin_users,
-        "recent_users_count": recent_users_count
+        "recent_users_count": recent_users_count,
+        "locale": locale,
+        "lang": locale,
+        "t": lambda key: t(key, locale),
+        "translations": translations
     })
+    
+    # Set language cookie if specified
+    if lang and lang in ['en', 'es', 'fr', 'de', 'pl']:
+        response.set_cookie(
+            key="lang_preference",
+            value=lang,
+            max_age=60*60*24*30,
+            httponly=True,
+            secure=False
+        )
+    
+    return response
 
 @router.get("/users/new", response_class=HTMLResponse)
 async def admin_user_new_form(request: Request, current_user: dict = Depends(require_admin_user)):
@@ -457,11 +437,16 @@ async def admin_delete_user(request: Request, user_id: str, current_user: dict =
 # For brevity, I'll include a few more key routes
 
 @router.get("/items", response_class=HTMLResponse)
-async def admin_items_list(request: Request):
+async def admin_items_list(request: Request, lang: Optional[str] = None):
     """Items management page"""
+    # Get locale for internationalization
+    locale = get_locale_from_request(request)
+    if lang and lang in ['en', 'es', 'fr', 'de', 'pl']:
+        locale = lang
+    
     current_user = get_current_user_from_session(request)
     if not current_user:
-        return RedirectResponse(url=f"/auth/login?redirect_url={request.url.path}")
+        return RedirectResponse(url=f"/auth/login?redirect_url={request.url.path}&lang={locale}")
     
     if current_user.get("role") != "admin":
         return create_access_denied_response(request, current_user)
@@ -477,15 +462,34 @@ async def admin_items_list(request: Request):
     today = datetime.now().date()
     recent_items_count = len(all_items)  # Simple count of all items
     
-    return templates.TemplateResponse("admin/items.html", {
+    # Get translations
+    translations = get_translations_for_locale(locale)
+    
+    response = templates.TemplateResponse("items.html", {
         "request": request,
-        "user": current_user,
+        "current_user": current_user,
         "items": all_items,
         "total_items": total_items,
         "active_items": active_items,
         "draft_items": draft_items,
-        "recent_items_count": recent_items_count
+        "recent_items_count": recent_items_count,
+        "locale": locale,
+        "lang": locale,
+        "t": lambda key: t(key, locale),
+        "translations": translations
     })
+    
+    # Set language cookie if specified
+    if lang and lang in ['en', 'es', 'fr', 'de', 'pl']:
+        response.set_cookie(
+            key="lang_preference",
+            value=lang,
+            max_age=60*60*24*30,
+            httponly=True,
+            secure=False
+        )
+    
+    return response
 
 @router.get("/items/new", response_class=HTMLResponse)
 async def admin_item_new_form(request: Request):

@@ -1,31 +1,31 @@
 {% extends "base.html" %}
 
-{% block title %}User Management{% endblock %}
+{% block title %}{{ t('management.user_management') }}{% endblock %}
 
 {% block content %}
 <div class="card">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-        <h2>👥 User Management</h2>
-        <a href="/admin/users/new" class="btn btn-success">➕ Add New User</a>
+        <h2>👥 {{ t('management.user_management') }}</h2>
+        <a href="/admin/users/new" class="btn btn-success">➕ {{ t('dashboard.actions.add_new_user') }}</a>
     </div>
     
     <div style="margin-bottom: 20px;">
-        <p>Total Users: <strong>{{ users|length }}</strong></p>
+        <p>{{ t('management.total_users') }}: <strong>{{ users|length }}</strong></p>
     </div>
     
     {% if users %}
         <table class="table">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Username</th>
-                    <th>Email</th>
-                    <th>Full Name</th>
-                    <th>Role</th>
-                    <th>Status</th>
-                    <th>Created</th>
-                    <th>Updated</th>
-                    <th>Actions</th>
+                    <th>{{ t('dashboard.table.id') }}</th>
+                    <th>{{ t('dashboard.table.username') }}</th>
+                    <th>{{ t('dashboard.table.email') }}</th>
+                    <th>{{ t('dashboard.table.full_name') }}</th>
+                    <th>{{ t('dashboard.table.role') }}</th>
+                    <th>{{ t('dashboard.table.status') }}</th>
+                    <th>{{ t('dashboard.table.created') }}</th>
+                    <th>{{ t('dashboard.table.updated') }}</th>
+                    <th>{{ t('dashboard.table.actions') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -36,22 +36,22 @@
                     <td>{{ user.email }}</td>
                     <td>{{ user.full_name or '-' }}</td>
                     <td><span class="badge badge-{{ user.role }}">{{ user.role.title() }}</span></td>
-                    <td><span class="badge badge-{{ 'active' if user.is_active else 'inactive' }}">{{ 'Active' if user.is_active else 'Inactive' }}</span></td>
+                    <td><span class="badge badge-{{ 'active' if user.is_active else 'inactive' }}">{{ t('dashboard.status_labels.active') if user.is_active else t('dashboard.status_labels.inactive') }}</span></td>
                     <td>{{ user.created_at[:16] }}</td>
                     <td>{{ user.updated_at[:16] if user.updated_at else '-' }}</td>
                     <td>
-                        <a href="/admin/users/{{ user.id }}" class="btn btn-primary" style="padding: 5px 10px; font-size: 12px;">View</a>
-                        <a href="/admin/users/{{ user.id }}/edit" class="btn btn-warning" style="padding: 5px 10px; font-size: 12px;">Edit</a>
+                        <a href="/admin/users/{{ user.id }}" class="btn btn-primary" style="padding: 5px 10px; font-size: 12px;">{{ t('dashboard.actions.view') }}</a>
+                        <a href="/admin/users/{{ user.id }}/edit" class="btn btn-warning" style="padding: 5px 10px; font-size: 12px;">{{ t('dashboard.actions.edit') }}</a>
                         <form method="post" action="/admin/users/{{ user.id }}/delete" style="display: inline;">
-                            <button type="submit" class="btn btn-danger" style="padding: 5px 10px; font-size: 12px;" onclick="return confirmDelete('user')">Delete</button>
+                            <button type="submit" class="btn btn-danger" style="padding: 5px 10px; font-size: 12px;" onclick="return confirm('{{ t('management.confirm_delete_user') }}')">{{ t('dashboard.actions.delete') }}</button>
                         </form>
                         {% if user.is_active %}
                             <form method="post" action="/admin/users/{{ user.id }}/deactivate" style="display: inline;">
-                                <button type="submit" class="btn btn-warning" style="padding: 5px 10px; font-size: 12px;">Deactivate</button>
+                                <button type="submit" class="btn btn-warning" style="padding: 5px 10px; font-size: 12px;">{{ t('dashboard.actions.deactivate') }}</button>
                             </form>
                         {% else %}
                             <form method="post" action="/admin/users/{{ user.id }}/activate" style="display: inline;">
-                                <button type="submit" class="btn btn-success" style="padding: 5px 10px; font-size: 12px;">Activate</button>
+                                <button type="submit" class="btn btn-success" style="padding: 5px 10px; font-size: 12px;">{{ t('dashboard.actions.activate') }}</button>
                             </form>
                         {% endif %}
                     </td>
@@ -61,25 +61,25 @@
         </table>
     {% else %}
         <div class="alert alert-warning">
-            <strong>No users found.</strong> <a href="/admin/users/new">Create the first user</a>
+            <strong>{{ t('management.no_users_found') }}</strong> <a href="/admin/users/new">{{ t('dashboard.actions.add_new_user') }}</a>
         </div>
     {% endif %}
 </div>
 
 <div class="card">
-    <h3>📊 User Statistics</h3>
+    <h3>📊 {{ t('dashboard.statistics.total_users') }}</h3>
     <div class="stats">
         <div class="stat-card">
             <div class="stat-number">{{ users|selectattr('role', 'equalto', 'admin')|list|length }}</div>
-            <div class="stat-label">Administrators</div>
+            <div class="stat-label">{{ t('auth.admin') }}s</div>
         </div>
         <div class="stat-card">
             <div class="stat-number">{{ users|selectattr('role', 'equalto', 'user')|list|length }}</div>
-            <div class="stat-label">Regular Users</div>
+            <div class="stat-label">{{ t('auth.regular_user') }}s</div>
         </div>
         <div class="stat-card">
             <div class="stat-number">{{ users|selectattr('is_active', 'equalto', true)|list|length }}</div>
-            <div class="stat-label">Active Users</div>
+            <div class="stat-label">{{ t('dashboard.statistics.active_users') }}</div>
         </div>
     </div>
 </div>

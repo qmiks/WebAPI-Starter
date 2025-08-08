@@ -109,6 +109,15 @@ async def login_for_access_token(request: Request):
         # Create session
         session_token = create_session(user)
         
+        # Build redirect URL with language parameter
+        if redirect_url:
+            # Add lang parameter to redirect URL if not already present
+            separator = "&" if "?" in redirect_url else "?"
+            if "lang=" not in redirect_url:
+                redirect_url = f"{redirect_url}{separator}lang={lang}"
+        else:
+            redirect_url = f"/?lang={lang}"
+        
         # Set secure cookie and language preference
         response = RedirectResponse(url=redirect_url, status_code=status.HTTP_303_SEE_OTHER)
         response.set_cookie(
