@@ -1,31 +1,31 @@
 {% extends "base.html" %}
 
-{% block title %}Item Management{% endblock %}
+{% block title %}{{ t('management.item_management') }}{% endblock %}
 
 {% block content %}
 <div class="card">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-        <h2>📦 Item Management</h2>
-        <a href="/admin/items/new" class="btn btn-success">➕ Add New Item</a>
+        <h2>📦 {{ t('management.item_management') }}</h2>
+        <a href="/admin/items/new" class="btn btn-success">➕ {{ t('dashboard.actions.add_new_item') }}</a>
     </div>
     
     <div style="margin-bottom: 20px;">
-        <p>Total Items: <strong>{{ items|length }}</strong></p>
+        <p>{{ t('management.total_items') }}: <strong>{{ items|length }}</strong></p>
     </div>
     
     {% if items %}
         <table class="table">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Price</th>
-                    <th>Status</th>
-                    <th>Owner</th>
-                    <th>Created</th>
-                    <th>Updated</th>
-                    <th>Actions</th>
+                    <th>{{ t('dashboard.table.id') }}</th>
+                    <th>{{ t('dashboard.table.name') }}</th>
+                    <th>{{ t('dashboard.table.description') }}</th>
+                    <th>{{ t('dashboard.table.price') }}</th>
+                    <th>{{ t('dashboard.table.status') }}</th>
+                    <th>{{ t('dashboard.table.owner') }}</th>
+                    <th>{{ t('dashboard.table.created') }}</th>
+                    <th>{{ t('dashboard.table.updated') }}</th>
+                    <th>{{ t('dashboard.table.actions') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -44,10 +44,10 @@
                     <td>{{ item.created_at[:16] }}</td>
                     <td>{{ item.updated_at[:16] if item.updated_at else '-' }}</td>
                     <td>
-                        <a href="/admin/items/{{ item.id }}" class="btn btn-primary" style="padding: 5px 10px; font-size: 12px;">View</a>
-                        <a href="/admin/items/{{ item.id }}/edit" class="btn btn-warning" style="padding: 5px 10px; font-size: 12px;">Edit</a>
+                        <a href="/admin/items/{{ item.id }}" class="btn btn-primary" style="padding: 5px 10px; font-size: 12px;">{{ t('dashboard.actions.view') }}</a>
+                        <a href="/admin/items/{{ item.id }}/edit" class="btn btn-warning" style="padding: 5px 10px; font-size: 12px;">{{ t('dashboard.actions.edit') }}</a>
                         <form method="post" action="/admin/items/{{ item.id }}/delete" style="display: inline;">
-                            <button type="submit" class="btn btn-danger" style="padding: 5px 10px; font-size: 12px;" onclick="return confirmDelete('item')">Delete</button>
+                            <button type="submit" class="btn btn-danger" style="padding: 5px 10px; font-size: 12px;" onclick="return confirm('{{ t('management.confirm_delete_item') }}')">{{ t('dashboard.actions.delete') }}</button>
                         </form>
                     </td>
                 </tr>
@@ -56,29 +56,29 @@
         </table>
     {% else %}
         <div class="alert alert-warning">
-            <strong>No items found.</strong> <a href="/admin/items/new">Create the first item</a>
+            <strong>{{ t('management.no_items_found') }}</strong> <a href="/admin/items/new">{{ t('dashboard.actions.add_new_item') }}</a>
         </div>
     {% endif %}
 </div>
 
 <div class="card">
-    <h3>📊 Item Statistics</h3>
+    <h3>📊 {{ t('dashboard.statistics.total_items') }}</h3>
     <div class="stats">
         <div class="stat-card">
             <div class="stat-number">{{ items|selectattr('status', 'equalto', 'active')|list|length }}</div>
-            <div class="stat-label">Active Items</div>
+            <div class="stat-label">{{ t('dashboard.statistics.active_items') }}</div>
         </div>
         <div class="stat-card">
             <div class="stat-number">{{ items|selectattr('status', 'equalto', 'draft')|list|length }}</div>
-            <div class="stat-label">Draft Items</div>
+            <div class="stat-label">{{ t('dashboard.status.pending') }}</div>
         </div>
         <div class="stat-card">
             <div class="stat-number">{{ items|selectattr('status', 'equalto', 'inactive')|list|length }}</div>
-            <div class="stat-label">Inactive Items</div>
+            <div class="stat-label">{{ t('dashboard.status.inactive') }}</div>
         </div>
         <div class="stat-card">
             <div class="stat-number">${{ "%.2f"|format(items|sum(attribute='price')) }}</div>
-            <div class="stat-label">Total Value</div>
+            <div class="stat-label">{{ t('dashboard.statistics.total') }} {{ t('dashboard.table.price') }}</div>
         </div>
     </div>
 </div>

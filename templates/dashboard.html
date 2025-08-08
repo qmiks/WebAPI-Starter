@@ -51,12 +51,12 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Username</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Status</th>
-                    <th>Created</th>
+                    <th>{{ t('dashboard.table.id') }}</th>
+                    <th>{{ t('dashboard.table.username') }}</th>
+                    <th>{{ t('dashboard.table.email') }}</th>
+                    <th>{{ t('dashboard.table.role') }}</th>
+                    <th>{{ t('dashboard.table.status') }}</th>
+                    <th>{{ t('dashboard.table.created') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -66,33 +66,33 @@
                     <td>{{ user.username }}</td>
                     <td>{{ user.email }}</td>
                     <td><span class="badge badge-{{ user.role }}">{{ user.role.title() }}</span></td>
-                    <td><span class="badge badge-{{ 'active' if user.is_active else 'inactive' }}">{{ 'Active' if user.is_active else 'Inactive' }}</span></td>
+                    <td><span class="badge badge-{{ 'active' if user.is_active else 'inactive' }}">{{ t('dashboard.status_labels.active') if user.is_active else t('dashboard.status_labels.inactive') }}</span></td>
                     <td>{{ user.created_at[:16] }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     {% else %}
-        <p>No users found.</p>
+        <p>{{ t('dashboard.no_data.no_users_found') }}</p>
     {% endif %}
     
     <div style="margin-top: 20px;">
-        <a href="/admin/users" class="btn btn-primary">View All Users</a>
+        <a href="/admin/users" class="btn btn-primary">{{ t('dashboard.actions.view_all_users') }}</a>
     </div>
 </div>
 
 <div class="card">
-    <h3>📦 Recent Items</h3>
+    <h3>📦 {{ t('dashboard.recent_items_admin') }}</h3>
     {% if recent_items %}
         <table class="table">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Price</th>
-                    <th>Status</th>
-                    <th>Owner</th>
-                    <th>Created</th>
+                    <th>{{ t('dashboard.table.id') }}</th>
+                    <th>{{ t('dashboard.table.name') }}</th>
+                    <th>{{ t('dashboard.table.price') }}</th>
+                    <th>{{ t('dashboard.table.status') }}</th>
+                    <th>{{ t('dashboard.table.owner') }}</th>
+                    <th>{{ t('dashboard.table.created') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -102,33 +102,33 @@
                     <td>{{ item.name }}</td>
                     <td>${{ "%.2f"|format(item.price) }}</td>
                     <td><span class="badge badge-{{ 'active' if item.status == 'active' else 'warning' if item.status == 'draft' else 'inactive' }}">{{ item.status.title() }}</span></td>
-                    <td>{{ item.owner_username or 'Unknown' }}</td>
+                    <td>{{ item.owner_username or t('dashboard.status_labels.unknown') }}</td>
                     <td>{{ item.created_at[:16] }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     {% else %}
-        <p>No items found.</p>
+        <p>{{ t('dashboard.no_data.no_items_found') }}</p>
     {% endif %}
     
     <div style="margin-top: 20px;">
-        <a href="/admin/items" class="btn btn-primary">View All Items</a>
+        <a href="/admin/items" class="btn btn-primary">{{ t('dashboard.actions.view_all_items') }}</a>
     </div>
 </div>
 
 <div class="card">
-    <h3>🔐 Client Applications</h3>
+    <h3>🔐 {{ t('dashboard.client_applications') }}</h3>
     {% if recent_client_apps %}
         <table class="table">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>App ID</th>
-                    <th>Status</th>
-                    <th>Created</th>
-                    <th>Actions</th>
+                    <th>{{ t('dashboard.table.id') }}</th>
+                    <th>{{ t('dashboard.table.name') }}</th>
+                    <th>{{ t('dashboard.table.app_id') }}</th>
+                    <th>{{ t('dashboard.table.status') }}</th>
+                    <th>{{ t('dashboard.table.created') }}</th>
+                    <th>{{ t('dashboard.table.actions') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -137,10 +137,10 @@
                     <td>{{ app.id }}</td>
                     <td>{{ app.name }}</td>
                     <td><code style="font-size: 0.8em;">{{ app.app_id[:20] }}...</code></td>
-                    <td><span class="badge badge-{{ 'active' if app.is_active else 'inactive' }}">{{ 'Active' if app.is_active else 'Inactive' }}</span></td>
+                    <td><span class="badge badge-{{ 'active' if app.is_active else 'inactive' }}">{{ t('dashboard.status_labels.active') if app.is_active else t('dashboard.status_labels.inactive') }}</span></td>
                     <td>{{ app.created_at[:16] }}</td>
                     <td>
-                        <a href="/admin/client-apps/" class="btn btn-sm" style="padding: 4px 8px; font-size: 0.8em; background: #667eea; color: white; text-decoration: none; border-radius: 4px;">Manage</a>
+                        <a href="/admin/client-apps/" class="btn btn-sm" style="padding: 4px 8px; font-size: 0.8em; background: #667eea; color: white; text-decoration: none; border-radius: 4px;">{{ t('dashboard.actions.manage') }}</a>
                     </td>
                 </tr>
                 {% endfor %}
@@ -148,14 +148,14 @@
         </table>
     {% else %}
         <div style="text-align: center; padding: 20px; color: #666;">
-            <p>No client applications found.</p>
-            <a href="/admin/client-apps/" class="btn btn-primary">Create Your First App</a>
+            <p>{{ t('dashboard.no_data.no_client_applications_found') }}</p>
+            <a href="/admin/client-apps/" class="btn btn-primary">{{ t('dashboard.actions.create_first_app') }}</a>
         </div>
     {% endif %}
     
     <div style="margin-top: 20px;">
-        <a href="/admin/client-apps/" class="btn btn-primary">🔐 Manage All Client Apps</a>
-        <a href="/api/v1/auth/token" class="btn btn-primary" style="background: #48bb78;">📚 API Token Endpoint</a>
+        <a href="/admin/client-apps/" class="btn btn-primary">🔐 {{ t('dashboard.actions.manage_all_client_apps') }}</a>
+        <a href="/api/v1/auth/token" class="btn btn-primary" style="background: #48bb78;">📚 {{ t('dashboard.actions.api_token_endpoint') }}</a>
     </div>
 </div>
 {% endblock %}

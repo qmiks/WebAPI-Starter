@@ -383,8 +383,6 @@
             <h1>🛠️ {{ t('app.title') if t else 'Web API Admin Panel' }}</h1>
             <div class="nav">
                 <a href="/admin" class="{% if request.url.path == '/admin' %}active{% endif %}">{{ t('navigation.dashboard') if t else 'Dashboard' }}</a>
-                <a href="/admin/users" class="{% if '/users' in request.url.path %}active{% endif %}">{{ t('navigation.users') if t else 'Users' }}</a>
-                <a href="/admin/items" class="{% if '/items' in request.url.path %}active{% endif %}">{{ t('navigation.items') if t else 'Items' }}</a>
                 <a href="/" target="_blank">🏠 {{ t('navigation.landing_page') if t else 'Landing Page' }}</a>
                 <a href="/docs" target="_blank">{{ t('navigation.api_docs') if t else 'API Docs' }}</a>
                 

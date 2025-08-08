@@ -165,7 +165,7 @@ async def user_dashboard(request: Request, db=Depends(get_db), lang: Optional[st
     
     # Get locale for internationalization
     locale = get_locale_from_request(request)
-    if lang and lang in ['en', 'es', 'fr', 'de']:
+    if lang and lang in ['en', 'es', 'fr', 'de', 'pl']:
         locale = lang
     
     # Check authentication
@@ -219,7 +219,7 @@ async def user_dashboard(request: Request, db=Depends(get_db), lang: Optional[st
     response = templates.TemplateResponse("user/dashboard.html", context)
     
     # Set language cookie if specified
-    if lang and lang in ['en', 'es', 'fr', 'de']:
+    if lang and lang in ['en', 'es', 'fr', 'de', 'pl']:
         response.set_cookie(
             key="lang_preference",
             value=lang,

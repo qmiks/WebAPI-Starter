@@ -27,7 +27,7 @@ async def login_page(
     try:
         # Get locale (URL param -> cookie -> header -> default)
         locale = get_locale_from_request(request)
-        if lang and lang in ['en', 'es', 'fr', 'de']:
+        if lang and lang in ['en', 'es', 'fr', 'de', 'pl']:
             locale = lang
         
         # Get translations
@@ -46,7 +46,7 @@ async def login_page(
         response = templates.TemplateResponse("auth/login.html", context)
         
         # Set language cookie if specified
-        if lang and lang in ['en', 'es', 'fr', 'de']:
+        if lang and lang in ['en', 'es', 'fr', 'de', 'pl']:
             response.set_cookie(
                 key="lang_preference",
                 value=lang,
@@ -108,6 +108,15 @@ async def login_for_access_token(request: Request):
         print(f"DEBUG: Authentication successful for user: {username}")
         # Create session
         session_token = create_session(user)
+        
+        # Build redirect URL with language parameter
+        if redirect_url:
+            # Add lang parameter to redirect URL if not already present
+            separator = "&" if "?" in redirect_url else "?"
+            if "lang=" not in redirect_url:
+                redirect_url = f"{redirect_url}{separator}lang={lang}"
+        else:
+            redirect_url = f"/?lang={lang}"
         
         # Set secure cookie and language preference
         response = RedirectResponse(url=redirect_url, status_code=status.HTTP_303_SEE_OTHER)

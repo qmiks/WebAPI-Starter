@@ -374,7 +374,7 @@
                         </div>
                     </div>
                     
-                    <a href="/admin" class="btn btn-primary">{{ t('landing.try_admin') }}</a>
+                    <a href="/admin{% if locale != 'en' %}?lang={{ locale }}{% endif %}" class="btn btn-primary">{{ t('landing.try_admin') }}</a>
                     <a href="/auth/login?redirect_url=/user/search{% if locale != 'en' %}&lang={{ locale }}{% endif %}" class="btn btn-primary">{{ t('landing.try_user_portal') }}</a>
                     <a href="/auth/register{% if locale != 'en' %}?lang={{ locale }}{% endif %}" class="btn btn-secondary">{{ t('landing.create_account') }}</a>
                     <a href="/docs{% if locale != 'en' %}?lang={{ locale }}{% endif %}" class="btn btn-secondary">{{ t('landing.explore_docs') }}</a>

@@ -340,43 +340,43 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🔐 Client Apps Management</h1>
-            <p>Manage API client applications and their access credentials</p>
+            <h1>🔐 {{ t('management.client_apps_title') }}</h1>
+            <p>{{ t('management.client_apps_subtitle') }}</p>
         </div>
 
         <div class="nav-bar">
-            <a href="/admin/">← Back to Admin Dashboard</a>
-            <a href="/admin/client-apps/">Client Apps</a>
-            <a href="/api/v1/auth/token">API Token Endpoint</a>
+            <a href="/admin/?lang={{ lang }}">{{ t('management.back_to_admin') }}</a>
+            <a href="/admin/client-apps/?lang={{ lang }}">{{ t('dashboard.quick_actions.client_apps') }}</a>
+            <a href="/api/v1/auth/token">{{ t('management.api_token_endpoint') }}</a>
         </div>
 
         <div class="content">
             {% if success_message %}
             <div class="success-message">
-                <strong>Success!</strong> {{ success_message }}
+                <strong>{{ t('management.success') }}</strong> {{ success_message }}
             </div>
             {% endif %}
 
             <!-- Create New App Form -->
             <div class="create-form">
-                <h3>🚀 Create New Client Application</h3>
+                <h3>🚀 {{ t('management.create_new_client_app') }}</h3>
                 <form method="post" action="/admin/client-apps/create">
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="name">Application Name *</label>
-                            <input type="text" id="name" name="name" required placeholder="My API Client">
+                            <label for="name">{{ t('management.application_name_required') }}</label>
+                            <input type="text" id="name" name="name" required placeholder="{{ t('management.application_name_placeholder') }}">
                         </div>
                         <div class="form-group">
-                            <label for="description">Description</label>
-                            <input type="text" id="description" name="description" placeholder="Brief description of the application">
+                            <label for="description">{{ t('management.description') }}</label>
+                            <input type="text" id="description" name="description" placeholder="{{ t('management.description_placeholder') }}">
                         </div>
                         <div class="form-group">
                             <div class="checkbox-group">
                                 <input type="checkbox" id="is_active" name="is_active" checked>
-                                <label for="is_active">Active</label>
+                                <label for="is_active">{{ t('management.active') }}</label>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary">Create App</button>
+                        <button type="submit" class="btn btn-primary">{{ t('management.create_app') }}</button>
                     </div>
                 </form>
             </div>
@@ -390,7 +390,7 @@
                         <div>
                             <div class="app-title">{{ app.name }}</div>
                             <span class="app-status {% if app.is_active %}status-active{% else %}status-inactive{% endif %}">
-                                {% if app.is_active %}Active{% else %}Inactive{% endif %}
+                                {% if app.is_active %}{{ t('management.status_active') }}{% else %}{{ t('management.status_inactive') }}{% endif %}
                             </span>
                         </div>
                     </div>
@@ -401,48 +401,48 @@
 
                     <div class="app-credentials">
                         <div class="credential-row">
-                            <span class="credential-label">App ID:</span>
+                            <span class="credential-label">{{ t('management.app_id') }}</span>
                             <code class="credential-value">{{ app.app_id }}</code>
                         </div>
                         <div class="credential-row">
-                            <span class="credential-label">App Secret:</span>
+                            <span class="credential-label">{{ t('management.app_secret') }}</span>
                             <code class="credential-value">{{ app.app_secret[:16] }}...</code>
                         </div>
                         {% if new_app and new_app.id == app.id %}
                         <div style="margin-top: 10px; padding: 10px; background: #d4edda; border-radius: 6px; font-size: 0.9rem;">
-                            <strong>⚠️ Save these credentials!</strong> The secret will be hidden after this.
+                            <strong>{{ t('management.save_credentials_warning') }}</strong>
                         </div>
                         {% endif %}
                     </div>
 
                     <div class="app-actions">
                         <button type="button" class="btn btn-primary" onclick="generateTestToken('{{ app.app_id }}', '{{ app.app_secret }}', '{{ app.name }}')">
-                            🎫 Get Test Token
+                            {{ t('management.get_test_token') }}
                         </button>
 
                         <form method="post" action="/admin/client-apps/{{ app.id }}/regenerate-secret" style="display: inline;">
-                            <button type="submit" class="btn btn-warning" onclick="return confirm('Regenerate secret? This will invalidate existing tokens.')">
-                                🔄 Regenerate Secret
+                            <button type="submit" class="btn btn-warning" onclick="return confirm('Regenerować sekret? To unieważni istniejące tokeny.')">
+                                {{ t('management.regenerate_secret') }}
                             </button>
                         </form>
 
                         <form method="post" action="/admin/client-apps/{{ app.id }}/toggle-status" style="display: inline;">
                             <button type="submit" class="btn {% if app.is_active %}btn-warning{% else %}btn-success{% endif %}">
-                                {% if app.is_active %}⏸️ Deactivate{% else %}▶️ Activate{% endif %}
+                                {% if app.is_active %}{{ t('management.deactivate') }}{% else %}{{ t('management.activate') }}{% endif %}
                             </button>
                         </form>
 
                         <form method="post" action="/admin/client-apps/{{ app.id }}/delete" style="display: inline;">
-                            <button type="submit" class="btn btn-danger" onclick="return confirm('Delete this app? This cannot be undone.')">
-                                🗑️ Delete
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Usunąć tę aplikację? Tej operacji nie można cofnąć.')">
+                                {{ t('management.delete') }}
                             </button>
                         </form>
                     </div>
 
                     <div class="app-meta">
-                        <div>Created: {{ app.created_at[:16] }}</div>
+                        <div>{{ t('management.created') }} {{ app.created_at[:16] }}</div>
                         {% if app.updated_at %}
-                        <div>Updated: {{ app.updated_at[:16] }}</div>
+                        <div>{{ t('management.updated') }} {{ app.updated_at[:16] }}</div>
                         {% endif %}
                     </div>
                 </div>
@@ -450,26 +450,26 @@
             </div>
             {% else %}
             <div class="no-apps">
-                <h3>No Client Applications</h3>
-                <p>Create your first client application to get started with API access.</p>
+                <h3>{{ t('management.no_apps_title') }}</h3>
+                <p>{{ t('management.no_apps_description') }}</p>
             </div>
             {% endif %}
 
             <!-- API Usage Documentation -->
             <div style="margin-top: 40px; padding: 25px; background: #f8f9fa; border-radius: 15px; border: 1px solid #e9ecef;">
-                <h3 style="color: #495057; margin-bottom: 15px;">📚 API Usage Guide</h3>
+                <h3 style="color: #495057; margin-bottom: 15px;">{{ t('management.usage_guide_title') }}</h3>
                 <div style="color: #6c757d; line-height: 1.6;">
-                    <p><strong>1. Get API Token:</strong></p>
+                    <p><strong>{{ t('management.usage_step1') }}</strong></p>
                     <pre style="background: white; padding: 15px; border-radius: 8px; margin: 10px 0; overflow-x: auto;">POST /api/v1/auth/token
 Content-Type: application/x-www-form-urlencoded
 
 app_id=your_app_id&app_secret=your_app_secret&expires_in=3600</pre>
 
-                    <p><strong>2. Use Token in API Calls:</strong></p>
+                    <p><strong>{{ t('management.usage_step2') }}</strong></p>
                     <pre style="background: white; padding: 15px; border-radius: 8px; margin: 10px 0; overflow-x: auto;">GET /api/v1/users
 Authorization: Bearer your_jwt_token</pre>
 
-                    <p><strong>3. Token expires in 1 hour by default. Request new tokens as needed.</strong></p>
+                    <p><strong>{{ t('management.usage_step3') }}</strong></p>
                 </div>
             </div>
         </div>
@@ -478,37 +478,37 @@ Authorization: Bearer your_jwt_token</pre>
     <!-- Token Generation Modal -->
     <div id="tokenModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000;" onclick="closeTokenModal()">
         <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 30px; border-radius: 15px; max-width: 600px; width: 90%;" onclick="event.stopPropagation()">
-            <h3 style="margin-bottom: 20px; color: #495057;">🎫 Test Bearer Token Generated</h3>
+            <h3 style="margin-bottom: 20px; color: #495057;">{{ t('management.token_modal_title') }}</h3>
             <div style="margin-bottom: 20px;">
-                <strong>App:</strong> <span id="tokenAppName"></span>
+                <strong>{{ t('management.token_modal_app') }}</strong> <span id="tokenAppName"></span>
             </div>
             <div style="margin-bottom: 20px;">
-                <strong>Bearer Token:</strong>
+                <strong>{{ t('management.token_modal_token') }}</strong>
                 <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; font-family: 'Courier New', monospace; word-break: break-all; border: 1px solid #e9ecef; margin-top: 10px;">
                     <span id="bearerToken"></span>
                 </div>
             </div>
             <div style="margin-bottom: 20px;">
-                <strong>Expires:</strong> <span id="tokenExpiry"></span>
+                <strong>{{ t('management.token_modal_expires') }}</strong> <span id="tokenExpiry"></span>
             </div>
             
             <div style="background: #e7f3ff; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #b8daff;">
-                <strong>📋 Usage Examples:</strong><br><br>
-                <strong>Swagger UI:</strong><br>
-                1. Go to <a href="/docs" target="_blank">Swagger UI</a><br>
-                2. Click "Authorize" button<br>
-                3. Enter: <code>Bearer [token]</code><br><br>
+                <strong>{{ t('management.usage_examples') }}</strong><br><br>
+                <strong>{{ t('management.swagger_ui') }}</strong><br>
+                {{ t('management.swagger_step1') }} <a href="/docs" target="_blank">Swagger UI</a><br>
+                {{ t('management.swagger_step2') }}<br>
+                {{ t('management.swagger_step3') }} <code>Bearer [token]</code><br><br>
                 
-                <strong>curl:</strong><br>
+                <strong>{{ t('management.curl_example') }}</strong><br>
                 <code>curl -H "Authorization: Bearer [token]" http://127.0.0.1:8000/api/v1/users/</code><br><br>
                 
-                <strong>Python:</strong><br>
+                <strong>{{ t('management.python_example') }}</strong><br>
                 <code>headers = {"Authorization": "Bearer [token]"}</code>
             </div>
             
             <div style="text-align: right;">
-                <button onclick="copyTokenToClipboard()" class="btn btn-primary" style="margin-right: 10px;">📋 Copy Token</button>
-                <button onclick="closeTokenModal()" class="btn btn-warning">Close</button>
+                <button onclick="copyTokenToClipboard()" class="btn btn-primary" style="margin-right: 10px;">{{ t('management.copy_token') }}</button>
+                <button onclick="closeTokenModal()" class="btn btn-warning">{{ t('management.close') }}</button>
             </div>
         </div>
     </div>
@@ -519,7 +519,7 @@ Authorization: Bearer your_jwt_token</pre>
                 // Show loading state
                 const button = event.target;
                 const originalText = button.innerHTML;
-                button.innerHTML = '⏳ Generating...';
+                button.innerHTML = '⏳ Generowanie...';
                 button.disabled = true;
 
                 // Generate token
@@ -547,10 +547,10 @@ Authorization: Bearer your_jwt_token</pre>
                     
                 } else {
                     const errorData = await response.json();
-                    alert(`Error generating token: ${errorData.detail || 'Unknown error'}`);
+                    alert(`Błąd generowania tokenu: ${errorData.detail || 'Nieznany błąd'}`);
                 }
             } catch (error) {
-                alert(`Error: ${error.message}`);
+                alert(`Błąd: ${error.message}`);
             } finally {
                 // Restore button
                 button.innerHTML = originalText;
@@ -569,7 +569,7 @@ Authorization: Bearer your_jwt_token</pre>
             navigator.clipboard.writeText(fullToken).then(() => {
                 const button = event.target;
                 const originalText = button.innerHTML;
-                button.innerHTML = '✅ Copied!';
+                button.innerHTML = '✅ Skopiowano!';
                 button.style.background = '#48bb78';
                 
                 setTimeout(() => {
@@ -585,7 +585,7 @@ Authorization: Bearer your_jwt_token</pre>
                 document.execCommand('copy');
                 document.body.removeChild(textArea);
                 
-                alert('Token copied to clipboard!');
+                alert('Token skopiowany do schowka!');
             });
         }
 
