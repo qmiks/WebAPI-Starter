@@ -67,7 +67,7 @@ async def admin_dashboard(request: Request, lang: Optional[str] = None):
     
     # Get locale for internationalization
     locale = get_locale_from_request(request)
-    if lang and lang in ['en', 'es', 'fr', 'de']:
+    if lang and lang in ['en', 'es', 'fr', 'de', 'pl']:
         locale = lang
     
     # Manual authentication check
@@ -141,7 +141,7 @@ async def admin_dashboard(request: Request, lang: Optional[str] = None):
     response = templates.TemplateResponse("admin/dashboard.html", context)
     
     # Set language cookie if specified
-    if lang and lang in ['en', 'es', 'fr', 'de']:
+    if lang and lang in ['en', 'es', 'fr', 'de', 'pl']:
         response.set_cookie(
             key="lang_preference",
             value=lang,

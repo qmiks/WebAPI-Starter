@@ -27,7 +27,7 @@ async def login_page(
     try:
         # Get locale (URL param -> cookie -> header -> default)
         locale = get_locale_from_request(request)
-        if lang and lang in ['en', 'es', 'fr', 'de']:
+        if lang and lang in ['en', 'es', 'fr', 'de', 'pl']:
             locale = lang
         
         # Get translations
@@ -46,7 +46,7 @@ async def login_page(
         response = templates.TemplateResponse("auth/login.html", context)
         
         # Set language cookie if specified
-        if lang and lang in ['en', 'es', 'fr', 'de']:
+        if lang and lang in ['en', 'es', 'fr', 'de', 'pl']:
             response.set_cookie(
                 key="lang_preference",
                 value=lang,
