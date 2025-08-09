@@ -9,6 +9,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from typing import Optional, Dict, Any
 import os
+from utils.i18n import t, get_translations_for_locale
 
 # Initialize templates
 templates = Jinja2Templates(directory="templates")
@@ -47,6 +48,14 @@ def create_error_response(
 ) -> HTMLResponse:
     """Create an HTML error response"""
     
+    # Get language preference
+    locale = request.cookies.get("lang_preference", "en")
+    if not locale or locale not in ['en', 'es', 'fr', 'de', 'pl']:
+        locale = "en"
+    
+    # Get translations
+    translations = get_translations_for_locale(locale)
+    
     return templates.TemplateResponse(
         "error_page.html",
         {
@@ -58,7 +67,11 @@ def create_error_response(
             "user_info": user_info,
             "current_url": str(request.url.path),
             "show_contact": show_contact,
-            "contact_message": contact_message
+            "contact_message": contact_message,
+            "locale": locale,
+            "lang": locale,
+            "t": lambda key: t(key, locale),
+            "translations": translations
         },
         status_code=status_code
     )
@@ -69,6 +82,14 @@ def create_access_denied_response(
     custom_message: Optional[str] = None
 ) -> HTMLResponse:
     """Create an access denied error page"""
+    
+    # Get language preference
+    locale = request.cookies.get("lang_preference", "en")
+    if not locale or locale not in ['en', 'es', 'fr', 'de', 'pl']:
+        locale = "en"
+    
+    # Get translations
+    translations = get_translations_for_locale(locale)
     
     if user_info and user_info.get("role") == "user":
         default_message = "You don't have permission to access this admin area. This section is restricted to administrators only."
@@ -90,7 +111,11 @@ def create_access_denied_response(
             "error_details": details,
             "user_info": user_info,
             "current_url": str(request.url.path),
-            "show_contact": True if user_info else False
+            "show_contact": True if user_info else False,
+            "locale": locale,
+            "lang": locale,
+            "t": lambda key: t(key, locale),
+            "translations": translations
         },
         status_code=403
     )

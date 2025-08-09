@@ -19,7 +19,11 @@
     "login_button": "Se connecter",
     "register_link": "Créer un nouveau compte",
     "back_to_home": "Retour à l'accueil",
-    "admin_access": "Accès administrateur"
+    "admin_access": "Accès administrateur",
+    "admin_access_required": "Accès administrateur requis",
+    "currently_logged_as": "Actuellement connecté en tant que",
+    "please_login_admin": "Veuillez vous connecter avec un compte administrateur pour continuer",
+    "admin_login_required": "Veuillez vous connecter avec des identifiants d'administrateur"
   },
   "users": {
     "user_created": "Utilisateur créé avec succès",

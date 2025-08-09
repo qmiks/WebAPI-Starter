@@ -27,7 +27,11 @@
     "user_access": "User access", 
     "regular_user": "Regular user",
     "admin": "Admin",
-    "user": "User"
+    "user": "User",
+    "admin_access_required": "Administrator access required",
+    "currently_logged_as": "Currently logged in as",
+    "please_login_admin": "Please login with an administrator account to continue",
+    "admin_login_required": "Please login with administrator credentials"
   },
   "users": {
     "user_created": "User created successfully",

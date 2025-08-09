@@ -19,7 +19,19 @@
         "login_button": "Anmelden",
         "register_link": "Neues Konto erstellen",
         "back_to_home": "Zurück zur Startseite",
-        "admin_access": "Administratorzugang"
+        "access_admin_dashboard": "Zugriff auf das Verwaltungsdashboard",
+        "access_user_portal": "Zugriff auf das Benutzerportal und Elemente suchen",
+        "access_application": "Zugriff auf die Anwendung",
+        "demo_credentials": "Demo-Anmeldedaten (kopieren und einfügen)",
+        "admin_access": "Administratorzugang",
+        "user_access": "Benutzerzugang",
+        "regular_user": "Normaler Benutzer",
+        "admin": "Administrator",
+        "user": "Benutzer",
+        "admin_access_required": "Administratorzugang erforderlich",
+        "currently_logged_as": "Derzeit angemeldet als",
+        "please_login_admin": "Bitte melden Sie sich mit einem Administratorkonto an, um fortzufahren",
+        "admin_login_required": "Bitte melden Sie sich mit Administratorendaten an"
     },
     "users": {
         "user_created": "Benutzer erfolgreich erstellt",
