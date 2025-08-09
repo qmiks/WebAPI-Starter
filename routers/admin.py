@@ -122,13 +122,16 @@ async def admin_dashboard(request: Request, lang: Optional[str] = None):
     if not current_user:
         print("DEBUG: No current user, redirecting to login")
         return RedirectResponse(
-            url=f"/auth/login?redirect_url={request.url.path}&lang={locale}",
+            url=f"/auth/login?redirect_url={request.url.path}&lang={locale}&admin_required=true",
             status_code=status.HTTP_303_SEE_OTHER
         )
     
     if current_user.get("role") != "admin":
-        print("DEBUG: User is not admin, returning HTML error page")
-        return create_access_denied_response(request, current_user)
+        print("DEBUG: User is not admin, redirecting to admin login")
+        return RedirectResponse(
+            url=f"/auth/login?redirect_url={request.url.path}&lang={locale}&admin_required=true&current_user={current_user.get('username', '')}",
+            status_code=status.HTTP_303_SEE_OTHER
+        )
     
     print("DEBUG: Authentication successful, loading dashboard")
     

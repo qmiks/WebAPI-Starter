@@ -21,7 +21,9 @@ async def login_page(
     request: Request, 
     error: Optional[str] = None, 
     redirect_url: str = "/admin",
-    lang: Optional[str] = None
+    lang: Optional[str] = None,
+    admin_required: Optional[str] = None,
+    current_user: Optional[str] = None
 ):
     """Display login page with language support."""
     try:
@@ -40,7 +42,9 @@ async def login_page(
             "locale": locale,
             "lang": locale,
             "t": lambda key: t(key, locale),
-            "translations": translations
+            "translations": translations,
+            "admin_required": admin_required == "true",
+            "current_user": current_user
         }
         
         response = templates.TemplateResponse("auth/login.html", context)

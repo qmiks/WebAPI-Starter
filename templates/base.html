@@ -385,8 +385,6 @@
                 {% if current_user and current_user.role == 'admin' %}
                     <!-- Admin Navigation -->
                     <a href="/admin" class="{% if request.url.path.startswith('/admin') %}active{% endif %}">{{ t('navigation.dashboard') if t else 'Admin Dashboard' }}</a>
-                    <a href="/admin/users" class="{% if request.url.path == '/admin/users' %}active{% endif %}">{{ t('navigation.users') if t else 'Users' }}</a>
-                    <a href="/admin/items" class="{% if request.url.path == '/admin/items' %}active{% endif %}">{{ t('navigation.items') if t else 'Items' }}</a>
                 {% elif current_user %}
                     <!-- User Navigation -->
                     <a href="/user/dashboard" class="{% if request.url.path.startswith('/user') %}active{% endif %}">{{ t('navigation.dashboard') if t else 'Dashboard' }}</a>

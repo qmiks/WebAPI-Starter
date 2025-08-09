@@ -19,7 +19,11 @@
     "login_button": "Iniciar Sesión",
     "register_link": "Crear nueva cuenta",
     "back_to_home": "Volver al inicio",
-    "admin_access": "Acceso de administrador"
+    "admin_access": "Acceso de administrador",
+    "admin_access_required": "Se requiere acceso de administrador",
+    "currently_logged_as": "Actualmente conectado como",
+    "please_login_admin": "Por favor, inicie sesión con una cuenta de administrador para continuar",
+    "admin_login_required": "Por favor, inicie sesión con credenciales de administrador"
   },
   "users": {
     "user_created": "User created successfully",

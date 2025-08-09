@@ -27,7 +27,11 @@
     "user_access": "Dostęp użytkownika",
     "regular_user": "Zwykły użytkownik",
     "admin": "Administrator",
-    "user": "Użytkownik"
+    "user": "Użytkownik",
+    "admin_access_required": "Wymagany dostęp administratora",
+    "currently_logged_as": "Obecnie zalogowany jako",
+    "please_login_admin": "Proszę zalogować się na konto administratora, aby kontynuować",
+    "admin_login_required": "Proszę zalogować się przy użyciu danych administratora"
   },
   "users": {
     "user_created": "Użytkownik utworzony pomyślnie",

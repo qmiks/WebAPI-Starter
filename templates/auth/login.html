@@ -238,7 +238,16 @@
 
     <div class="login-container">
         <div class="login-header">
-            {% if redirect_url and ('/admin' in redirect_url) %}
+            {% if admin_required %}
+                <h1>🔐 {{ t('auth.admin_login_title') }}</h1>
+                {% if current_user %}
+                    <p style="color: #d32f2f; font-weight: 500;">{{ t('auth.admin_access_required') }}</p>
+                    <p style="color: #666; font-size: 0.9rem;">{{ t('auth.currently_logged_as') }}: <strong>{{ current_user }}</strong></p>
+                    <p style="color: #666; font-size: 0.9rem;">{{ t('auth.please_login_admin') }}</p>
+                {% else %}
+                    <p>{{ t('auth.admin_login_required') }}</p>
+                {% endif %}
+            {% elif redirect_url and ('/admin' in redirect_url) %}
                 <h1>🔐 {{ t('auth.admin_login_title') }}</h1>
                 <p>{{ t('auth.access_admin_dashboard') }}</p>
             {% elif redirect_url and ('/user' in redirect_url or '/user-portal' in redirect_url) %}
