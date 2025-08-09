@@ -117,25 +117,25 @@
                 {% if user_info %}
                     {% if user_info.role == "admin" %}
                         <a href="/admin" class="btn btn-primary">
-                            <i class="fas fa-cog me-2"></i>Admin Dashboard
+                            <i class="fas fa-cog me-2"></i>{{ t('auth.admin_dashboard') }}
                         </a>
                     {% elif user_info.role == "user" %}
                         <a href="/user-portal" class="btn btn-primary">
-                            <i class="fas fa-search me-2"></i>User Portal
+                            <i class="fas fa-search me-2"></i>{{ t('auth.user_portal') }}
                         </a>
                     {% else %}
                         <a href="/" class="btn btn-primary">
-                            <i class="fas fa-home me-2"></i>Go to Home
+                            <i class="fas fa-home me-2"></i>{{ t('auth.go_to_home') }}
                         </a>
                     {% endif %}
                 {% else %}
                     <a href="/auth/login?redirect_url={{ current_url or '/' }}" class="btn btn-primary">
-                        <i class="fas fa-sign-in-alt me-2"></i>Login
+                        <i class="fas fa-sign-in-alt me-2"></i>{{ t('auth.login') }}
                     </a>
                 {% endif %}
                 
                 <a href="/" class="btn btn-secondary">
-                    <i class="fas fa-arrow-left me-2"></i>Back to Home
+                    <i class="fas fa-arrow-left me-2"></i>{{ t('auth.back_to_home') }}
                 </a>
             </div>
             
@@ -143,7 +143,7 @@
             <div class="mt-4 pt-3 border-top">
                 <small class="text-muted">
                     <i class="fas fa-info-circle me-1"></i>
-                    {{ contact_message or "Need help? Contact your administrator." }}
+                    {{ contact_message or t('auth.need_help_contact') }}
                 </small>
             </div>
             {% endif %}
