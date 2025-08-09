@@ -421,7 +421,7 @@
                         </button>
 
                         <form method="post" action="/admin/client-apps/{{ app.id }}/regenerate-secret?lang={{ lang }}" style="display: inline;">
-                            <button type="submit" class="btn btn-warning" onclick="return confirm('Regenerować sekret? To unieważni istniejące tokeny.')">
+                            <button type="submit" class="btn btn-warning" onclick="return confirm('{{ t('management.confirm_regenerate_secret') }}')">
                                 {{ t('management.regenerate_secret') }}
                             </button>
                         </form>
