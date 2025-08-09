@@ -36,10 +36,10 @@
     
     <div style="margin-top: 30px;">
         <h3>{{ t('dashboard.quick_actions') }}</h3>
-        <a href="/admin/users" class="btn btn-primary">👥 {{ t('dashboard.actions.manage_users') }}</a>
-        <a href="/admin/items" class="btn btn-primary">📦 {{ t('dashboard.actions.manage_items') }}</a>
-        <a href="/admin/client-apps" class="btn btn-primary">🔐 {{ t('dashboard.actions.client_apps') }}</a>
-        <a href="/admin/users/new" class="btn btn-success">➕ {{ t('dashboard.actions.add_new_user') }}</a>
+        <a href="/admin/users?lang={{ lang }}" class="btn btn-primary">👥 {{ t('dashboard.actions.manage_users') }}</a>
+        <a href="/admin/items?lang={{ lang }}" class="btn btn-primary">📦 {{ t('dashboard.actions.manage_items') }}</a>
+        <a href="/admin/client-apps?lang={{ lang }}" class="btn btn-primary">🔐 {{ t('dashboard.actions.client_apps') }}</a>
+        <a href="/admin/users/new?lang={{ lang }}" class="btn btn-success">➕ {{ t('dashboard.actions.add_new_user') }}</a>
     </div>
 </div>
 
@@ -51,12 +51,12 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>{{ t('dashboard.table.id') }}</th>
-                    <th>{{ t('dashboard.table.username') }}</th>
-                    <th>{{ t('dashboard.table.email') }}</th>
-                    <th>{{ t('dashboard.table.role') }}</th>
-                    <th>{{ t('dashboard.table.status') }}</th>
-                    <th>{{ t('dashboard.table.created') }}</th>
+                    <th>{{ table_t.id }}</th>
+                    <th>{{ table_t.username }}</th>
+                    <th>{{ table_t.email }}</th>
+                    <th>{{ table_t.role }}</th>
+                    <th>{{ table_t.status }}</th>
+                    <th>{{ table_t.created }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -77,7 +77,7 @@
     {% endif %}
     
     <div style="margin-top: 20px;">
-        <a href="/admin/users" class="btn btn-primary">{{ t('dashboard.actions.view_all_users') }}</a>
+        <a href="/admin/users?lang={{ lang }}" class="btn btn-primary">{{ t('dashboard.actions.view_all_users') }}</a>
     </div>
 </div>
 
@@ -87,12 +87,12 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>{{ t('dashboard.table.id') }}</th>
-                    <th>{{ t('dashboard.table.name') }}</th>
-                    <th>{{ t('dashboard.table.price') }}</th>
-                    <th>{{ t('dashboard.table.status') }}</th>
-                    <th>{{ t('dashboard.table.owner') }}</th>
-                    <th>{{ t('dashboard.table.created') }}</th>
+                    <th>{{ table_t.id }}</th>
+                    <th>{{ table_t.name }}</th>
+                    <th>{{ table_t.price }}</th>
+                    <th>{{ table_t.status }}</th>
+                    <th>{{ table_t.owner }}</th>
+                    <th>{{ table_t.created }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -113,7 +113,7 @@
     {% endif %}
     
     <div style="margin-top: 20px;">
-        <a href="/admin/items" class="btn btn-primary">{{ t('dashboard.actions.view_all_items') }}</a>
+        <a href="/admin/items?lang={{ lang }}" class="btn btn-primary">{{ t('dashboard.actions.view_all_items') }}</a>
     </div>
 </div>
 
@@ -123,12 +123,12 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>{{ t('dashboard.table.id') }}</th>
-                    <th>{{ t('dashboard.table.name') }}</th>
-                    <th>{{ t('dashboard.table.app_id') }}</th>
-                    <th>{{ t('dashboard.table.status') }}</th>
-                    <th>{{ t('dashboard.table.created') }}</th>
-                    <th>{{ t('dashboard.table.actions') }}</th>
+                    <th>{{ table_t.id }}</th>
+                    <th>{{ table_t.name }}</th>
+                    <th>{{ table_t.app_id }}</th>
+                    <th>{{ table_t.status }}</th>
+                    <th>{{ table_t.created }}</th>
+                    <th>{{ table_t.actions }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -140,7 +140,7 @@
                     <td><span class="badge badge-{{ 'active' if app.is_active else 'inactive' }}">{{ t('dashboard.status_labels.active') if app.is_active else t('dashboard.status_labels.inactive') }}</span></td>
                     <td>{{ app.created_at[:16] }}</td>
                     <td>
-                        <a href="/admin/client-apps/" class="btn btn-sm" style="padding: 4px 8px; font-size: 0.8em; background: #667eea; color: white; text-decoration: none; border-radius: 4px;">{{ t('dashboard.actions.manage') }}</a>
+                        <a href="/admin/client-apps/?lang={{ lang }}" class="btn btn-sm" style="padding: 4px 8px; font-size: 0.8em; background: #667eea; color: white; text-decoration: none; border-radius: 4px;">{{ t('dashboard.actions.manage') }}</a>
                     </td>
                 </tr>
                 {% endfor %}
@@ -149,12 +149,12 @@
     {% else %}
         <div style="text-align: center; padding: 20px; color: #666;">
             <p>{{ t('dashboard.no_data.no_client_applications_found') }}</p>
-            <a href="/admin/client-apps/" class="btn btn-primary">{{ t('dashboard.actions.create_first_app') }}</a>
+            <a href="/admin/client-apps/?lang={{ lang }}" class="btn btn-primary">{{ t('dashboard.actions.create_first_app') }}</a>
         </div>
     {% endif %}
     
     <div style="margin-top: 20px;">
-        <a href="/admin/client-apps/" class="btn btn-primary">🔐 {{ t('dashboard.actions.manage_all_client_apps') }}</a>
+        <a href="/admin/client-apps/?lang={{ lang }}" class="btn btn-primary">🔐 {{ t('dashboard.actions.manage_all_client_apps') }}</a>
         <a href="/api/v1/auth/token" class="btn btn-primary" style="background: #48bb78;">📚 {{ t('dashboard.actions.api_token_endpoint') }}</a>
     </div>
 </div>

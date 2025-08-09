@@ -11,8 +11,8 @@
             <p>Manage inventory items and their status</p>
         </div>
         <div class="header-actions">
-            <a href="/admin" class="btn btn-secondary">← Back to Dashboard</a>
-            <a href="/admin/items/new" class="btn btn-primary">➕ Add New Item</a>
+            <a href="/admin?lang={{ lang }}" class="btn btn-secondary">← Back to Dashboard</a>
+            <a href="/admin/items/new?lang={{ lang }}" class="btn btn-primary">➕ Add New Item</a>
         </div>
     </div>
 
@@ -62,40 +62,44 @@
         {% for item in items %}
         <div class="item-card">
             <div class="item-header">
-                <h3 class="item-name">{{ item.name }}</h3>
-                <span class="status-badge {% if item.status == 'active' %}status-active{% elif item.status == 'draft' %}status-draft{% else %}status-inactive{% endif %}">
-                    {{ item.status.title() }}
+                <h3 class="item-name">{{ item['name'] }}</h3>
+                <span class="status-badge {% if item['status'] == 'active' %}status-active{% elif item['status'] == 'draft' %}status-draft{% else %}status-inactive{% endif %}">
+                    {{ item['status'].title() }}
                 </span>
             </div>
             
-            {% if item.description %}
-            <div class="item-description">{{ item.description[:100] }}{% if item.description|length > 100 %}...{% endif %}</div>
+            {% if item['description'] %}
+            <div class="item-description">{{ item['description'][:100] }}{% if item['description']|length > 100 %}...{% endif %}</div>
             {% endif %}
             
             <div class="item-meta">
                 <div class="meta-item">
                     <span class="meta-label">ID:</span>
-                    <span class="meta-value">{{ item.id }}</span>
+                    <span class="meta-value">{{ item['id'] }}</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Owner:</span>
+                    <span class="meta-value">{{ item['owner_id'] }}</span>
                 </div>
                 <div class="meta-item">
                     <span class="meta-label">Created:</span>
-                    <span class="meta-value">{{ item.created_at[:10] if item.created_at else '-' }}</span>
+                    <span class="meta-value">{{ item['created_at'][:10] if item['created_at'] else '-' }}</span>
                 </div>
-                {% if item.updated_at %}
+                {% if item['updated_at'] %}
                 <div class="meta-item">
                     <span class="meta-label">Updated:</span>
-                    <span class="meta-value">{{ item.updated_at[:10] }}</span>
+                    <span class="meta-value">{{ item['updated_at'][:10] }}</span>
                 </div>
                 {% endif %}
             </div>
             
             <div class="item-actions">
-                <a href="/admin/items/{{ item.id }}/edit" class="btn-small btn-primary">✏️ Edit</a>
-                <a href="/admin/items/{{ item.id }}" class="btn-small btn-info">👁️ View</a>
-                <button onclick="toggleItemStatus({{ item.id }})" class="btn-small btn-warning">
-                    {% if item.status == 'active' %}⏸️ Deactivate{% else %}▶️ Activate{% endif %}
+                <a href="/admin/items/{{ item['id'] }}/edit?lang={{ lang }}" class="btn-small btn-primary">✏️ Edit</a>
+                <a href="/admin/items/{{ item['id'] }}?lang={{ lang }}" class="btn-small btn-info">👁️ View</a>
+                <button onclick="toggleItemStatus({{ item['id'] }})" class="btn-small btn-warning">
+                    {% if item['status'] == 'active' %}⏸️ Deactivate{% else %}▶️ Activate{% endif %}
                 </button>
-                <button onclick="deleteItem({{ item.id }})" class="btn-small btn-danger">🗑️ Delete</button>
+                <button onclick="deleteItem({{ item['id'] }})" class="btn-small btn-danger">🗑️ Delete</button>
             </div>
         </div>
         {% endfor %}

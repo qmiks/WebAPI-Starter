@@ -18,7 +18,8 @@
         "password": "Passwort",
         "login_button": "Anmelden",
         "register_link": "Neues Konto erstellen",
-        "back_to_home": "Zurück zur Startseite"
+        "back_to_home": "Zurück zur Startseite",
+        "admin_access": "Administratorzugang"
     },
     "users": {
         "user_created": "Benutzer erfolgreich erstellt",
@@ -35,7 +36,32 @@
         "item_updated": "Element erfolgreich aktualisiert",
         "item_deleted": "Element erfolgreich gelöscht",
         "item_not_found": "Element nicht gefunden",
-        "invalid_item_data": "Ungültige Elementdaten"
+        "invalid_item_data": "Ungültige Elementdaten",
+        "create_item": "Element erstellen",
+        "edit_item": "Element bearbeiten",
+        "name": "Name",
+        "name_placeholder": "Elementnamen eingeben",
+        "name_help": "Geben Sie einen beschreibenden Namen für Ihr Element ein (1-100 Zeichen)",
+        "description": "Beschreibung",
+        "description_placeholder": "Elementbeschreibung eingeben (optional)",
+        "description_help": "Optionale Beschreibung Ihres Elements (max. 500 Zeichen)",
+        "price": "Preis",
+        "price_help": "Geben Sie den Preis für dieses Element ein (muss größer als $0.00 sein)",
+        "status": "Status",
+        "active": "Aktiv",
+        "inactive": "Inaktiv",
+        "draft": "Entwurf",
+        "status_help": "Setzen Sie den Status Ihres Elements",
+        "item_statuses": "Element-Status",
+        "active_help": "Element ist sichtbar und verfügbar",
+        "inactive_help": "Element ist versteckt aber gespeichert",
+        "draft_help": "Element wird bearbeitet"
+    },
+    "common": {
+        "back": "Zurück",
+        "cancel": "Abbrechen",
+        "save_changes": "Änderungen speichern",
+        "help": "Hilfe"
     },
     "general": {
         "success": "Erfolg",
@@ -50,6 +76,7 @@
     "dashboard": {
         "admin_title": "Administrator-Dashboard",
         "user_title": "Benutzer-Dashboard",
+        "user_welcome_message": "Suchen und verwalten Sie Ihre Elemente",
         "overview": "Systemübersicht",
         "welcome_admin": "Willkommen im Web-API-Admin-Panel. Hier können Sie Benutzer, Elemente verwalten und Ihre Anwendung überwachen.",
         "welcome_user": "Willkommen in Ihrem Benutzer-Dashboard",
@@ -61,6 +88,17 @@
         "system_status": "Systemstatus",
         "storage_usage": "Speichernutzung",
         "api_performance": "API-Leistung",
+        "table": {
+            "id": "ID",
+            "username": "Benutzername",
+            "email": "E-Mail",
+            "full_name": "Vollständiger Name",
+            "role": "Rolle",
+            "status": "Status",
+            "created": "Erstellt",
+            "updated": "Aktualisiert",
+            "actions": "Aktionen"
+        },
         "statistics": {
             "total_users": "Gesamtbenutzer",
             "active_users": "Aktive Benutzer",
@@ -81,9 +119,12 @@
             "add_new_user": "Neuen Benutzer hinzufügen",
             "add_new_item": "Neues Element hinzufügen",
             "view_all": "Alle anzeigen",
+            "view": "Ansehen",
             "edit": "Bearbeiten",
             "delete": "Löschen",
-            "create": "Erstellen"
+            "create": "Erstellen",
+            "activate": "Aktivieren",
+            "deactivate": "Deaktivieren"
         },
         "status": {
             "online": "Online",
@@ -93,7 +134,18 @@
             "pending": "Ausstehend",
             "approved": "Genehmigt",
             "rejected": "Abgelehnt"
+        },
+        "status_labels": {
+            "active": "Aktiv",
+            "inactive": "Inaktiv"
         }
+    },
+    "management": {
+        "user_management": "Benutzerverwaltung"
+    },
+    "search": {
+        "title": "Elemente suchen",
+        "placeholder": "Elemente nach Name oder Beschreibung suchen..."
     },
     "forms": {
         "name": "Name",

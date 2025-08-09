@@ -18,7 +18,8 @@
     "password": "Mot de passe",
     "login_button": "Se connecter",
     "register_link": "Créer un nouveau compte",
-    "back_to_home": "Retour à l'accueil"
+    "back_to_home": "Retour à l'accueil",
+    "admin_access": "Accès administrateur"
   },
   "users": {
     "user_created": "Utilisateur créé avec succès",
@@ -37,7 +38,32 @@
     "item_deleted": "Élément supprimé avec succès",
     "item_not_found": "Élément non trouvé",
     "title_required": "Le titre est requis",
-    "description_required": "La description est requise"
+    "description_required": "La description est requise",
+    "create_item": "Créer un Élément",
+    "edit_item": "Modifier l'Élément",
+    "name": "Nom",
+    "name_placeholder": "Entrez le nom de l'élément",
+    "name_help": "Entrez un nom descriptif pour votre élément (1-100 caractères)",
+    "description": "Description",
+    "description_placeholder": "Entrez la description de l'élément (optionnel)",
+    "description_help": "Description optionnelle de votre élément (max 500 caractères)",
+    "price": "Prix",
+    "price_help": "Entrez le prix de cet élément (doit être supérieur à $0.00)",
+    "status": "Statut",
+    "active": "Actif",
+    "inactive": "Inactif", 
+    "draft": "Brouillon",
+    "status_help": "Définir le statut de votre élément",
+    "item_statuses": "Statuts des Éléments",
+    "active_help": "L'élément est visible et disponible",
+    "inactive_help": "L'élément est caché mais sauvegardé",
+    "draft_help": "L'élément est en cours de travail"
+  },
+  "common": {
+    "back": "Retour",
+    "cancel": "Annuler",
+    "save_changes": "Enregistrer les Modifications",
+    "help": "Aide"
   },
   "admin": {
     "admin_panel": "Panneau d'administration",
@@ -101,6 +127,9 @@
     "contact_support": "Veuillez contacter le support si le problème persiste"
   },
   "dashboard": {
+    "admin_title": "Tableau de bord administrateur",
+    "user_title": "Tableau de bord utilisateur",
+    "user_welcome_message": "Rechercher et gérer vos éléments",
     "title": "Tableau de bord",
     "overview": "Aperçu",
     "recent_activity": "Activité récente",
@@ -121,7 +150,36 @@
     "view_items": "Voir les éléments",
     "create_item": "Créer un élément",
     "your_profile": "Votre profil",
-    "settings": "Paramètres"
+    "settings": "Paramètres",
+    "table": {
+      "id": "ID",
+      "username": "Nom d'utilisateur",
+      "email": "E-mail",
+      "full_name": "Nom complet",
+      "role": "Rôle",
+      "status": "Statut",
+      "created": "Créé",
+      "updated": "Mis à jour",
+      "actions": "Actions"
+    },
+    "actions": {
+      "view": "Voir",
+      "edit": "Modifier",
+      "delete": "Supprimer",
+      "activate": "Activer",
+      "deactivate": "Désactiver"
+    },
+    "status_labels": {
+      "active": "Actif",
+      "inactive": "Inactif"
+    }
+  },
+  "management": {
+    "user_management": "Gestion des utilisateurs"
+  },
+  "search": {
+    "title": "Rechercher des éléments",
+    "placeholder": "Rechercher des éléments par nom ou description..."
   },
   "buttons": {
     "save": "Enregistrer",

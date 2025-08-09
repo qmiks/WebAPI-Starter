@@ -60,6 +60,46 @@ async def require_admin_user(request: Request) -> dict:
     
     return current_user
 
+@router.get("/debug", response_class=HTMLResponse)
+async def debug_translations(request: Request, lang: Optional[str] = None):
+    """Debug translations"""
+    # Get locale for internationalization
+    locale = get_locale_from_request(request)
+    if lang and lang in ['en', 'es', 'fr', 'de', 'pl']:
+        locale = lang
+    
+    current_user = get_current_user_from_session(request)
+    if not current_user:
+        return RedirectResponse(url=f"/auth/login?redirect_url={request.url.path}&lang={locale}")
+    
+    if current_user.get("role") != "admin":
+        return create_access_denied_response(request, current_user)
+    
+    # Get translations and test them
+    translations = get_translations_for_locale(locale)
+    test_key = "dashboard.table.id"
+    translated_value = t(test_key, locale)
+    
+    # Create manual HTML to bypass template issues
+    html_content = f"""
+    <!DOCTYPE html>
+    <html>
+    <head><title>Translation Debug</title></head>
+    <body>
+        <h1>Translation Debug</h1>
+        <p>Locale: {locale}</p>
+        <p>Test key: {test_key}</p>
+        <p>Direct translation result: "{translated_value}"</p>
+        <p>Is translation working: {"YES" if translated_value != test_key else "NO"}</p>
+        
+        <h2>Template context test:</h2>
+        <p>Going to render template now...</p>
+    </body>
+    </html>
+    """
+    
+    return HTMLResponse(content=html_content)
+
 @router.get("/", response_class=HTMLResponse)
 async def admin_dashboard(request: Request, lang: Optional[str] = None):
     """Admin dashboard with statistics and navigation"""
@@ -112,7 +152,22 @@ async def admin_dashboard(request: Request, lang: Optional[str] = None):
     # Get translations
     translations = get_translations_for_locale(locale)
     
-    context = {
+    # Pre-translate commonly used table keys
+    table_translations = {}
+    table_keys = [
+        'id', 'username', 'email', 'role', 'status', 'created', 'updated',
+        'name', 'description', 'price', 'owner', 'app_id', 'actions', 'full_name'
+    ]
+    
+    for key in table_keys:
+        table_key = f'dashboard.table.{key}'
+        table_translations[key] = t(table_key, locale)
+    
+    # Create a translation function that works in templates
+    def translate_key(key):
+        return t(key, locale)
+    
+    response = templates.TemplateResponse("dashboard.html", {
         "request": request,
         "current_user": current_user,
         "total_users": total_users,
@@ -126,12 +181,11 @@ async def admin_dashboard(request: Request, lang: Optional[str] = None):
         "recent_client_apps": recent_client_apps,
         "locale": locale,
         "lang": locale,
-        "t": lambda key: t(key, locale),
+        "t": translate_key,
+        "table_t": table_translations,
         "translations": translations,
         "messages": get_flash_messages()
-    }
-    
-    response = templates.TemplateResponse("dashboard.html", context)
+    })
     
     # Set language cookie if specified
     if lang and lang in ['en', 'es', 'fr', 'de', 'pl']:
@@ -173,7 +227,22 @@ async def admin_users_list(request: Request, lang: Optional[str] = None):
     # Get translations
     translations = get_translations_for_locale(locale)
     
-    response = templates.TemplateResponse("users.html", {
+    # Pre-translate commonly used table keys
+    table_translations = {}
+    table_keys = [
+        'id', 'username', 'email', 'role', 'status', 'created', 'updated',
+        'name', 'description', 'price', 'owner', 'app_id', 'actions', 'full_name'
+    ]
+    
+    for key in table_keys:
+        table_key = f'dashboard.table.{key}'
+        table_translations[key] = t(table_key, locale)
+    
+    # Create a translation function that works in templates
+    def translate_key(key):
+        return t(key, locale)
+    
+    response = templates.TemplateResponse("admin/users.html", {
         "request": request,
         "current_user": current_user,
         "users": all_users,
@@ -183,7 +252,8 @@ async def admin_users_list(request: Request, lang: Optional[str] = None):
         "recent_users_count": recent_users_count,
         "locale": locale,
         "lang": locale,
-        "t": lambda key: t(key, locale),
+        "t": translate_key,
+        "table_t": table_translations,
         "translations": translations
     })
     
@@ -465,7 +535,22 @@ async def admin_items_list(request: Request, lang: Optional[str] = None):
     # Get translations
     translations = get_translations_for_locale(locale)
     
-    response = templates.TemplateResponse("items.html", {
+    # Pre-translate commonly used table keys
+    table_translations = {}
+    table_keys = [
+        'id', 'username', 'email', 'role', 'status', 'created', 'updated',
+        'name', 'description', 'price', 'owner', 'app_id', 'actions', 'full_name'
+    ]
+    
+    for key in table_keys:
+        table_key = f'dashboard.table.{key}'
+        table_translations[key] = t(table_key, locale)
+    
+    # Create a translation function that works in templates
+    def translate_key(key):
+        return t(key, locale)
+    
+    response = templates.TemplateResponse("admin/items.html", {
         "request": request,
         "current_user": current_user,
         "items": all_items,
@@ -475,7 +560,8 @@ async def admin_items_list(request: Request, lang: Optional[str] = None):
         "recent_items_count": recent_items_count,
         "locale": locale,
         "lang": locale,
-        "t": lambda key: t(key, locale),
+        "t": translate_key,
+        "table_t": table_translations,
         "translations": translations
     })
     

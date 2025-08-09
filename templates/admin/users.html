@@ -11,8 +11,8 @@
             <p>Manage user accounts and permissions</p>
         </div>
         <div class="header-actions">
-            <a href="/admin" class="btn btn-secondary">← Back to Dashboard</a>
-            <a href="/admin/users/new" class="btn btn-primary">➕ Add New User</a>
+            <a href="/admin?lang={{ lang }}" class="btn btn-secondary">← Back to Dashboard</a>
+            <a href="/admin/users/new?lang={{ lang }}" class="btn btn-primary">➕ Add New User</a>
         </div>
     </div>
 
@@ -73,31 +73,31 @@
             <tbody id="usersTableBody">
                 {% for user in users %}
                 <tr>
-                    <td>{{ user.id }}</td>
+                    <td>{{ user['id'] }}</td>
                     <td>
                         <div class="user-info">
-                            <div class="user-avatar">{{ user.username[0].upper() }}</div>
-                            <strong>{{ user.username }}</strong>
+                            <div class="user-avatar">{{ user['username'][0].upper() }}</div>
+                            <strong>{{ user['username'] }}</strong>
                         </div>
                     </td>
-                    <td>{{ user.email }}</td>
-                    <td>{{ user.full_name or '-' }}</td>
+                    <td>{{ user['email'] }}</td>
+                    <td>{{ user['full_name'] or '-' }}</td>
                     <td>
-                        <span class="role-badge role-{{ user.role }}">
-                            {{ user.role.title() }}
+                        <span class="role-badge role-{{ user['role'] }}">
+                            {{ user['role'].title() }}
                         </span>
                     </td>
                     <td>
-                        <span class="status-badge {% if user.is_active %}status-active{% else %}status-inactive{% endif %}">
-                            {% if user.is_active %}Active{% else %}Inactive{% endif %}
+                        <span class="status-badge {% if user['is_active'] %}status-active{% else %}status-inactive{% endif %}">
+                            {% if user['is_active'] %}Active{% else %}Inactive{% endif %}
                         </span>
                     </td>
-                    <td>{{ user.created_at[:10] if user.created_at else '-' }}</td>
+                    <td>{{ user['created_at'][:10] if user['created_at'] else '-' }}</td>
                     <td>
                         <div class="action-buttons">
-                            <a href="/admin/users/{{ user.id }}/edit" class="btn-small btn-primary">✏️ Edit</a>
-                            <a href="/admin/users/{{ user.id }}" class="btn-small btn-info">👁️ View</a>
-                            <button onclick="deleteUser({{ user.id }})" class="btn-small btn-danger">🗑️ Delete</button>
+                            <a href="/admin/users/{{ user['id'] }}/edit?lang={{ lang }}" class="btn-small btn-primary">✏️ Edit</a>
+                            <a href="/admin/users/{{ user['id'] }}?lang={{ lang }}" class="btn-small btn-info">👁️ View</a>
+                            <button onclick="deleteUser({{ user['id'] }})" class="btn-small btn-danger">🗑️ Delete</button>
                         </div>
                     </td>
                 </tr>

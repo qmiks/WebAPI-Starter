@@ -1,398 +1,411 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ t('dashboard.user_title') }} - Web API Application</title>
-    <style>
-        * {
-            margin: 0;
-            padding:            <div class="nav">
-                <a href="/user/dashboard" class="active">🛠️ Admin Dashboard</a>
-                <a href="/user/search">🔍 Search Items</a>
-                <a href="/user/profile">👤 Profile</a>
-                <a href="/">🏠 Home</a>
-                
-                <!-- Language Switcher -->
-                <div class="language-switcher">
-                    <select onchange="changeLanguage(this.value)" style="padding: 6px 10px; border-radius: 15px; border: 1px solid #ddd; background: white;">
-                        <option value="en" {% if locale == 'en' %}selected{% endif %}>🇺🇸 {{ t('languages.english') }}</option>
-                        <option value="es" {% if locale == 'es' %}selected{% endif %}>🇪🇸 {{ t('languages.spanish') }}</option>
-                        <option value="fr" {% if locale == 'fr' %}selected{% endif %}>🇫🇷 {{ t('languages.french') }}</option>
-                        <option value="de" {% if locale == 'de' %}selected{% endif %}>🇩🇪 {{ t('languages.german') }}</option>
-                        <option value="pl" {% if locale == 'pl' %}selected{% endif %}>🇵🇱 {{ t('languages.polish') }}</option>
-                    </select>
-                </div>
-            </div>           box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            color: #333;
-        }
-        
-        .header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 15px 0;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
-        }
-        
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .header h1 {
-            color: #667eea;
-            font-size: 1.8rem;
-            font-weight: 700;
-        }
-        
-        .nav {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-        }
-        
-        .nav a {
-            color: #667eea;
-            text-decoration: none;
-            padding: 8px 16px;
-            border-radius: 25px;
-            transition: all 0.3s ease;
-            font-weight: 500;
-        }
-        
-        .nav a:hover, .nav a.active {
-            background: #667eea;
-            color: white;
-            transform: translateY(-2px);
-        }
-        
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            color: #555;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        .welcome-section {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 30px;
-            border-radius: 20px;
-            margin-bottom: 30px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-        
-        .welcome-title {
-            font-size: 2rem;
-            margin-bottom: 10px;
-            color: #333;
-        }
-        
-        .welcome-subtitle {
-            color: #666;
-            font-size: 1.1rem;
-        }
-        
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-        
-        .stat-card {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 25px;
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            text-align: center;
-            transition: transform 0.3s ease;
-        }
-        
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .stat-icon {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-            display: block;
-        }
-        
-        .stat-number {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #667eea;
-            margin-bottom: 5px;
-        }
-        
-        .stat-label {
-            color: #666;
-            font-weight: 500;
-        }
-        
-        .recent-items {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 30px;
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-        
-        .section-title {
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            color: #333;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .items-list {
-            display: grid;
-            gap: 15px;
-        }
-        
-        .item-row {
-            display: grid;
-            grid-template-columns: 1fr auto auto auto;
-            gap: 15px;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 10px;
-            align-items: center;
-            transition: background 0.3s ease;
-        }
-        
-        .item-row:hover {
-            background: #e9ecef;
-        }
-        
-        .item-name {
-            font-weight: 600;
-            color: #333;
-        }
-        
-        .item-price {
-            font-weight: 700;
-            color: #667eea;
-        }
-        
-        .item-status {
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-        
-        .status-active {
-            background: #d4edda;
-            color: #155724;
-        }
-        
-        .status-inactive {
-            background: #f8d7da;
-            color: #721c24;
-        }
-        
-        .status-pending {
-            background: #fff3cd;
-            color: #856404;
-        }
-        
-        .item-date {
-            color: #666;
-            font-size: 0.9rem;
-        }
-        
-        .no-items {
-            text-align: center;
-            padding: 40px;
-            color: #666;
-        }
-        
-        .btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 25px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
-        
-        .btn-secondary {
-            background: #f8f9fa;
-            color: #495057;
-            border: 2px solid #e1e1e1;
-        }
-        
-        .btn-secondary:hover {
-            background: #e9ecef;
-            transform: translateY(-2px);
-        }
-        
-        .quick-actions {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            margin-top: 20px;
-            flex-wrap: wrap;
-        }
-        
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                gap: 15px;
-            }
-            
-            .nav {
-                justify-content: center;
-            }
-            
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .item-row {
-                grid-template-columns: 1fr;
-                gap: 10px;
-                text-align: center;
-            }
-            
-            .quick-actions {
-                flex-direction: column;
-                align-items: center;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="header">
-        <div class="header-content">
-            <h1>�️ Admin Dashboard</h1>
-            <div class="nav">
-                <a href="/user/dashboard" class="active">�️ Admin Dashboard</a>
-                <a href="/user/search">🔍 Search Items</a>
-                <a href="/user/profile">👤 Profile</a>
-                <a href="/">🏠 Home</a>
-            </div>
-            <div class="user-info">
-                <span>👋 {{ current_user.full_name or current_user.username }}</span>
-                <a href="/auth/logout" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.9rem;">Logout</a>
-            </div>
-        </div>
-    </div>
+{% extends "base.html" %}
+
+{% block title %}{{ t('dashboard.user_title') if t else 'User Dashboard' }}{% endblock %}
+
+{% block content %}
+<style>
+    .dashboard-container {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: calc(100vh - 100px);
+        padding: 1.5rem 0;
+    }
     
-    <div class="container">
-        <div class="welcome-section">
-            <h1 class="welcome-title">{{ t('dashboard.welcome_user') }}, {{ current_user.full_name or current_user.username }}! 👋</h1>
-            <p class="welcome-subtitle">{{ t('dashboard.overview') }}</p>
+    .main-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 1.5rem;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        border: 1px solid rgba(255,255,255,0.2);
+        margin-bottom: 1.5rem;
+    }
+    
+    .header-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid rgba(102, 126, 234, 0.1);
+    }
+    
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .stat-item {
+        text-align: center;
+        padding: 1rem;
+        background: rgba(102, 126, 234, 0.1);
+        border-radius: 12px;
+        transition: all 0.3s ease;
+    }
+    
+    .stat-item:hover {
+        transform: translateY(-3px);
+        background: rgba(102, 126, 234, 0.15);
+    }
+    
+    .stat-number {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #667eea;
+        margin-bottom: 0.2rem;
+    }
+    
+    .stat-label {
+        font-size: 0.8rem;
+        color: #718096;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .search-section {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        border: 1px solid rgba(255,255,255,0.2);
+    }
+    
+    .search-form {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+    }
+    
+    .search-input {
+        flex: 1;
+        min-width: 200px;
+        padding: 0.8rem 1rem;
+        border: 2px solid #e9ecef;
+        border-radius: 10px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+    
+    .search-input:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    
+    .search-btn {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 0.8rem 1.5rem;
+        border: none;
+        border-radius: 10px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+    }
+    
+    .search-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+    }
+    
+    .filter-select {
+        padding: 0.8rem 1rem;
+        border: 2px solid #e9ecef;
+        border-radius: 10px;
+        font-size: 1rem;
+        background: white;
+        cursor: pointer;
+    }
+    
+    .actions-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .action-btn {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 0.8rem 1rem;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 600;
+        text-align: center;
+        transition: all 0.3s ease;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+    
+    .action-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        color: white;
+        text-decoration: none;
+    }
+    
+    .action-btn.secondary {
+        background: rgba(255, 255, 255, 0.9);
+        color: #667eea;
+        border: 2px solid #667eea;
+    }
+    
+    .action-btn.secondary:hover {
+        background: #667eea;
+        color: white;
+    }
+    
+    .results-section {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        padding: 1.5rem;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        border: 1px solid rgba(255,255,255,0.2);
+    }
+    
+    .items-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1rem;
+    }
+    
+    .item-card {
+        background: rgba(102, 126, 234, 0.05);
+        border-radius: 12px;
+        padding: 1rem;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(102, 126, 234, 0.1);
+    }
+    
+    .item-card:hover {
+        background: rgba(102, 126, 234, 0.1);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .item-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 0.5rem;
+    }
+    
+    .item-name {
+        font-weight: 600;
+        color: #2d3748;
+        font-size: 1rem;
+        margin: 0;
+    }
+    
+    .item-price {
+        color: #38a169;
+        font-weight: 700;
+        font-size: 1.1rem;
+    }
+    
+    .item-description {
+        color: #718096;
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+        line-height: 1.4;
+    }
+    
+    .item-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .status-badge {
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .status-active { background: #c6f6d5; color: #22543d; }
+    .status-inactive { background: #fed7d7; color: #742a2a; }
+    .status-draft { background: #feebc8; color: #7b341e; }
+    
+    .item-actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+    
+    .btn-mini {
+        padding: 0.3rem 0.6rem;
+        border-radius: 6px;
+        font-size: 0.8rem;
+        text-decoration: none;
+        border: none;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    
+    .btn-view { background: #007bff; color: white; }
+    .btn-edit { background: #6c757d; color: white; }
+    .btn-view:hover, .btn-edit:hover { 
+        transform: translateY(-1px); 
+        text-decoration: none; 
+        color: white;
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 2rem;
+        color: #718096;
+    }
+    
+    @media (max-width: 768px) {
+        .dashboard-container { padding: 1rem 0; }
+        .main-card { margin: 0 1rem 1.5rem 1rem; }
+        .search-section, .results-section { margin: 0 1rem 1.5rem 1rem; }
+        .header-section { flex-direction: column; text-align: center; }
+        .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        .actions-row { grid-template-columns: 1fr; }
+        .search-form { flex-direction: column; }
+        .items-grid { grid-template-columns: 1fr; }
+    }
+</style>
+
+<div class="dashboard-container">
+    <div class="container-fluid" style="max-width: 1200px;">
+        <!-- Header with Stats -->
+        <div class="main-card">
+            <div class="header-section">
+                <div>
+                    <h1 style="font-size: 1.8rem; font-weight: 700; color: #2d3748; margin: 0;">
+                        👋 {{ current_user.username }}
+                    </h1>
+                    <p style="color: #718096; margin: 0; font-size: 0.9rem;">
+                        {{ t('dashboard.user_welcome_message') if t else 'Search and manage your items' }}
+                    </p>
+                </div>
+                <div style="font-size: 2rem; opacity: 0.3;">🎯</div>
+            </div>
+
+            <!-- Statistics Grid -->
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">{{ user_stats.total_items }}</div>
+                    <div class="stat-label">Items</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">{{ user_stats.active_items }}</div>
+                    <div class="stat-label">Active</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">${{ "%.0f"|format(user_stats.total_value) }}</div>
+                    <div class="stat-label">Value</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">{{ user_stats.recent_items }}</div>
+                    <div class="stat-label">Recent</div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="actions-row">
+                <a href="/user/items/new?lang={{ lang }}" class="action-btn">
+                    ➕ Add New Item
+                </a>
+                <a href="#search" class="action-btn secondary" onclick="document.querySelector('.search-input').focus()">
+                    🔍 Search Items
+                </a>
+            </div>
         </div>
-        
-        <div class="stats-grid">
-            <div class="stat-card">
-                <span class="stat-icon">📦</span>
-                <div class="stat-number">{{ total_items }}</div>
-                <div class="stat-label">{{ t('dashboard.statistics.total_items') }}</div>
-            </div>
+
+        <!-- Search Section -->
+        <div class="search-section" id="search">
+            <h3 style="color: #2d3748; margin-bottom: 1rem; font-size: 1.2rem; font-weight: 600;">
+                🔍 Search Your Items
+            </h3>
             
-            <div class="stat-card">
-                <span class="stat-icon">✅</span>
-                <div class="stat-number">{{ active_items }}</div>
-                <div class="stat-label">{{ t('dashboard.statistics.active_items') }}</div>
-            </div>
-            
-            <div class="stat-card">
-                <span class="stat-icon">💰</span>
-                <div class="stat-number">${{ "%.2f"|format(total_value) }}</div>
-                <div class="stat-label">{{ t('dashboard.statistics.total') }} {{ t('dashboard.statistics.total_items')|lower }}</div>
-            </div>
-            
-            <div class="stat-card">
-                <span class="stat-icon">👥</span>
-                <div class="stat-number">{{ total_users }}</div>
-                <div class="stat-label">{{ t('dashboard.statistics.active_users') }}</div>
-            </div>
+            <form method="get" action="/user/dashboard" class="search-form">
+                <input type="hidden" name="lang" value="{{ lang }}">
+                <input 
+                    type="text" 
+                    name="query" 
+                    value="{{ search_query or '' }}" 
+                    placeholder="{{ t('search.placeholder') if t else 'Search items by name or description...' }}"
+                    class="search-input"
+                >
+                <select name="status" class="filter-select">
+                    <option value="">All Status</option>
+                    <option value="active" {% if current_status == 'active' %}selected{% endif %}>Active</option>
+                    <option value="inactive" {% if current_status == 'inactive' %}selected{% endif %}>Inactive</option>
+                    <option value="draft" {% if current_status == 'draft' %}selected{% endif %}>Draft</option>
+                </select>
+                <button type="submit" class="search-btn">Search</button>
+            </form>
         </div>
-        
-        <div class="recent-items">
-            <h2 class="section-title">
-                📋 {{ t('dashboard.recent_items') }}
-            </h2>
+
+        <!-- Results Section -->
+        <div class="results-section">
+            {% if search_performed %}
+                <h4 style="color: #2d3748; margin-bottom: 1rem; font-size: 1.1rem; font-weight: 600;">
+                    📝 Search Results ({{ items|length }} found)
+                </h4>
+            {% else %}
+                <h4 style="color: #2d3748; margin-bottom: 1rem; font-size: 1.1rem; font-weight: 600;">
+                    📝 Recent Items
+                </h4>
+            {% endif %}
             
-            {% if recent_items %}
-            <div class="items-list">
-                {% for item in recent_items %}
-                <div class="item-row">
-                    <div class="item-name">{{ item.name }}</div>
-                    <div class="item-price">${{ "%.2f"|format(item.price) }}</div>
-                    <span class="item-status status-{{ item.status }}">{{ t('dashboard.status.' + item.status) if t('dashboard.status.' + item.status) != 'dashboard.status.' + item.status else item.status }}</span>
-                    <div class="item-date">{{ item.created_at[:10] }}</div>
+            {% if items %}
+            <div class="items-grid">
+                {% for item in items %}
+                <div class="item-card">
+                    <div class="item-header">
+                        <h5 class="item-name">{{ item['name'] }}</h5>
+                        <div class="item-price">${{ "%.0f"|format(item['price']) }}</div>
+                    </div>
+                    
+                    {% if item['description'] %}
+                    <div class="item-description">
+                        {{ item['description'][:100] }}{% if item['description']|length > 100 %}...{% endif %}
+                    </div>
+                    {% endif %}
+                    
+                    <div class="item-footer">
+                        <span class="status-badge status-{{ item['status'] }}">{{ item['status'].title() }}</span>
+                        <div class="item-actions">
+                            <a href="/user/items/{{ item['id'] }}?lang={{ lang }}" class="btn-mini btn-view">View</a>
+                            <a href="/user/items/{{ item['id'] }}/edit?lang={{ lang }}" class="btn-mini btn-edit">Edit</a>
+                        </div>
+                    </div>
                 </div>
                 {% endfor %}
             </div>
             {% else %}
-            <div class="no-items">
-                <h3>📭 {{ t('dashboard.statistics.total_items') }}</h3>
-                <p>{{ t('dashboard.welcome_user') }}</p>
+            <div class="empty-state">
+                {% if search_performed %}
+                    <div style="font-size: 2rem; opacity: 0.5; margin-bottom: 0.5rem;">🔍</div>
+                    <h4 style="color: #4a5568;">No results found</h4>
+                    <p style="margin-bottom: 1rem; font-size: 0.9rem;">Try adjusting your search terms or filters.</p>
+                {% else %}
+                    <div style="font-size: 2rem; opacity: 0.5; margin-bottom: 0.5rem;">📦</div>
+                    <h4 style="color: #4a5568;">No items yet</h4>
+                    <p style="margin-bottom: 1rem; font-size: 0.9rem;">Create your first item to get started!</p>
+                {% endif %}
+                <a href="/user/items/new?lang={{ lang }}" class="action-btn" style="display: inline-flex;">
+                    ✨ Add Your First Item
+                </a>
             </div>
             {% endif %}
-            
-            <div class="quick-actions">
-                <a href="/user/search" class="btn btn-primary">🔍 {{ t('dashboard.actions.view_all') }} {{ t('dashboard.statistics.total_items') }}</a>
-                <a href="/user/profile" class="btn btn-secondary">👤 {{ t('dashboard.user_title') }}</a>
-                {% if current_user.role == 'admin' %}
-                <a href="/admin" class="btn btn-secondary">🛠️ {{ t('dashboard.admin_title') }}</a>
-                {% endif %}
-            </div>
         </div>
     </div>
-
-    <script>
-        function changeLanguage(lang) {
-            // Get current URL parameters
-            const url = new URL(window.location);
-            
-            // Set the lang parameter
-            url.searchParams.set('lang', lang);
-            
-            // Redirect to the URL with the new language
-            window.location.href = url.toString();
-        }
-    </script>
-</body>
-</html>
+</div>
+{% endblock %}
