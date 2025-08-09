@@ -382,7 +382,16 @@
         <div class="container">
             <h1>🛠️ {{ t('app.title') if t else 'Web API Admin Panel' }}</h1>
             <div class="nav">
-                <a href="/admin" class="{% if request.url.path == '/admin' %}active{% endif %}">{{ t('navigation.dashboard') if t else 'Dashboard' }}</a>
+                {% if current_user and current_user.role == 'admin' %}
+                    <!-- Admin Navigation -->
+                    <a href="/admin" class="{% if request.url.path.startswith('/admin') %}active{% endif %}">{{ t('navigation.dashboard') if t else 'Admin Dashboard' }}</a>
+                    <a href="/admin/users" class="{% if request.url.path == '/admin/users' %}active{% endif %}">{{ t('navigation.users') if t else 'Users' }}</a>
+                    <a href="/admin/items" class="{% if request.url.path == '/admin/items' %}active{% endif %}">{{ t('navigation.items') if t else 'Items' }}</a>
+                {% elif current_user %}
+                    <!-- User Navigation -->
+                    <a href="/user/dashboard" class="{% if request.url.path.startswith('/user') %}active{% endif %}">{{ t('navigation.dashboard') if t else 'Dashboard' }}</a>
+                    <a href="/user/profile" class="{% if request.url.path == '/user/profile' %}active{% endif %}">{{ t('navigation.profile') if t else 'Profile' }}</a>
+                {% endif %}
                 <a href="/" target="_blank">🏠 {{ t('navigation.landing_page') if t else 'Landing Page' }}</a>
                 <a href="/docs" target="_blank">{{ t('navigation.api_docs') if t else 'API Docs' }}</a>
                 

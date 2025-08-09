@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {% if action == 'create' %}
+        {{ t('items.create_item') if t else 'Create Item' }}
+    {% else %}
+        {{ t('items.edit_item') if t else 'Edit Item' }}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title mb-0">
+                        {% if action == 'create' %}
+                            <i class="fas fa-plus"></i> {{ t('items.create_item') if t else 'Create Item' }}
+                        {% else %}
+                            <i class="fas fa-edit"></i> {{ t('items.edit_item') if t else 'Edit Item' }}
+                        {% endif %}
+                    </h3>
+                </div>
+                <div class="card-body">
+                    {% if action == 'create' %}
+                    <form method="post" action="/user/items/new">
+                    {% else %}
+                    <form method="post" action="/user/items/{{ item.id }}/edit">
+                    {% endif %}
+                        <input type="hidden" name="lang" value="{{ lang }}">
+                        
+                        <!-- Name Field -->
+                        <div class="mb-3">
+                            <label for="name" class="form-label">
+                                {{ t('items.name') if t else 'Name' }} <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="name" 
+                                   name="name" 
+                                   value="{% if item %}{{ item.name }}{% endif %}" 
+                                   required 
+                                   maxlength="100"
+                                   placeholder="{{ t('items.name_placeholder') if t else 'Enter item name' }}">
+                            <div class="form-text">{{ t('items.name_help') if t else 'Enter a descriptive name for your item (1-100 characters)' }}</div>
+                        </div>
+
+                        <!-- Description Field -->
+                        <div class="mb-3">
+                            <label for="description" class="form-label">
+                                {{ t('items.description') if t else 'Description' }}
+                            </label>
+                            <textarea class="form-control" 
+                                      id="description" 
+                                      name="description" 
+                                      rows="3" 
+                                      maxlength="500"
+                                      placeholder="{{ t('items.description_placeholder') if t else 'Enter item description (optional)' }}">{% if item and item.description %}{{ item.description }}{% endif %}</textarea>
+                            <div class="form-text">{{ t('items.description_help') if t else 'Optional description of your item (max 500 characters)' }}</div>
+                        </div>
+
+                        <!-- Price Field -->
+                        <div class="mb-3">
+                            <label for="price" class="form-label">
+                                {{ t('items.price') if t else 'Price' }} <span class="text-danger">*</span>
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text">$</span>
+                                <input type="number" 
+                                       class="form-control" 
+                                       id="price" 
+                                       name="price" 
+                                       value="{% if item %}{{ item.price }}{% endif %}" 
+                                       step="0.01" 
+                                       min="0.01" 
+                                       required
+                                       placeholder="0.00">
+                            </div>
+                            <div class="form-text">{{ t('items.price_help') if t else 'Enter the price for this item (must be greater than $0.00)' }}</div>
+                        </div>
+
+                        <!-- Status Field -->
+                        <div class="mb-3">
+                            <label for="status" class="form-label">
+                                {{ t('items.status') if t else 'Status' }}
+                            </label>
+                            <select class="form-select" id="status" name="status">
+                                <option value="active" {% if not item or item.status == 'active' %}selected{% endif %}>
+                                    {{ t('items.active') if t else 'Active' }}
+                                </option>
+                                <option value="inactive" {% if item and item.status == 'inactive' %}selected{% endif %}>
+                                    {{ t('items.inactive') if t else 'Inactive' }}
+                                </option>
+                                <option value="draft" {% if item and item.status == 'draft' %}selected{% endif %}>
+                                    {{ t('items.draft') if t else 'Draft' }}
+                                </option>
+                            </select>
+                            <div class="form-text">{{ t('items.status_help') if t else 'Set the status of your item' }}</div>
+                        </div>
+
+                        <!-- Form Actions -->
+                        <div class="d-flex justify-content-between">
+                            <a href="/user/items?lang={{ lang }}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> {{ t('common.back') if t else 'Back' }}
+                            </a>
+                            <div>
+                                {% if action == 'edit' %}
+                                <a href="/user/items/{{ item.id }}?lang={{ lang }}" class="btn btn-outline-primary me-2">
+                                    {{ t('common.cancel') if t else 'Cancel' }}
+                                </a>
+                                {% endif %}
+                                <button type="submit" class="btn btn-primary">
+                                    {% if action == 'create' %}
+                                        <i class="fas fa-plus"></i> {{ t('items.create_item') if t else 'Create Item' }}
+                                    {% else %}
+                                        <i class="fas fa-save"></i> {{ t('common.save_changes') if t else 'Save Changes' }}
+                                    {% endif %}
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            {% if action == 'create' %}
+            <!-- Help Card -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-info-circle"></i> {{ t('common.help') if t else 'Help' }}
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <h6>{{ t('items.item_statuses') if t else 'Item Statuses' }}</h6>
+                    <ul class="list-unstyled">
+                        <li><span class="badge bg-success me-2">{{ t('items.active') if t else 'Active' }}</span> {{ t('items.active_help') if t else 'Item is visible and available' }}</li>
+                        <li><span class="badge bg-secondary me-2">{{ t('items.inactive') if t else 'Inactive' }}</span> {{ t('items.inactive_help') if t else 'Item is hidden but saved' }}</li>
+                        <li><span class="badge bg-warning me-2">{{ t('items.draft') if t else 'Draft' }}</span> {{ t('items.draft_help') if t else 'Item is being worked on' }}</li>
+                    </ul>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

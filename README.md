@@ -29,6 +29,21 @@ This template saves you weeks of development time by providing:
 2. **Start developing:**
    ```bash
    python main.py
+   # Server starts at http://127.0.0.1:8000
+   ```
+
+3. **Explore the organized structure:**
+   ```bash
+   # View project structure
+   see docs/PROJECT_STRUCTURE.md
+   
+   # Run tests
+   python scripts/run_tests.py
+   
+   # Check system health
+   python utils/check_db.py
+   ```
+   python main.py
    ```
 
 3. **Explore what's included:**

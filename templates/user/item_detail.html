@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+
+{% block title %}{{ item.name }} - {{ t('items.item_details') if t else 'Item Details' }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <!-- Item Details Card -->
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="card-title mb-0">
+                        <i class="fas fa-box"></i> {{ item.name }}
+                    </h3>
+                    <div>
+                        {% if item.status == 'active' %}
+                            <span class="badge bg-success">{{ t('items.active') if t else 'Active' }}</span>
+                        {% elif item.status == 'inactive' %}
+                            <span class="badge bg-secondary">{{ t('items.inactive') if t else 'Inactive' }}</span>
+                        {% elif item.status == 'draft' %}
+                            <span class="badge bg-warning">{{ t('items.draft') if t else 'Draft' }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="card-body">
+                    <!-- Price -->
+                    <div class="row mb-3">
+                        <div class="col-sm-3">
+                            <strong>{{ t('items.price') if t else 'Price' }}:</strong>
+                        </div>
+                        <div class="col-sm-9">
+                            <h4 class="text-primary mb-0">${{ "%.2f"|format(item.price) }}</h4>
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="row mb-3">
+                        <div class="col-sm-3">
+                            <strong>{{ t('items.description') if t else 'Description' }}:</strong>
+                        </div>
+                        <div class="col-sm-9">
+                            {% if item.description %}
+                                <p class="mb-0">{{ item.description }}</p>
+                            {% else %}
+                                <em class="text-muted">{{ t('common.no_description') if t else 'No description provided' }}</em>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Created Date -->
+                    <div class="row mb-3">
+                        <div class="col-sm-3">
+                            <strong>{{ t('common.created_at') if t else 'Created' }}:</strong>
+                        </div>
+                        <div class="col-sm-9">
+                            {{ item.created_at[:19] | replace('T', ' ') }}
+                        </div>
+                    </div>
+
+                    <!-- Updated Date -->
+                    {% if item.updated_at %}
+                    <div class="row mb-3">
+                        <div class="col-sm-3">
+                            <strong>{{ t('common.updated_at') if t else 'Last Updated' }}:</strong>
+                        </div>
+                        <div class="col-sm-9">
+                            {{ item.updated_at[:19] | replace('T', ' ') }}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- Item ID -->
+                    <div class="row mb-3">
+                        <div class="col-sm-3">
+                            <strong>{{ t('common.id') if t else 'ID' }}:</strong>
+                        </div>
+                        <div class="col-sm-9">
+                            <code>{{ item.id }}</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <!-- Actions Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-tools"></i> {{ t('common.actions') if t else 'Actions' }}
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="/user/items/{{ item.id }}/edit?lang={{ lang }}" class="btn btn-primary">
+                            <i class="fas fa-edit"></i> {{ t('common.edit') if t else 'Edit' }}
+                        </a>
+                        <button type="button" 
+                                class="btn btn-danger" 
+                                onclick="confirmDelete()">
+                            <i class="fas fa-trash"></i> {{ t('common.delete') if t else 'Delete' }}
+                        </button>
+                        <hr>
+                        <a href="/user/items?lang={{ lang }}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left"></i> {{ t('items.back_to_items') if t else 'Back to Items' }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Stats Card -->
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-chart-bar"></i> {{ t('items.item_info') if t else 'Item Information' }}
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        <li class="d-flex justify-content-between align-items-center mb-2">
+                            <span>{{ t('items.status') if t else 'Status' }}:</span>
+                            {% if item.status == 'active' %}
+                                <span class="badge bg-success">{{ t('items.active') if t else 'Active' }}</span>
+                            {% elif item.status == 'inactive' %}
+                                <span class="badge bg-secondary">{{ t('items.inactive') if t else 'Inactive' }}</span>
+                            {% elif item.status == 'draft' %}
+                                <span class="badge bg-warning">{{ t('items.draft') if t else 'Draft' }}</span>
+                            {% endif %}
+                        </li>
+                        <li class="d-flex justify-content-between align-items-center mb-2">
+                            <span>{{ t('items.name_length') if t else 'Name Length' }}:</span>
+                            <span>{{ item.name|length }} {{ t('common.characters') if t else 'chars' }}</span>
+                        </li>
+                        {% if item.description %}
+                        <li class="d-flex justify-content-between align-items-center mb-2">
+                            <span>{{ t('items.description_length') if t else 'Description Length' }}:</span>
+                            <span>{{ item.description|length }} {{ t('common.characters') if t else 'chars' }}</span>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{ t('common.confirm_delete') if t else 'Confirm Delete' }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>{{ t('items.delete_confirmation') if t else 'Are you sure you want to delete this item?' }}</p>
+                <p><strong>"{{ item.name }}"</strong></p>
+                <p class="text-muted small">{{ t('common.action_irreversible') if t else 'This action cannot be undone.' }}</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    {{ t('common.cancel') if t else 'Cancel' }}
+                </button>
+                <form method="post" action="/user/items/{{ item.id }}/delete" style="display: inline;">
+                    <input type="hidden" name="lang" value="{{ lang }}">
+                    <button type="submit" class="btn btn-danger">
+                        {{ t('common.delete') if t else 'Delete' }}
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function confirmDelete() {
+    var deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+    deleteModal.show();
+}
+</script>
+{% endblock %}
