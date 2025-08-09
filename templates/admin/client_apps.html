@@ -360,7 +360,7 @@
             <!-- Create New App Form -->
             <div class="create-form">
                 <h3>🚀 {{ t('management.create_new_client_app') }}</h3>
-                <form method="post" action="/admin/client-apps/create">
+                <form method="post" action="/admin/client-apps/create?lang={{ lang }}">
                     <div class="form-row">
                         <div class="form-group">
                             <label for="name">{{ t('management.application_name_required') }}</label>
@@ -420,20 +420,20 @@
                             {{ t('management.get_test_token') }}
                         </button>
 
-                        <form method="post" action="/admin/client-apps/{{ app.id }}/regenerate-secret" style="display: inline;">
-                            <button type="submit" class="btn btn-warning" onclick="return confirm('Regenerować sekret? To unieważni istniejące tokeny.')">
+                        <form method="post" action="/admin/client-apps/{{ app.id }}/regenerate-secret?lang={{ lang }}" style="display: inline;">
+                            <button type="submit" class="btn btn-warning" onclick="return confirm('{{ t('management.confirm_regenerate_secret') }}')">
                                 {{ t('management.regenerate_secret') }}
                             </button>
                         </form>
 
-                        <form method="post" action="/admin/client-apps/{{ app.id }}/toggle-status" style="display: inline;">
+                        <form method="post" action="/admin/client-apps/{{ app.id }}/toggle-status?lang={{ lang }}" style="display: inline;">
                             <button type="submit" class="btn {% if app.is_active %}btn-warning{% else %}btn-success{% endif %}">
                                 {% if app.is_active %}{{ t('management.deactivate') }}{% else %}{{ t('management.activate') }}{% endif %}
                             </button>
                         </form>
 
-                        <form method="post" action="/admin/client-apps/{{ app.id }}/delete" style="display: inline;">
-                            <button type="submit" class="btn btn-danger" onclick="return confirm('Usunąć tę aplikację? Tej operacji nie można cofnąć.')">
+                        <form method="post" action="/admin/client-apps/{{ app.id }}/delete?lang={{ lang }}" style="display: inline;">
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('{{ t('management.confirm_delete_app') }}')">
                                 {{ t('management.delete') }}
                             </button>
                         </form>
