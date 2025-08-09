@@ -433,7 +433,7 @@
                         </form>
 
                         <form method="post" action="/admin/client-apps/{{ app.id }}/delete?lang={{ lang }}" style="display: inline;">
-                            <button type="submit" class="btn btn-danger" onclick="return confirm('Usunąć tę aplikację? Tej operacji nie można cofnąć.')">
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('{{ t('management.confirm_delete_app') }}')">
                                 {{ t('management.delete') }}
                             </button>
                         </form>
