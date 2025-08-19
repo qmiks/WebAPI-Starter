@@ -136,7 +136,12 @@
       "status": "Status",
       "created": "Utworzony",
       "updated": "Zaktualizowany",
-      "actions": "Akcje"
+      "actions": "Akcje",
+      "name": "Nazwa",
+      "description": "Opis",
+      "price": "Cena",
+      "owner": "Właściciel",
+      "app_id": "ID aplikacji"
     },
     "status_labels": {
       "active": "Aktywny",
@@ -156,13 +161,56 @@
     "user_management": "Zarządzanie użytkownikami",
     "total_users": "Łączna liczba użytkowników",
     "confirm_delete_user": "Czy na pewno chcesz usunąć tego użytkownika?",
-    "no_users_found": "Nie znaleziono użytkowników."
+    "no_users_found": "Nie znaleziono użytkowników.",
+    "administrators": "Administratorzy",
+    "new_this_week": "Nowi w tym tygodniu",
+    "users_subtitle": "Zarządzaj kontami użytkowników i uprawnieniami"
+  },
+  "users": {
+    "search_placeholder": "🔍 Szukaj użytkowników..."
+  },
+  "filters": {
+    "all_roles": "Wszystkie role",
+    "all_status": "Wszystkie statusy"
   },
   "search": {
-    "placeholder": "Wyszukaj elementy według nazwy lub opisu...",
     "title": "Wyszukaj elementy",
+    "page_title": "Wyszukaj swoje elementy",
+    "description": "Znajdź i zarządzaj swoimi elementami",
+    "unavailable": "Dodawanie elementu niedostępne",
+    "search_term": "Szukane hasło",
+    "search_placeholder": "Wprowadź nazwę, opis...",
+    "status": "Status",
+    "all_statuses": "Wszystkie statusy",
+    "search_button": "Szukaj",
+    "quick_actions": "Szybkie akcje",
+    "view_only": "Tylko podgląd",
+    "item_management_disabled": "Zarządzanie elementami wyłączone",
+    "results": "Wyniki wyszukiwania",
     "no_results": "Nie znaleziono wyników",
+    "no_results_desc": "Spróbuj zmienić kryteria wyszukiwania.",
+    "start_searching": "Rozpocznij wyszukiwanie",
+    "start_searching_desc": "Wpisz powyżej szukane hasło, aby znaleźć elementy.",
+    "placeholder": "Wyszukaj elementy według nazwy lub opisu...",
     "results_count": "znalezionych wyników"
+  },
+  
+  "status": {
+    "active": "Aktywny",
+    "inactive": "Nieaktywny",
+    "draft": "Szkic"
+  },
+  "table": {
+    "name": "Nazwa",
+    "description": "Opis",
+    "price": "Cena",
+    "status": "Status",
+    "actions": "Akcje"
+  },
+  "actions": {
+    "dashboard": "Panel",
+    "dashboard_desc": "Zobacz swój przegląd",
+    "add_new_item": "Dodaj nowy element"
   },
   "forms": {
     "name": "Nazwa",
@@ -193,6 +241,11 @@
     "hello": "Cześć",
     "language": "Język",
     "switch_language": "Zmień język"
+  },
+  "pagination": {
+    "previous": "Poprzednia",
+    "next": "Następna",
+    "page_info": "Strona 1 z 1"
   },
   "languages": {
     "english": "Angielski",

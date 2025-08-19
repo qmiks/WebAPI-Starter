@@ -170,7 +170,7 @@ async def admin_dashboard(request: Request, lang: Optional[str] = None):
     def translate_key(key):
         return t(key, locale)
     
-    response = templates.TemplateResponse("dashboard.html", {
+    response = templates.TemplateResponse("admin/dashboard.html", {
         "request": request,
         "current_user": current_user,
         "total_users": total_users,

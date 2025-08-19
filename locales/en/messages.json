@@ -41,7 +41,8 @@
     "email_already_exists": "Email already exists",
     "username_already_exists": "Username already exists",
     "invalid_email": "Invalid email format",
-    "password_too_short": "Password must be at least 8 characters long"
+    "password_too_short": "Password must be at least 8 characters long",
+    "search_placeholder": "Search users..."
   },
   "items": {
     "item_created": "Item created successfully",
@@ -136,7 +137,12 @@
       "status": "Status",
       "created": "Created",
       "updated": "Updated",
-      "actions": "Actions"
+      "actions": "Actions",
+      "name": "Name",
+      "description": "Description",
+      "price": "Price",
+      "owner": "Owner",
+      "app_id": "App ID"
     },
     "status_labels": {
       "active": "Active",
@@ -156,13 +162,94 @@
     "user_management": "User Management",
     "total_users": "Total Users",
     "confirm_delete_user": "Are you sure you want to delete this user?",
-    "no_users_found": "No users found."
+    "no_users_found": "No users found.",
+    "administrators": "Administrators",
+    "new_this_week": "New This Week",
+    "users_subtitle": "Manage user accounts and permissions",
+
+    "client_apps_title": "Client Applications",
+    "client_apps_subtitle": "Create and manage client apps and API tokens",
+    "back_to_admin": "← Back to Dashboard",
+    "api_token_endpoint": "API Token Endpoint",
+    "success": "Success",
+    "create_new_client_app": "Create New Client App",
+    "application_name_required": "Application Name (required)",
+    "application_name_placeholder": "Enter application name (min 3 characters)",
+    "description": "Description",
+    "description_placeholder": "Optional short description",
+    "active": "Active",
+    "create_app": "Create App",
+    "status_active": "Active",
+    "status_inactive": "Inactive",
+    "app_id": "App ID",
+    "app_secret": "App Secret",
+    "save_credentials_warning": "Important: Save your App ID and App Secret now. You won't be able to see the full secret again!",
+    "get_test_token": "Get Test Token",
+    "confirm_regenerate_secret": "Regenerate app secret? The old secret will stop working.",
+    "regenerate_secret": "Regenerate Secret",
+    "deactivate": "Deactivate",
+    "activate": "Activate",
+    "confirm_delete_app": "Are you sure you want to delete this app? This action cannot be undone.",
+    "delete": "Delete",
+    "created": "Created:",
+    "updated": "Updated:",
+    "no_apps_title": "No client apps yet",
+    "no_apps_description": "Create your first client app using the form above to get App ID and Secret for API access.",
+    "usage_guide_title": "API Usage Guide",
+    "usage_step1": "1) Request an access token (POST):",
+    "usage_step2": "2) Use the token to call protected endpoints:",
+    "usage_step3": "3) In Swagger, click Authorize and paste your token as:",
+    "token_modal_title": "Generated API Token",
+    "token_modal_app": "Application:",
+    "token_modal_token": "Access Token:",
+    "token_modal_expires": "Expires:",
+    "usage_examples": "Usage Examples",
+    "swagger_ui": "Swagger UI",
+    "swagger_step1": "Open",
+    "swagger_step2": "Click the Authorize button and enter your token",
+    "swagger_step3": "Use format",
+    "curl_example": "cURL Example",
+    "python_example": "Python Example",
+    "copy_token": "Copy Token",
+    "close": "Close"
   },
   "search": {
-    "placeholder": "Search items by name or description...",
     "title": "Search Items",
+    "page_title": "Search Your Items",
+    "description": "Find and manage your items easily",
+    "unavailable": "Add Item Unavailable",
+    "search_term": "Search Term",
+    "search_placeholder": "Enter item name, description...",
+    "status": "Status",
+    "all_statuses": "All Statuses",
+    "search_button": "Search",
+    "quick_actions": "Quick Actions",
+    "view_only": "View Only",
+    "item_management_disabled": "Item management disabled",
+    "results": "Search Results",
     "no_results": "No results found",
+    "no_results_desc": "Try adjusting your search terms.",
+    "start_searching": "Start Searching",
+    "start_searching_desc": "Enter a search term above to find your items.",
+    "placeholder": "Search items by name or description...",
     "results_count": "results found"
+  },
+  "status": {
+    "active": "Active",
+    "inactive": "Inactive",
+    "draft": "Draft"
+  },
+  "table": {
+    "name": "Name",
+    "description": "Description",
+    "price": "Price",
+    "status": "Status",
+    "actions": "Actions"
+  },
+  "actions": {
+    "dashboard": "Dashboard",
+    "dashboard_desc": "View your overview",
+    "add_new_item": "Add New Item"
   },
   "forms": {
     "name": "Name",
@@ -234,5 +321,9 @@
     "api_structure_desc": "Well-organized project structure with automatic OpenAPI documentation, CORS configuration, and standardized response patterns - follow the established patterns for consistency.",
     "ui_templates_title": "UI Templates Included",
     "ui_templates_desc": "Professional responsive HTML templates for forms, dashboards, and user interfaces. Easily customizable with modern CSS - perfect starting point for your frontend."
+  },
+  "filters": {
+    "all_roles": "All Roles",
+    "all_status": "All Status"
   }
 }
